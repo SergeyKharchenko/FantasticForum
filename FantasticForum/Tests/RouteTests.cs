@@ -13,13 +13,19 @@ namespace Tests
         [Test]
         public void TestIncomingRoutes()
         {
-            //IncomingRouteMatchTest("~/", "Index", "Home");
+            #if !DEBUG
+            return;
+            #endif
+            IncomingRouteMatchTest("~/", "List", "Topic");
         }
 
         [Test]
         public void TestOutgoingRoutes()
         {
-            //OutgoingRouteMatchTest("Index", "Home", null, "/");
+            #if !DEBUG
+            return;
+            #endif
+            OutgoingRouteMatchTest("List", "Topic", null, "/");
         }
 
         private static void IncomingRouteMatchTest(string url, string action, string controller, object routeProperties = null, string httpMethod = "GET")
