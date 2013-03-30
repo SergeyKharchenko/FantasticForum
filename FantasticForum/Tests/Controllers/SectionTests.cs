@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Models;
 using Moq;
@@ -33,7 +34,7 @@ namespace Tests.Controllers
         public void ListTest()
         {
             var view = controller.List();
-            var actualSections = view.Model as Collection<SectionListVM>;
+            var actualSections = view.Model as List<SectionListVM>;
 
             unitOfWorkMock.Verify(unit => unit.Section, Times.Once());
             Assert.That(actualSections, Is.Not.Null);

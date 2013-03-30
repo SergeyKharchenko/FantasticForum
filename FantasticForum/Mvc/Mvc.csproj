@@ -174,6 +174,7 @@
     <Compile Include="Infrastructure\Abstract\ISectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Abstract\IRepository.cs" />
     <Compile Include="Infrastructure\Abstract\IUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Concrete\ForumContextInitializer.cs" />
     <Compile Include="Infrastructure\Concrete\NinjectControllerFactory.cs" />
     <Compile Include="Infrastructure\Concrete\Repository.cs" />
     <Compile Include="Infrastructure\Concrete\SectionUnitOfWork.cs" />
@@ -268,6 +269,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Preview\Index.cshtml" />
+    <Content Include="Views\Section\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

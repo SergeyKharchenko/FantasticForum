@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -30,7 +29,7 @@ namespace Mvc.Infrastructure.Concrete
         {
             kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));  
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));  
-            kernel.Bind(typeof(DbContext)).To(typeof(FormContext)).InSingletonScope();  
+            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InSingletonScope();  
         }
 
     }
