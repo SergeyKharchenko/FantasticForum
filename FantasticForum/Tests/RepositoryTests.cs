@@ -22,6 +22,8 @@ namespace Tests
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());
 
             context = new ForumContext();
+            if (context.Database.Exists())
+                context.Database.Delete();
             context.Database.Initialize(true);
 
             sections = new List<Section>

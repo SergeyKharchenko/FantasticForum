@@ -31,7 +31,7 @@ namespace Tests.UnitOfWork
         [Test]
         public void SectionsTest()
         {
-            var actualSections = unitOfWork.Sections;
+            var actualSections = unitOfWork.Section;
 
             repositoryMock.Verify(repo => repo.Entities, Times.Once());
             Assert.That(actualSections, Is.EquivalentTo(sections));

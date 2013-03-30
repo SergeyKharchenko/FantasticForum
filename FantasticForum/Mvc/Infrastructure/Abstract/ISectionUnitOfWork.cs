@@ -3,8 +3,8 @@ using Models;
 
 namespace Mvc.Infrastructure.Abstract
 {
-    public interface IEntityUnitOfWork : IUnitOfWork
+    public interface ISectionUnitOfWork : IUnitOfWork
     {
-        IEnumerable<Entity> Sections { get; }
+        IEnumerable<Section> Section { get; }
     }
 }

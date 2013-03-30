@@ -109,6 +109,7 @@
     <Compile Include="RepositoryTests.cs" />
     <Compile Include="RouteTests.cs" />
     <Compile Include="UnitOfWork\SectionTests.cs" />
+    <Compile Include="ViewModel\Section\SectionListVMTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

@@ -3,6 +3,7 @@ using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure.Abstract;
+using Mvc.ViewModels;
 using NUnit.Framework;
 
 namespace Tests.Controllers
@@ -11,7 +12,7 @@ namespace Tests.Controllers
     public class SectionTests
     {
         private SectionController controller;
-        private Mock<IEntityUnitOfWork> unitOfWorkMock;
+        private Mock<ISectionUnitOfWork> unitOfWorkMock;
         private Collection<Section> sections;
 
         [SetUp]
@@ -23,8 +24,8 @@ namespace Tests.Controllers
                     new Section {Title = "Life"},
                     new Section {Title = "Programming"}
                 };
-            unitOfWorkMock = new Mock<IEntityUnitOfWork>();
-            unitOfWorkMock.Setup(unit => unit.Sections).Returns(sections);
+            unitOfWorkMock = new Mock<ISectionUnitOfWork>();
+            unitOfWorkMock.Setup(unit => unit.Section).Returns(sections);
             controller = new SectionController(unitOfWorkMock.Object);
         }
 
@@ -32,9 +33,9 @@ namespace Tests.Controllers
         public void ListTest()
         {
             var view = controller.List();
-            var actualSections = view.Model as Collection<Section>;
+            var actualSections = view.Model as Collection<SectionListVM>;
 
-            unitOfWorkMock.Verify(unit => unit.Sections, Times.Once());
+            unitOfWorkMock.Verify(unit => unit.Section, Times.Once());
             Assert.That(actualSections, Is.Not.Null);
             Assert.That(actualSections, Is.EquivalentTo(actualSections));
         }
