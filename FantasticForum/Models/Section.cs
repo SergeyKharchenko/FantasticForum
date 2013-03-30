@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models
 {
-    [Table("Topic")]
-    public class Topic : Entity
+    [Table("Section")]
+    public class Section : Entity
     {
         [Required]
         [StringLength(30, MinimumLength = 2)]

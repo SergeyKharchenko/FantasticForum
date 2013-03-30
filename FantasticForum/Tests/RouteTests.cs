@@ -16,7 +16,7 @@ namespace Tests
             #if !DEBUG
             return;
             #endif
-            IncomingRouteMatchTest("~/", "List", "Topic");
+            IncomingRouteMatchTest("~/", "List", "Section");
         }
 
         [Test]
@@ -25,7 +25,7 @@ namespace Tests
             #if !DEBUG
             return;
             #endif
-            OutgoingRouteMatchTest("List", "Topic", null, "/");
+            OutgoingRouteMatchTest("List", "Section", null, "/");
         }
 
         private static void IncomingRouteMatchTest(string url, string action, string controller, object routeProperties = null, string httpMethod = "GET")

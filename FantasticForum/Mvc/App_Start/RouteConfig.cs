@@ -20,7 +20,7 @@ namespace Mvc.App_Start
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new {controller = "Topic", action = "List", id = UrlParameter.Optional}
+                defaults: new {controller = "Section", action = "List", id = UrlParameter.Optional}
                 );
         }
     }

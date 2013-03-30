@@ -8,22 +8,22 @@ using Mvc.Infrastructure.Abstract;
 
 namespace Mvc.Controllers
 {
-    public class TopicController : Controller
+    public class SectionController : Controller
     {
         private readonly IEntityUnitOfWork unitOfWork;
 
-        public TopicController(IEntityUnitOfWork unitOfWork)
+        public SectionController(IEntityUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
         
 
         //
-        // GET: /Topic/List
+        // GET: /Section/List
 
         public ViewResult List()
         {
-            return View(unitOfWork.Topics);
+            return View(unitOfWork.Sections);
         }
 
     }

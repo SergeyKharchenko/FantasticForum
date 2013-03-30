@@ -104,10 +104,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\TopicTests.cs" />
+    <Compile Include="Controllers\SectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteTests.cs" />
-    <Compile Include="UnitOfWork\TopicTests.cs" />
+    <Compile Include="UnitOfWork\SectionTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

@@ -5,6 +5,6 @@ namespace Mvc.Infrastructure.Abstract
 {
     public interface IEntityUnitOfWork : IUnitOfWork
     {
-        IEnumerable<Entity> Topics { get; }
+        IEnumerable<Entity> Sections { get; }
     }
 }

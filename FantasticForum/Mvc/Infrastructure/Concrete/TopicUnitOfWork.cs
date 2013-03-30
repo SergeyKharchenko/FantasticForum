@@ -4,11 +4,11 @@ using Mvc.Infrastructure.Abstract;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class TopicUnitOfWork : IEntityUnitOfWork
+    public class SectionUnitOfWork : IEntityUnitOfWork
     {
-        private readonly IRepository<Topic> topicRepository;
+        private readonly IRepository<Section> topicRepository;
 
-        public TopicUnitOfWork(IRepository<Topic> topicRepository)
+        public SectionUnitOfWork(IRepository<Section> topicRepository)
         {
             this.topicRepository = topicRepository;
         }
@@ -18,7 +18,7 @@ namespace Mvc.Infrastructure.Concrete
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Entity> Topics
+        public IEnumerable<Entity> Sections
         {
             get { return topicRepository.Entities; }
         }
