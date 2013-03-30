@@ -31,10 +31,10 @@ namespace Tests.UnitOfWork
         [Test]
         public void SectionsTest()
         {
-            var expectedSections = unitOfWork.Sections;
+            var actualSections = unitOfWork.Sections;
 
             repositoryMock.Verify(repo => repo.Entities, Times.Once());
-            Assert.That(expectedSections, Is.EquivalentTo(sections));
+            Assert.That(actualSections, Is.EquivalentTo(sections));
         }
 
     }

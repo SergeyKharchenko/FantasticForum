@@ -32,11 +32,11 @@ namespace Tests.Controllers
         public void ListTest()
         {
             var view = controller.List();
-            var expectedSections = view.Model as Collection<Section>;
+            var actualSections = view.Model as Collection<Section>;
 
             unitOfWorkMock.Verify(unit => unit.Sections, Times.Once());
-            Assert.That(expectedSections, Is.Not.Null);
-            Assert.That(expectedSections, Is.EquivalentTo(expectedSections));
+            Assert.That(actualSections, Is.Not.Null);
+            Assert.That(actualSections, Is.EquivalentTo(actualSections));
         }
     }
 }
