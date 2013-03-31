@@ -51,7 +51,7 @@ namespace Tests.Controllers
         {
             var httpContextMock = new Mock<HttpContextBase>();
             var serverMock = new Mock<HttpServerUtilityBase>();
-            const string virtualPath = "~/Image/Section";
+            const string virtualPath = "~/Images/Section";
             serverMock.Setup(x => x.MapPath(virtualPath)).Returns(@"c:\work\app_data");
             httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
             controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
