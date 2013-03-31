@@ -9,6 +9,7 @@
 </p>
 <table>
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Title)
         </th>
@@ -17,6 +18,16 @@
 
 @foreach (var item in Model) {
     <tr>
+        <td>
+            @if (@item.Image != null)
+            {
+                <img src="@item.Image.FileName" alt="@item.Title" width="24" height="24"/>
+            }
+            else
+            {
+                <img src="~/Images/Section/section-without-avatar.png" alt="@item.Title" width="24" height="24"/>
+            }
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>

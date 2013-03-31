@@ -242,6 +242,10 @@
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Images\Section\section-life.jpg" />
+    <Content Include="Images\Section\section-news.png" />
+    <Content Include="Images\Section\section-sport.jpg" />
+    <Content Include="Images\Section\section-without-avatar.png" />
     <Content Include="Images\under-construction.jpg" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -277,7 +281,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Images\Section\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

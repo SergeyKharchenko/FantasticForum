@@ -9,6 +9,7 @@ namespace Mvc.App_Start
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            /*
             #if !DEBUG
             routes.MapRoute(
                 name: "Preview",
@@ -16,6 +17,7 @@ namespace Mvc.App_Start
                 defaults: new { controller = "Preview", action = "Index" }
             );
             #endif
+             */
 
             routes.MapRoute(
                 name: "Default",
