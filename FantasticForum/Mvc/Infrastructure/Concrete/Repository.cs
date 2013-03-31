@@ -21,5 +21,15 @@ namespace Mvc.Infrastructure.Concrete
         {
             get { return dbSet.AsEnumerable(); }
         }
+
+        public void Create(TEntity entity)
+        {
+            dbSet.Add(entity);
+        }
+
+        public void SaveChanges()
+        {
+            context.SaveChanges();
+        }
     }
 }

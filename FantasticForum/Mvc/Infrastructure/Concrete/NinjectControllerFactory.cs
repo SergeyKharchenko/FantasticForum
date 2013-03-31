@@ -27,9 +27,10 @@ namespace Mvc.Infrastructure.Concrete
 
         private void AddBindings()
         {
-            kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));  
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));  
+            kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));
+            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InThreadScope();  
             kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InThreadScope();  
+            kernel.Bind(typeof(IImageHelper)).To(typeof(ImageHelper));  
         }
 
     }

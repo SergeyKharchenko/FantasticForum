@@ -1,5 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 using Models;
 using Moq;
 using Mvc.Controllers;
@@ -39,6 +44,29 @@ namespace Tests.Controllers
             unitOfWorkMock.Verify(unit => unit.Section, Times.Once());
             Assert.That(actualSections, Is.Not.Null);
             Assert.That(actualSections, Is.EquivalentTo(actualSections));
+        }
+
+        [Test]
+        public void CreateTest()
+        {
+            var httpContextMock = new Mock<HttpContextBase>();
+            var serverMock = new Mock<HttpServerUtilityBase>();
+            const string virtualPath = "~/Image/Section";
+            serverMock.Setup(x => x.MapPath(virtualPath)).Returns(@"c:\work\app_data");
+            httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
+            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+
+            var httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
+
+            var section = new Section();
+
+            var view = controller.Create(section, httpPostedFileBaseMock.Object);
+            var redirectResult = view as RedirectToRouteResult;
+
+            unitOfWorkMock.Verify(unit => unit.Create(section, httpPostedFileBaseMock.Object, @"c:\work\app_data", virtualPath.Substring(1)));
+            Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
+            
         }
     }
 }
