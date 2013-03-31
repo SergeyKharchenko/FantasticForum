@@ -9,5 +9,7 @@ namespace Models
         [Required]
         [StringLength(30, MinimumLength = 2)]
         public string Title { get; set; }
+
+        public Image Image { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace Mvc.Infrastructure.Concrete
         {
             kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));  
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));  
-            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InSingletonScope();  
+            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InThreadScope();  
         }
 
     }

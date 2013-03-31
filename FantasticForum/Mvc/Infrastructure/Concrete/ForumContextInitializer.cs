@@ -4,7 +4,7 @@ using Models;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class ForumContextInitializer : DropCreateDatabaseIfModelChanges<ForumContext>
+    public class ForumContextInitializer : DropCreateDatabaseAlways<ForumContext>
     {
         protected override void Seed(ForumContext context)
         {

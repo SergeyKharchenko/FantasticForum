@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Configuration;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -23,10 +24,11 @@ namespace Mvc
             AuthConfig.RegisterAuth();
 
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
-
+            
             #if DEBUG
             Database.SetInitializer(new ForumContextInitializer());
             #else
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ForumContext, Models.Migrations.Configuration>());
             var context = new ForumContext();
             context.Database.Initialize(true);
             #endif
