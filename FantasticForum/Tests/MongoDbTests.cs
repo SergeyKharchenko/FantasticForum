@@ -22,6 +22,13 @@ namespace Tests
             collection.Insert(entity);
         }
 
+        [Test]
+        public void AppVarTest()
+        {
+            Console.WriteLine(ConfigurationManager.AppSettings.Get("Environment"));
+            Console.WriteLine(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
+        }
+
 
         private string GetMongoDbConnectionString()
         {
