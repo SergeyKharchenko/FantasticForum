@@ -25,6 +25,9 @@ namespace Tests
 
         private string GetMongoDbConnectionString()
         {
+            Console.WriteLine(@"ConfigurationManager" + ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
+            Console.WriteLine(@"Environment" + Environment.GetEnvironmentVariable("MONGOLAB_URI"));
+
             return Environment.GetEnvironmentVariable("MONGOLAB_URI") ??
                    "mongodb://localhost/Things";
         }
