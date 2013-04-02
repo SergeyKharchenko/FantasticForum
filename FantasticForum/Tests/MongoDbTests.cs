@@ -17,7 +17,7 @@ namespace Tests
             
             var client = new MongoClient(connectionString);
             var server = client.GetServer();
-            var database = server.GetDatabase("test");
+            var database = server.GetDatabase("appharbor_c717f8e9-4daf-4dfe-89c9-76933e1b68cd");
             var collection = database.GetCollection<EntityDummy>("entities");
 
             var entity = new EntityDummy { Name = "Tom" };
