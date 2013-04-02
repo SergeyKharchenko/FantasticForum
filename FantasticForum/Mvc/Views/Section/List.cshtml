@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Mvc.ViewModels.SectionListVM>
+﻿@using System.Configuration
+@model IEnumerable<Mvc.ViewModels.SectionListVM>
 
 @{
     ViewBag.Title = "Fantastic Forum";
 }
+
+@ConfigurationManager.AppSettings.Get("MONGOLAB_URI")
 
 <p>
     @Html.ActionLink("Create New", "Create")
