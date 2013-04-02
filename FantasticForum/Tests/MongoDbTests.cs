@@ -24,6 +24,7 @@ namespace Tests
             collection.Insert(entity);
         }
 
+
         private string GetMongoDbConnectionString()
         {
             return ConfigurationManager.AppSettings.Get("MONGOLAB_URI") ??
