@@ -11,7 +11,8 @@
 
 @foreach (var key in ConfigurationManager.AppSettings.AllKeys)
 {
-    Console.WriteLine(key);
+    @key@: - @ConfigurationManager.AppSettings.Get(key)<br/>
+    
 }
 
 <table>
