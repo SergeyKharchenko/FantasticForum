@@ -14,17 +14,13 @@ namespace Tests
         {
             var connectionString =
                 "mongodb://appharbor_c717f8e9-4daf-4dfe-89c9-76933e1b68cd:dngs6u4v0k8nelai4dmqj33ddq@ds035907.mongolab.com:35907/appharbor_c717f8e9-4daf-4dfe-89c9-76933e1b68cd";
-
-            MongoDatabase.Create(connectionString);
-            return;
-            Console.WriteLine(connectionString);
-
+            
             var client = new MongoClient(connectionString);
             var server = client.GetServer();
             var database = server.GetDatabase("test");
             var collection = database.GetCollection<EntityDummy>("entities");
 
-            var entity = new EntityDummy() { Name = "Tom" };
+            var entity = new EntityDummy { Name = "Tom" };
             collection.Insert(entity);
         }
 
