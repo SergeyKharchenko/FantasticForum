@@ -27,6 +27,11 @@ namespace Tests
         {
             Console.WriteLine(ConfigurationManager.AppSettings.Get("Environment"));
             Console.WriteLine(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
+
+            foreach (var key in ConfigurationManager.AppSettings.AllKeys)
+            {
+                Console.WriteLine(key);
+            }
         }
 
 
