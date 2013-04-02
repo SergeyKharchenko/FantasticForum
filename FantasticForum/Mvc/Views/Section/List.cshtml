@@ -1,5 +1,4 @@
-﻿@using System.Configuration
-@model IEnumerable<Mvc.ViewModels.SectionListVM>
+﻿@model IEnumerable<Mvc.ViewModels.SectionListVM>
 
 @{
     ViewBag.Title = "Fantastic Forum";
@@ -8,12 +7,6 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
-@foreach (var key in ConfigurationManager.AppSettings.AllKeys)
-{
-    @key@: - @ConfigurationManager.AppSettings.Get(key)<br/>
-    
-}
 
 <table>
     <tr>
