@@ -5,28 +5,23 @@ using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
+using Mvc.StructModels;
 
 namespace Mvc.Infrastructure.Concrete
 {
     public class SectionUnitOfWork : ISectionUnitOfWork
     {
-        private readonly IImageHelper imageHelper;
         private readonly IRepository<Section> sectionRepository;
-        private readonly IRepository<Image> imageRepository;
+        private readonly IMongoRepository<Image> imageMongoRepository;
+        private readonly IFileHelper fileHelper;
 
-        public SectionUnitOfWork(IImageHelper imageHelper,
-                                 IRepository<Section> sectionRepository,
-                                 IRepository<Image> imageRepository)
+        public SectionUnitOfWork(IRepository<Section> sectionRepository,
+                                 IMongoRepository<Image> imageMongoRepository,
+                                 IFileHelper fileHelper)
         {
-            this.imageHelper = imageHelper;
             this.sectionRepository = sectionRepository;
-            this.imageRepository = imageRepository;
-        }
-
-        public void Commit()
-        {
-            sectionRepository.SaveChanges();
-            imageRepository.SaveChanges();
+            this.imageMongoRepository = imageMongoRepository;
+            this.fileHelper = fileHelper;
         }
 
         public IEnumerable<Section> Section
@@ -34,22 +29,26 @@ namespace Mvc.Infrastructure.Concrete
             get { return sectionRepository.Entities; }
         }
 
-        public void Create(Section section, HttpPostedFileBase avatar, string path, string virtualPath)
+        public void Create(Section section, HttpPostedFileBase avatar)
         {
-            lock (ControllerBuilder.Current)
+            if (avatar != null)
             {
-                if (avatar != null)
-                {
-                    var newId = 1;
-                    if (imageRepository.Entities.Any())
-                        newId = imageRepository.Entities.Max(image => image.Id) + 1;
-                    var fullPath = imageHelper.Save(avatar, path, newId);
-                    var fileName = Path.Combine(virtualPath, Path.GetFileName(fullPath));
-                    section.Image = new Image {FileName = fileName, ImageMimeType = avatar.ContentType};
-                }
-                sectionRepository.Create(section);
-                Commit();
+                var imageData = fileHelper.FileBaseToByteArray(avatar);
+                var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
+                imageMongoRepository.Create(image);
+                section.ImageId = image.Id.ToString();
             }
+            sectionRepository.Create(section);
+            sectionRepository.SaveChanges();
+        }
+
+        public GetAvatarSM GetAvatar(int sectionId)
+        {
+            var section = sectionRepository.GetById(sectionId);
+            if (string.IsNullOrEmpty(section.ImageId))
+                return new GetAvatarSM(false);
+            var image = imageMongoRepository.Get(section.ImageId);
+            return new GetAvatarSM(true, image.Data, image.ImageMimeType);
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Web;
 using Models;
+using MongoDB.Bson;
 using Moq;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
@@ -13,15 +15,15 @@ namespace Tests.UnitOfWork
     public class SectionTests
     {
         private SectionUnitOfWork unitOfWork;
-        private Mock<IImageHelper> imageHelperMock;
+        private Mock<IMongoRepository<Image>> imageMongoRepositoryMock;
         private Mock<IRepository<Section>> sectionRepositoryMock;
-        private Mock<IRepository<Image>> imageRepositoryMock;
+        private Mock<IFileHelper> fileHelperMock;
         private Collection<Section> sections;
             
         [SetUp]
         public void SetUp()
         {
-            imageHelperMock = new Mock<IImageHelper>();
+            imageMongoRepositoryMock = new Mock<IMongoRepository<Image>>(); 
             sections = new Collection<Section>
                 {
                     new Section {Id = 1, Title = "Sport"},
@@ -30,8 +32,10 @@ namespace Tests.UnitOfWork
                 };
             sectionRepositoryMock = new Mock<IRepository<Section>>();
             sectionRepositoryMock.Setup(repo => repo.Entities).Returns(sections);
-            imageRepositoryMock = new Mock<IRepository<Image>>();
-            unitOfWork = new SectionUnitOfWork(imageHelperMock.Object, sectionRepositoryMock.Object, imageRepositoryMock.Object);
+            fileHelperMock = new Mock<IFileHelper>();
+            unitOfWork = new SectionUnitOfWork(sectionRepositoryMock.Object,
+                                               imageMongoRepositoryMock.Object,
+                                               fileHelperMock.Object);
         }
 
         [Test]
@@ -46,49 +50,75 @@ namespace Tests.UnitOfWork
         [Test]
         public void CreateSectionTest()
         {
-            imageRepositoryMock.Setup(repo => repo.Entities).Returns(new List<Image>
-                {
-                    new Image {Id = 1},
-                    new Image {Id = 2},
-                    new Image {Id = 3},
-                });
-
             var imageMock = new Mock<HttpPostedFileBase>();
-            imageMock.Setup(image => image.FileName).Returns("love.jpg");
             imageMock.Setup(image => image.ContentType).Returns("file/jpg");
-            imageHelperMock.Setup(helper => helper.Save(imageMock.Object, @"c:\work\app_data", 4)).Returns(@"c:\work\app_data\4.jpg");
+            imageMock.Setup(image => image.ContentLength).Returns(100);
 
-            var section = new Section {Title = "Love"};            
+            var imageData = new byte[] {1, 2, 3};
+            fileHelperMock.Setup(helper => helper.FileBaseToByteArray(imageMock.Object)).Returns(imageData);
 
-            unitOfWork.Create(section, imageMock.Object, @"c:\work\app_data", "/Images/Section/");
+            var objectId = new ObjectId("1234567890ab1234567890ab");
+            imageMongoRepositoryMock.Setup(repo => repo.Create(It.IsAny<Image>())).Callback((Image image) => image.Id = objectId);
 
-            imageHelperMock.Verify(helper => helper.Save(imageMock.Object, @"c:\work\app_data", 4), Times.Once());
+            var section = new Section {Title = "Love"};
+
+
+            unitOfWork.Create(section, imageMock.Object);
+
+
+            fileHelperMock.Verify(helper => helper.FileBaseToByteArray(imageMock.Object), Times.Once());
+            imageMongoRepositoryMock.Verify(
+                repo =>
+                repo.Create(
+                    It.Is((Image image) => image.Data.Equals(imageData) && image.ImageMimeType.Equals("file/jpg"))), Times.Once());
             sectionRepositoryMock.Verify(repo => repo.Create(section), Times.Once());
             sectionRepositoryMock.Verify(repo => repo.SaveChanges(), Times.Once());
-            Assert.That(section.Image.FileName, Is.EqualTo("/Images/Section/4.jpg"));
-            Assert.That(section.Image.ImageMimeType, Is.EqualTo("file/jpg"));
+            Assert.That(section.ImageId, Is.EqualTo(objectId.ToString()));
         }
 
         [Test]
         public void CreateSectionWithEmptyImageDBTest()
         {
-            imageRepositoryMock.Setup(repo => repo.Entities).Returns(new List<Image>());
+            var section = new Section { Title = "Love" };
 
-            var imageMock = new Mock<HttpPostedFileBase>();
-            imageMock.Setup(image => image.FileName).Returns("love.jpg");
-            imageMock.Setup(image => image.ContentType).Returns("file/jpg");
-            imageHelperMock.Setup(helper => helper.Save(imageMock.Object, @"c:\work\app_data", 1)).Returns(@"c:\work\app_data\1.jpg");
+            unitOfWork.Create(section, null);
 
-            var section = new Section {Title = "Love"};            
-
-            unitOfWork.Create(section, imageMock.Object, @"c:\work\app_data", "/Images/Section/");
-
-            imageHelperMock.Verify(helper => helper.Save(imageMock.Object, @"c:\work\app_data", 1), Times.Once());
             sectionRepositoryMock.Verify(repo => repo.Create(section), Times.Once());
             sectionRepositoryMock.Verify(repo => repo.SaveChanges(), Times.Once());
-            Assert.That(section.Image.FileName, Is.EqualTo("/Images/Section/1.jpg"));
-            Assert.That(section.Image.ImageMimeType, Is.EqualTo("file/jpg"));
+            imageMongoRepositoryMock.Verify(repo => repo.Create(It.IsAny<Image>()), Times.Never());
         }
 
+        [Test]
+        public void GetAvatarSuccessTest()
+        {
+            const int sectionId = 1;
+            var section = new Section {ImageId = "1"};
+            sectionRepositoryMock.Setup(repo => repo.GetById(sectionId)).Returns(section);
+            var data = new byte[] {1, 2, 3};
+            imageMongoRepositoryMock.Setup(repo => repo.Get("1"))
+                .Returns(new Image { Data = data, ImageMimeType = "file" });
+
+            var getAvatarSM = unitOfWork.GetAvatar(sectionId);
+
+            Assert.That(getAvatarSM.HasAvatar, Is.True);
+            sectionRepositoryMock.Verify(repo => repo.GetById(sectionId), Times.Once());
+            imageMongoRepositoryMock.Verify(repo => repo.Get("1"), Times.Once());
+            Assert.That(getAvatarSM.AvatarData, Is.EquivalentTo(data));
+            Assert.That(getAvatarSM.ImageMimeType, Is.EqualTo("file"));
+        }
+
+        [Test]
+        public void GetAvatarUnsuccessTest()
+        {
+            const int sectionId = 1;
+            var section = new Section {ImageId = ""};
+            sectionRepositoryMock.Setup(repo => repo.GetById(sectionId)).Returns(section);
+
+            var getAvatarSM = unitOfWork.GetAvatar(sectionId);
+
+            Assert.That(getAvatarSM.HasAvatar, Is.False);
+            sectionRepositoryMock.Verify(repo => repo.GetById(sectionId), Times.Once());
+            imageMongoRepositoryMock.Verify(repo => repo.Get("1"), Times.Never());
+        }
     }
 }

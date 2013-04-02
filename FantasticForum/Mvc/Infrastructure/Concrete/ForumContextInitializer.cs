@@ -12,30 +12,15 @@ namespace Mvc.Infrastructure.Concrete
                 {
                     new Section
                         {
-                            Title = "Sport",
-                            Image = new Image
-                                {
-                                    FileName = "/Images/Section/section-sport.jpg",
-                                    ImageMimeType = "image/jpg"
-                                }
+                            Title = "Sport"
                         },
                     new Section
                         {
-                            Title = "Life",
-                            Image = new Image
-                                {
-                                    FileName = "/Images/Section/section-life.jpg",
-                                    ImageMimeType = "image/jpg"
-                                }
+                            Title = "Life"
                         },
                     new Section
                         {
-                            Title = "News",
-                            Image = new Image
-                                {
-                                    FileName = "/Images/Section/section-news.png",
-                                    ImageMimeType = "image/png"
-                                }
+                            Title = "News"
                         }
                 };
             sections.ForEach(section => context.Sections.Add(section));

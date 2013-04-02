@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using Models;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.Repository
 {
     [TestFixture]
     public class RepositoryTests
@@ -44,6 +43,15 @@ namespace Tests
             var actualSections = repository.Entities;
 
             Assert.That(actualSections, Is.EquivalentTo(sections));
+        }
+
+        [Test]
+        public void GetByIdTest()
+        {
+            var section = repository.GetById(2);
+
+            Assert.That(section.Id, Is.EqualTo(2));
+            Assert.That(section.Title, Is.EqualTo("Life"));
         }
 
         [TestFixtureTearDown]

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using Models;
+using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
 
@@ -20,6 +21,11 @@ namespace Mvc.Infrastructure.Concrete
         public IEnumerable<TEntity> Entities
         {
             get { return dbSet.AsEnumerable(); }
+        }
+
+        public TEntity GetById(int id)
+        {
+            return dbSet.Find(id);
         }
 
         public void Create(TEntity entity)

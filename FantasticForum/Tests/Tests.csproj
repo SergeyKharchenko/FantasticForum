@@ -111,11 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\SectionTests.cs" />
+    <Compile Include="FileHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepositoryTests.cs" />
+    <Compile Include="Repository\MongoRepositoryTests.cs" />
+    <Compile Include="Repository\RepositoryTests.cs" />
     <Compile Include="RouteTests.cs" />
     <Compile Include="UnitOfWork\SectionTests.cs" />
-    <Compile Include="ImageHelperTests.cs" />
     <Compile Include="ViewModel\Section\SectionListVMTests.cs" />
   </ItemGroup>
   <ItemGroup>

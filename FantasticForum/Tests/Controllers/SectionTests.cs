@@ -9,6 +9,7 @@ using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure.Abstract;
+using Mvc.StructModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
 
@@ -19,6 +20,7 @@ namespace Tests.Controllers
     {
         private SectionController controller;
         private Mock<ISectionUnitOfWork> unitOfWorkMock;
+        private Mock<IFileHelper> fileHelperMock;
         private Collection<Section> sections;
 
         [SetUp]
@@ -32,7 +34,8 @@ namespace Tests.Controllers
                 };
             unitOfWorkMock = new Mock<ISectionUnitOfWork>();
             unitOfWorkMock.Setup(unit => unit.Section).Returns(sections);
-            controller = new SectionController(unitOfWorkMock.Object);
+            fileHelperMock = new Mock<IFileHelper>();
+            controller = new SectionController(unitOfWorkMock.Object, fileHelperMock.Object);
         }
 
         [Test]
@@ -49,13 +52,6 @@ namespace Tests.Controllers
         [Test]
         public void CreateTest()
         {
-            var httpContextMock = new Mock<HttpContextBase>();
-            var serverMock = new Mock<HttpServerUtilityBase>();
-            const string virtualPath = "~/Images/Section";
-            serverMock.Setup(x => x.MapPath(virtualPath)).Returns(@"c:\work\app_data");
-            httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
-            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
-
             var httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
 
             var section = new Section();
@@ -63,10 +59,41 @@ namespace Tests.Controllers
             var view = controller.Create(section, httpPostedFileBaseMock.Object);
             var redirectResult = view as RedirectToRouteResult;
 
-            unitOfWorkMock.Verify(unit => unit.Create(section, httpPostedFileBaseMock.Object, @"c:\work\app_data", virtualPath.Substring(1)));
+            unitOfWorkMock.Verify(unit => unit.Create(section, httpPostedFileBaseMock.Object));
             Assert.That(redirectResult, Is.Not.Null);
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
+        }
+
+        [Test]
+        public void GetAvatarSuccessTest()
+        {
+            var avatarData = new byte[] {1, 2, 3};
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new GetAvatarSM(true, avatarData, "file"));
+
+            var avatar = controller.GetAvatar(1);
+
+            Assert.That(avatar.FileContents, Is.EquivalentTo(avatarData));
+            Assert.That(avatar.ContentType, Is.EquivalentTo("file"));
             
+        }
+
+        [Test]
+        public void GetAvatarUnsuccessTest()
+        {
+            var httpContextMock = new Mock<HttpContextBase>();
+            var serverMock = new Mock<HttpServerUtilityBase>();
+            const string virtualPath = "~/Images/Section/section-without-avatar.png";
+            serverMock.Setup(x => x.MapPath(virtualPath)).Returns(@"c:\work\app_data");
+            httpContextMock.Setup(x => x.Server).Returns(serverMock.Object);
+            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+            var avatarData = new byte[] {1, 2, 4};
+            fileHelperMock.Setup(helper => helper.FileToByteArray(@"c:\work\app_data")).Returns(avatarData);
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new GetAvatarSM(false));
+
+            var avatar = controller.GetAvatar(1);
+
+            Assert.That(avatar.FileContents, Is.EquivalentTo(avatarData));
+            Assert.That(avatar.ContentType, Is.EquivalentTo("image/png"));
         }
     }
 }

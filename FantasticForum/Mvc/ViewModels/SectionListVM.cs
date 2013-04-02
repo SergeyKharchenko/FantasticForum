@@ -8,13 +8,13 @@ namespace Mvc.ViewModels
     {
         public int Id { get; private set; }
         public string Title { get; private set; }
-        public Image Image { get; set; }
+        public string ImageId { get; set; }
 
         public SectionListVM(Section section)
         {
             Id = section.Id;
             Title = section.Title;
-            Image = section.Image;
+            ImageId = section.ImageId;
         }
     }
 

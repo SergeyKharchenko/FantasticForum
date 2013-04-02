@@ -9,10 +9,12 @@ namespace Mvc.Controllers
     public class SectionController : Controller
     {
         private readonly ISectionUnitOfWork unitOfWork;
+        private readonly IFileHelper fileHelper;
 
-        public SectionController(ISectionUnitOfWork unitOfWork)
+        public SectionController(ISectionUnitOfWork unitOfWork, IFileHelper fileHelper)
         {
             this.unitOfWork = unitOfWork;
+            this.fileHelper = fileHelper;
         }
         
 
@@ -39,11 +41,18 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View();
-            const string virtualPath = "~/Images/Section";
-            var path = Server.MapPath(virtualPath);
-            unitOfWork.Create(section, avatar, path, virtualPath.Substring(1));
+            unitOfWork.Create(section, avatar);
             return RedirectToAction("List");
         }
 
+        public FileContentResult GetAvatar(int sectionId)
+        {
+            var getAvatarSM = unitOfWork.GetAvatar(sectionId);
+            if (getAvatarSM.HasAvatar)
+                return File(getAvatarSM.AvatarData, getAvatarSM.ImageMimeType);
+
+            var imageData = fileHelper.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
+            return File(imageData, "image/png");
+        }
     }
 }

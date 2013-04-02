@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Models.Abstract;
 
 namespace Models
 {
@@ -10,6 +11,7 @@ namespace Models
         [StringLength(30, MinimumLength = 2)]
         public string Title { get; set; }
 
-        public virtual Image Image { get; set; }
+        [ScaffoldColumn(false)]
+        public string ImageId { get; set; }
     }
 }

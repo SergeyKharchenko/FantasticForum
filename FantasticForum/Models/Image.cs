@@ -1,15 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Models.Abstract;
+using MongoDB.Bson;
 
 namespace Models
 {
-    [Table("Image")]
-    public class Image : Entity
+    public class Image : MongoEntity
     {
-        [ScaffoldColumn(false)]
         public string ImageMimeType { get; set; }
-
-        [ScaffoldColumn(false)]
-        public string FileName { get; set; }
+        public byte[] Data { get; set; }
     }
 }

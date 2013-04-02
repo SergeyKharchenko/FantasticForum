@@ -1,12 +1,15 @@
 namespace Models.Migrations
 {
+    using System;
+    using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
-    public sealed class Configuration : DbMigrationsConfiguration<ForumContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Models.ForumContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(Models.ForumContext context)

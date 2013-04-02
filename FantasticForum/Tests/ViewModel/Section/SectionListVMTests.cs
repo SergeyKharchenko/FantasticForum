@@ -13,9 +13,9 @@ namespace Tests.ViewModel.Section
         {
             var sections = new List<Models.Section>
                 {
-                    new Models.Section {Title = "Sport", Image = new Image()},
-                    new Models.Section {Title = "Life", Image = new Image()},
-                    new Models.Section {Title = "Programming", Image = new Image()}
+                    new Models.Section {ImageId = "1", Title = "Sport"},
+                    new Models.Section {ImageId = "12", Title = "Life"},
+                    new Models.Section {ImageId = "13", Title = "Programming"}
                 };
 
             var sectionListVMs = sections.ToVMList();
