@@ -28,7 +28,7 @@ namespace Mvc
             #if DEBUG
             Database.SetInitializer(new ForumContextInitializer());
             #else
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ForumContext, Models.Migrations.Configuration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ForumContext, Models.Migrations.Configuration>());
             #endif
 
         }
