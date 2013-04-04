@@ -54,6 +54,34 @@ namespace Tests.Repository
             Assert.That(section.Title, Is.EqualTo("Life"));
         }
 
+        [Test]
+        public void RemoveTest()
+        {
+            var section = repository.GetById(1);
+            Assert.That(section.Id, Is.EqualTo(1));
+            Assert.That(section.Title, Is.EqualTo("Sport"));
+            repository.Remove(section);
+            repository.SaveChanges();
+
+            section = repository.GetById(1);
+
+            Assert.That(section, Is.Null);
+        }
+
+        [Test]
+        public void RemoveByIdTest()
+        {
+            var section = repository.GetById(3);
+            Assert.That(section.Id, Is.EqualTo(3));
+            Assert.That(section.Title, Is.EqualTo("News"));
+            repository.Remove(3);
+            repository.SaveChanges();
+
+            section = repository.GetById(3);
+
+            Assert.That(section, Is.Null);
+        }
+
         [TestFixtureTearDown]
         public void CleanUp()
         {

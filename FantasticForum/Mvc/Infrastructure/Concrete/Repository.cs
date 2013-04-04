@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using Models;
 using Models.Abstract;
@@ -31,6 +32,19 @@ namespace Mvc.Infrastructure.Concrete
         public void Create(TEntity entity)
         {
             dbSet.Add(entity);
+        }
+
+        public void Remove(TEntity entity)
+        {
+            if (context.Entry(entity).State == EntityState.Detached)
+                dbSet.Attach(entity);
+            dbSet.Remove(entity);
+        }
+
+        public void Remove(object id)
+        {
+            var entity = dbSet.Find(id);
+            Remove(entity);
         }
 
         public void SaveChanges()

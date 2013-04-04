@@ -9,7 +9,8 @@ namespace Mvc.Infrastructure.Abstract
         IEnumerable<TEntity> Entities { get; }
         TEntity GetById(int id);
         void Create(TEntity entity);
-
+        void Remove(TEntity entity);
+        void Remove(object id);
         void SaveChanges();
     }
 }
