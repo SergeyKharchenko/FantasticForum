@@ -48,10 +48,23 @@ namespace Tests.Repository
         [Test]
         public void GetByIdTest()
         {
-            var section = repository.GetById(2);
+            var section = GetSectionById(2);
 
             Assert.That(section.Id, Is.EqualTo(2));
             Assert.That(section.Title, Is.EqualTo("Life"));
+        }
+
+        [Test]
+        public void CreateTest()
+        {
+            var section = new Section {Title = "Love"};
+            repository.Create(section);
+            var id = section.Id;
+
+            section = GetSectionById(id);
+
+            Assert.That(section.Id, Is.EqualTo(id));
+            Assert.That(section.Title, Is.EqualTo("Love"));
         }
 
         [Test]
@@ -89,5 +102,9 @@ namespace Tests.Repository
             context.Dispose();
         }
 
+        public Section GetSectionById(int id)
+        {
+            return repository.GetById(id);
+        }
     }
 }

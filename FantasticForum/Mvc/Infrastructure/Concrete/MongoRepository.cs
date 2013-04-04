@@ -1,8 +1,10 @@
-﻿using Models.Abstract;
+﻿using System.Linq;
+using Models.Abstract;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using Mvc.Infrastructure.Abstract;
+using MongoDB.Driver.Linq;
 
 namespace Mvc.Infrastructure.Concrete
 {
@@ -10,10 +12,16 @@ namespace Mvc.Infrastructure.Concrete
     {
         private readonly MongoCollection<TEntity> collection;
 
-        public MongoRepository(MongoDatabase database)
+        public MongoRepository(MongoDatabase database, string collectionName = "")
         {
-            var collectionName = string.Format("{0}s", typeof (TEntity).Name);
+            if (string.IsNullOrEmpty(collectionName))
+                collectionName = string.Format("{0}s", typeof (TEntity).Name);
             collection = database.GetCollection<TEntity>(collectionName);   
+        }
+
+        public IQueryable<TEntity> Entities
+        {
+            get { return collection.AsQueryable(); }
         }
 
         public void Create(TEntity entity)
