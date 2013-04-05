@@ -34,6 +34,12 @@ namespace Mvc.Infrastructure.Concrete
             dbSet.Add(entity);
         }
 
+        public void Update(TEntity entity)
+        {
+            dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
+        }
+
         public void Remove(TEntity entity)
         {
             if (context.Entry(entity).State == EntityState.Detached)

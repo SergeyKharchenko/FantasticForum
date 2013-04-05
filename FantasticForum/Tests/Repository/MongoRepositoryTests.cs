@@ -15,7 +15,7 @@ namespace Tests.Repository
         private IMongoRepository<Image> repository;
         private List<Image> images;
             
-        [TestFixtureSetUp]
+        [SetUp]
         public void SetUp()
         {
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
@@ -37,7 +37,7 @@ namespace Tests.Repository
         {
             var entities = repository.Entities.ToList();
 
-            for (var i = 0; i < entities.Count(); i++)
+            for (var i = 0; i < entities.Count; i++)
             {
                 Assert.That(entities[i].Id, Is.EqualTo(images[i].Id));
                 Assert.That(entities[i].Data, Is.EquivalentTo(images[i].Data));
@@ -46,7 +46,7 @@ namespace Tests.Repository
         }
 
         [Test]
-        public void InsertEntityTest()
+        public void CreateTest()
         {
             var image = new Image {Data = new byte[] {1, 2, 3}, ImageMimeType = "Hello"};
             repository.Create(image);
@@ -69,6 +69,23 @@ namespace Tests.Repository
         }
 
         [Test]
+        public void UpdateTest()
+        {
+            var id = repository.Entities.First().Id.ToString();
+            var image = GetEntityById(id);
+            Assert.That(image.Id.ToString(), Is.EqualTo(id));
+            Assert.That(image.ImageMimeType, Is.EqualTo("png"));
+
+            image.ImageMimeType = "bmp";
+
+            repository.Update(image);
+
+            image = GetEntityById(id);
+            Assert.That(image.Id.ToString(), Is.EqualTo(id));
+            Assert.That(image.ImageMimeType, Is.EqualTo("bmp"));
+        }
+
+        [Test]
         public void RemoveTest()
         {
             var id = repository.Entities.Last().Id.ToString();
@@ -87,7 +104,7 @@ namespace Tests.Repository
             return entity;
         }
 
-        [TestFixtureTearDown]
+        [TearDown]
         public void CleanUp()
         {
             repository.DropCollection();

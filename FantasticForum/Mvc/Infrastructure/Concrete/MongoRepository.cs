@@ -36,6 +36,11 @@ namespace Mvc.Infrastructure.Concrete
             return collection.FindOne(query);
         }
 
+        public void Update(TEntity entity)
+        {
+            collection.Save(entity);
+        }
+
         public void Remove(string id)
         {
             var objectId = new ObjectId(id);

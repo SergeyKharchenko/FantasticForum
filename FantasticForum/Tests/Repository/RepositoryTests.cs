@@ -5,6 +5,7 @@ using Models;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Tests.Repository
 {
@@ -14,9 +15,9 @@ namespace Tests.Repository
         private IRepository<Section> repository;
         private ForumContext context;
         private List<Section> sections;
-            
+
         [TestFixtureSetUp]
-        public void SetUp()
+        public void SetUpFixture()
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());
 
@@ -24,7 +25,11 @@ namespace Tests.Repository
             if (context.Database.Exists())
                 context.Database.Delete();
             context.Database.Initialize(true);
+        }
 
+        [SetUp]
+        public void SetUp()
+        {
             sections = new List<Section>
                 {
                     new Section {Title = "Sport"},
@@ -42,16 +47,26 @@ namespace Tests.Repository
         {
             var actualSections = repository.Entities;
 
+            foreach (var section in sections)
+            {
+                Console.WriteLine(section.Id);
+            }
+            foreach (var section in actualSections)
+            {
+                Console.WriteLine(section.Id);
+            }
+
             Assert.That(actualSections, Is.EquivalentTo(sections));
         }
 
         [Test]
         public void GetByIdTest()
         {
-            var section = GetSectionById(2);
+            var id = context.Sections.First().Id;
+            var section = GetSectionById(id);
 
-            Assert.That(section.Id, Is.EqualTo(2));
-            Assert.That(section.Title, Is.EqualTo("Life"));
+            Assert.That(section.Id, Is.EqualTo(id));
+            Assert.That(section.Title, Is.EqualTo("Sport"));
         }
 
         [Test]
@@ -59,6 +74,7 @@ namespace Tests.Repository
         {
             var section = new Section {Title = "Love"};
             repository.Create(section);
+            repository.SaveChanges();
             var id = section.Id;
 
             section = GetSectionById(id);
@@ -68,15 +84,34 @@ namespace Tests.Repository
         }
 
         [Test]
+        public void UpdateTest()
+        {
+            var id = context.Sections.First().Id;
+            var section = GetSectionById(id);
+            Assert.That(section.Id, Is.EqualTo(id));
+            Assert.That(section.Title, Is.EqualTo("Sport"));
+
+            section.Title = "Games";
+
+            repository.Update(section);
+            repository.SaveChanges();
+
+            section = GetSectionById(id);
+            Assert.That(section.Id, Is.EqualTo(id));
+            Assert.That(section.Title, Is.EqualTo("Games"));
+        }
+
+        [Test]
         public void RemoveTest()
         {
-            var section = repository.GetById(1);
-            Assert.That(section.Id, Is.EqualTo(1));
+            var id = context.Sections.First().Id;
+            var section = repository.GetById(id);
+            Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
             repository.Remove(section);
             repository.SaveChanges();
 
-            section = repository.GetById(1);
+            section = repository.GetById(id);
 
             Assert.That(section, Is.Null);
         }
@@ -84,27 +119,35 @@ namespace Tests.Repository
         [Test]
         public void RemoveByIdTest()
         {
-            var section = repository.GetById(3);
-            Assert.That(section.Id, Is.EqualTo(3));
-            Assert.That(section.Title, Is.EqualTo("News"));
-            repository.Remove(3);
+            var id = context.Sections.First().Id;
+            var section = repository.GetById(id);
+            Assert.That(section.Id, Is.EqualTo(id));
+            Assert.That(section.Title, Is.EqualTo("Sport"));
+            repository.Remove(id);
             repository.SaveChanges();
 
-            section = repository.GetById(3);
+            section = repository.GetById(id);
 
             Assert.That(section, Is.Null);
-        }
-
-        [TestFixtureTearDown]
-        public void CleanUp()
-        {
-            context.Database.Delete();
-            context.Dispose();
         }
 
         public Section GetSectionById(int id)
         {
             return repository.GetById(id);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            context.Sections.ToList().ForEach(section => context.Sections.Remove(section));
+            context.SaveChanges();
+        }
+
+        [TestFixtureTearDown]
+        public void TestFixtureTearDown()
+        {
+            context.Database.Delete();
+            context.Dispose();
         }
     }
 }
