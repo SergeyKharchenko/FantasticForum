@@ -47,7 +47,7 @@ namespace Mvc.Controllers
 
         //
         // POST: /Section/GetAvatar
-        [HttpPost]
+
         public FileContentResult GetAvatar(int sectionId)
         {
             var getAvatarSM = unitOfWork.GetAvatar(sectionId);
@@ -69,7 +69,7 @@ namespace Mvc.Controllers
 
         //
         // POST: /Section/Remove
-        [HttpPost]
+        [HttpPost][ValidateAntiForgeryToken]
         public RedirectToRouteResult Remove(Section section)
         {
             unitOfWork.RemoveSection(section.Id);

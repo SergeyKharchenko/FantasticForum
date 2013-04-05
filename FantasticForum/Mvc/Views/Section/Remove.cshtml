@@ -1,0 +1,24 @@
+﻿@model Models.Section
+
+@{
+    ViewBag.Title = "Remove section";
+}
+
+<h3>Are you sure you want to remove this?</h3>
+<fieldset>
+    <legend>Section</legend>
+    <div>
+        <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
+                                                                       new {sectionId = Model.Id})" />   
+        @Html.DisplayFor(model => model.Title)
+    </div>
+</fieldset>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+    <p>
+        <input type="submit" value="Remove" /> |
+        @Html.ActionLink("Back to List", "List")
+    </p>
+}
