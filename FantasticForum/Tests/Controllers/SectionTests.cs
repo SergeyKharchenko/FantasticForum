@@ -59,7 +59,7 @@ namespace Tests.Controllers
             var view = controller.Create(section, httpPostedFileBaseMock.Object);
             var redirectResult = view as RedirectToRouteResult;
 
-            unitOfWorkMock.Verify(unit => unit.Create(section, httpPostedFileBaseMock.Object));
+            unitOfWorkMock.Verify(unit => unit.CreateSection(section, httpPostedFileBaseMock.Object));
             Assert.That(redirectResult, Is.Not.Null);
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
         }
@@ -94,6 +94,30 @@ namespace Tests.Controllers
 
             Assert.That(avatar.FileContents, Is.EquivalentTo(avatarData));
             Assert.That(avatar.ContentType, Is.EquivalentTo("image/png"));
+        }
+
+        [Test]
+        public void ShowRemovePageTest()
+        {
+            unitOfWorkMock.Setup(unit => unit.GetSectionById(1))
+                .Returns(new Section{Id = 1, Title = "Games"});
+
+            var view = controller.Remove(1);
+            var section = view.Model as Section;
+
+            unitOfWorkMock.Verify(unit => unit.GetSectionById(1), Times.Once());
+            Assert.That(section, Is.Not.Null);
+            Assert.That(section.Id, Is.EqualTo(1));
+            Assert.That(section.Title, Is.EqualTo("Games"));
+        }
+
+        [Test]
+        public void RemoveTest()
+        {
+            var view = controller.Remove(new Section {Id = 1});
+
+            unitOfWorkMock.Verify(unit => unit.RemoveSection(1), Times.Once());
+            Assert.That(view.RouteValues["action"], Is.EqualTo("List"));
         }
     }
 }

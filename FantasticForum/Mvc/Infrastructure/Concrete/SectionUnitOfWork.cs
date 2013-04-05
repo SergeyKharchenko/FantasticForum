@@ -29,7 +29,12 @@ namespace Mvc.Infrastructure.Concrete
             get { return sectionRepository.Entities; }
         }
 
-        public void Create(Section section, HttpPostedFileBase avatar)
+        public Section GetSectionById(int sectionId)
+        {
+            return sectionRepository.GetById(sectionId);
+        }
+
+        public void CreateSection(Section section, HttpPostedFileBase avatar)
         {
             if (avatar != null)
             {
@@ -39,6 +44,15 @@ namespace Mvc.Infrastructure.Concrete
                 section.ImageId = image.Id.ToString();
             }
             sectionRepository.Create(section);
+            sectionRepository.SaveChanges();
+        }
+
+        public void RemoveSection(int sectionId)
+        {
+            var section = sectionRepository.GetById(sectionId);
+            if (!string.IsNullOrEmpty(section.ImageId))
+                imageMongoRepository.Remove(section.ImageId);
+            sectionRepository.Remove(sectionId);
             sectionRepository.SaveChanges();
         }
 

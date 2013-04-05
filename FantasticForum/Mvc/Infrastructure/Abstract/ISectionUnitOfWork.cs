@@ -9,7 +9,9 @@ namespace Mvc.Infrastructure.Abstract
     public interface ISectionUnitOfWork : IUnitOfWork
     {
         IEnumerable<Section> Section { get; }
-        void Create(Section section, HttpPostedFileBase avatar);
+        Section GetSectionById(int sectionId);
+        void CreateSection(Section section, HttpPostedFileBase avatar);
+        void RemoveSection(int sectionId);
         GetAvatarSM GetAvatar(int sectionId);
     }
 }

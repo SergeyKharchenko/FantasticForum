@@ -35,16 +35,19 @@ namespace Mvc.Controllers
         }      
 
         //
-        // GET: /Section/Create
+        // POST: /Section/Create
         [HttpPost]
         public ActionResult Create(Section section, HttpPostedFileBase avatar)
         {
             if (!ModelState.IsValid)
                 return View();
-            unitOfWork.Create(section, avatar);
+            unitOfWork.CreateSection(section, avatar);
             return RedirectToAction("List");
         }
 
+        //
+        // POST: /Section/GetAvatar
+        [HttpPost]
         public FileContentResult GetAvatar(int sectionId)
         {
             var getAvatarSM = unitOfWork.GetAvatar(sectionId);
@@ -53,6 +56,24 @@ namespace Mvc.Controllers
 
             var imageData = fileHelper.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
             return File(imageData, "image/png");
+        }
+
+        //
+        // Get: /Section/Remove
+        
+        public ViewResult Remove(int sectionId)
+        {
+            var section = unitOfWork.GetSectionById(sectionId);
+            return View(section);
+        }
+
+        //
+        // POST: /Section/Remove
+        [HttpPost]
+        public RedirectToRouteResult Remove(Section section)
+        {
+            unitOfWork.RemoveSection(section.Id);
+            return RedirectToAction("List");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Tests.UnitOfWork
     [TestFixture]
     public class SectionTests
     {
-        private SectionUnitOfWork unitOfWork;
+        private ISectionUnitOfWork unitOfWork;
         private Mock<IMongoRepository<Image>> imageMongoRepositoryMock;
         private Mock<IRepository<Section>> sectionRepositoryMock;
         private Mock<IFileHelper> fileHelperMock;
@@ -26,7 +26,7 @@ namespace Tests.UnitOfWork
             imageMongoRepositoryMock = new Mock<IMongoRepository<Image>>(); 
             sections = new Collection<Section>
                 {
-                    new Section {Id = 1, Title = "Sport"},
+                    new Section {Id = 1, Title = "Sport", ImageId = "abcd"},
                     new Section {Id = 2, Title = "Life"},
                     new Section {Id = 3, Title = "Programming"}
                 };
@@ -48,6 +48,19 @@ namespace Tests.UnitOfWork
         }
 
         [Test]
+        public void GetSectionByIdTest()
+        {
+            sectionRepositoryMock.Setup(repo => repo.GetById(1))
+                .Returns(new Section {Id = 1, Title = "Games"});
+
+            var section = unitOfWork.GetSectionById(1);
+
+            sectionRepositoryMock.Verify(repo => repo.GetById(1), Times.Once());
+            Assert.That(section.Id, Is.EqualTo(1));
+            Assert.That(section.Title, Is.EqualTo("Games"));
+        }
+
+        [Test]
         public void CreateSectionTest()
         {
             var imageMock = new Mock<HttpPostedFileBase>();
@@ -63,7 +76,7 @@ namespace Tests.UnitOfWork
             var section = new Section {Title = "Love"};
 
 
-            unitOfWork.Create(section, imageMock.Object);
+            unitOfWork.CreateSection(section, imageMock.Object);
 
 
             fileHelperMock.Verify(helper => helper.FileBaseToByteArray(imageMock.Object), Times.Once());
@@ -81,7 +94,7 @@ namespace Tests.UnitOfWork
         {
             var section = new Section { Title = "Love" };
 
-            unitOfWork.Create(section, null);
+            unitOfWork.CreateSection(section, null);
 
             sectionRepositoryMock.Verify(repo => repo.Create(section), Times.Once());
             sectionRepositoryMock.Verify(repo => repo.SaveChanges(), Times.Once());
@@ -119,6 +132,32 @@ namespace Tests.UnitOfWork
             Assert.That(getAvatarSM.HasAvatar, Is.False);
             sectionRepositoryMock.Verify(repo => repo.GetById(sectionId), Times.Once());
             imageMongoRepositoryMock.Verify(repo => repo.Get("1"), Times.Never());
+        }
+
+        [Test]
+        public void RemoveSectionWithAvatarTest()
+        {
+            sectionRepositoryMock.Setup(repo => repo.GetById(1))
+                .Returns(new Section { Id = 1, Title = "Sport", ImageId = "abcd" });
+
+            unitOfWork.RemoveSection(1);
+
+            imageMongoRepositoryMock.Verify(repo => repo.Remove("abcd"), Times.Once());
+            sectionRepositoryMock.Verify(repo => repo.Remove(1), Times.Once());
+            sectionRepositoryMock.Verify(repo => repo.SaveChanges(), Times.Once());
+        }
+
+        [Test]
+        public void RemoveSectionWithoutAvatarTest()
+        {
+            sectionRepositoryMock.Setup(repo => repo.GetById(1))
+                .Returns(new Section { Id = 1, Title = "Sport" });
+
+            unitOfWork.RemoveSection(1);
+
+            imageMongoRepositoryMock.Verify(repo => repo.Remove("abcd"), Times.Never());
+            sectionRepositoryMock.Verify(repo => repo.Remove(1), Times.Once());
+            sectionRepositoryMock.Verify(repo => repo.SaveChanges(), Times.Once());
         }
     }
 }
