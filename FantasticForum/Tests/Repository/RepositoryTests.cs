@@ -63,38 +63,38 @@ namespace Tests.Repository
         public void GetByIdTest()
         {
             var id = context.Sections.First().Id;
-            var section = GetSectionById(id);
+            var section = GetEntityById(id);
 
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
         }
 
         [Test]
-        public void CreateTest()
-        {
-            var section = new Section {Title = "Love"};
-            repository.Create(section);
+        public void CreateOrUpdateNewEntityTest()
+        {            
+            var section = new Section {Title = "Study"};
+
+            repository.CreateOrUpdate(section);
             var id = section.Id;
 
-            section = GetSectionById(id);
-
+            section = GetEntityById(id);
             Assert.That(section.Id, Is.EqualTo(id));
-            Assert.That(section.Title, Is.EqualTo("Love"));
+            Assert.That(section.Title, Is.EqualTo("Study"));
         }
 
         [Test]
         public void UpdateTest()
         {
             var id = context.Sections.First().Id;
-            var section = GetSectionById(id);
+            var section = GetEntityById(id);
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
 
             section.Title = "Games";
 
-            repository.Update(section);
+            repository.CreateOrUpdate(section);
 
-            section = GetSectionById(id);
+            section = GetEntityById(id);
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Games"));
         }
@@ -127,7 +127,7 @@ namespace Tests.Repository
             Assert.That(section, Is.Null);
         }
 
-        public Section GetSectionById(int id)
+        public Section GetEntityById(int id)
         {
             return repository.GetById(id);
         }

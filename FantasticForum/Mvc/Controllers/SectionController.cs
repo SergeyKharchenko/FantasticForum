@@ -31,26 +31,35 @@ namespace Mvc.Controllers
 
         public ViewResult Create()
         {
-            return View();
+            return View("Edit", new Section());
+        }       
+
+        //
+        // GET: /Section/Edit
+
+        public ViewResult Edit(int id)
+        {
+            var section = unitOfWork.GetSectionById(id);
+            return View(section);
         }      
 
         //
-        // POST: /Section/Create
+        // POST: /Section/Edit
         [HttpPost]
-        public ActionResult Create(Section section, HttpPostedFileBase avatar)
+        public ActionResult Edit(Section section, HttpPostedFileBase avatar)
         {
             if (!ModelState.IsValid)
-                return View();
-            unitOfWork.CreateSection(section, avatar);
+                return View("Edit", section);
+            unitOfWork.CreateOrUpdateSection(section, avatar);
             return RedirectToAction("List");
         }
 
         //
         // POST: /Section/GetAvatar
 
-        public FileContentResult GetAvatar(int sectionId)
+        public FileContentResult GetAvatar(int id)
         {
-            var getAvatarSM = unitOfWork.GetAvatar(sectionId);
+            var getAvatarSM = unitOfWork.GetAvatar(id);
             if (getAvatarSM.HasAvatar)
                 return File(getAvatarSM.AvatarData, getAvatarSM.ImageMimeType);
 
@@ -61,9 +70,9 @@ namespace Mvc.Controllers
         //
         // Get: /Section/Remove
         
-        public ViewResult Remove(int sectionId)
+        public ViewResult Remove(int id)
         {
-            var section = unitOfWork.GetSectionById(sectionId);
+            var section = unitOfWork.GetSectionById(id);
             return View(section);
         }
 

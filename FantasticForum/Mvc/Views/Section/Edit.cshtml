@@ -1,0 +1,37 @@
+﻿@model Models.Section
+
+@{
+    ViewBag.Title = Model.Id == 0 ? "New section" : "Edit section";
+}
+
+@using (Html.BeginForm("Edit", "Section", FormMethod.Post, new {enctype = "multipart/form-data"})) {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Id)
+
+    <fieldset>
+        <legend>Section</legend>
+
+        @Html.EditorForModel()    
+        
+        <p>
+            Section avatar: 
+            @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImageId))
+            {
+                <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
+                                                                                new {id = Model.Id})" />  
+            }
+            <input type="file" name="avatar" />
+        </p>
+        <p>
+            <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

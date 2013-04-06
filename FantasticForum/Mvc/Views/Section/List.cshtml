@@ -21,15 +21,14 @@
     <tr>
         <td>
             <img width="24" height="24" alt="@item.Title" src="@Url.Action("GetAvatar", "Section",
-                                                                           new {sectionId = item.Id})" />
+                                                                           new {id = item.Id})" />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |
-            @Html.ActionLink("Details", "Details", new {id = item.Id}) |
-            @Html.ActionLink("Remove", "Remove", new {sectionId = item.Id})
+            @Html.ActionLink("Remove", "Remove", new {id = item.Id})
         </td>
     </tr>
 }

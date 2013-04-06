@@ -10,7 +10,7 @@ namespace Mvc.Infrastructure.Abstract
     {
         IEnumerable<Section> Section { get; }
         Section GetSectionById(int sectionId);
-        void CreateSection(Section section, HttpPostedFileBase avatar);
+        void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar);
         void RemoveSection(int sectionId);
         GetAvatarSM GetAvatar(int sectionId);
     }

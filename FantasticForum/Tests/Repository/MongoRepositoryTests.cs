@@ -29,7 +29,7 @@ namespace Tests.Repository
                     new Image {Data = new byte[] {111, 222, 3}, ImageMimeType = "jpg"},
                     new Image {Data = new byte[] {222, 123, 1}, ImageMimeType = "gif"},
                 };
-            images.ForEach(i => repository.Create(i));
+            images.ForEach(i => repository.CreateOrUpdate(i));
         }
 
         [Test]
@@ -46,18 +46,6 @@ namespace Tests.Repository
         }
 
         [Test]
-        public void CreateTest()
-        {
-            var image = new Image {Data = new byte[] {1, 2, 3}, ImageMimeType = "Hello"};
-            repository.Create(image);
-            var id = image.Id.ToString();
-
-            var newImage = GetEntityById(id);
-            Assert.That(newImage.Data, Is.EquivalentTo(image.Data));
-            Assert.That(newImage.ImageMimeType, Is.EqualTo(image.ImageMimeType));
-        }
-
-        [Test]
         public void GetEntityByIdTest()
         {
             var id = repository.Entities.First().Id.ToString();
@@ -66,6 +54,19 @@ namespace Tests.Repository
             Assert.That(image.Id.ToString(), Is.EqualTo(id));
             Assert.That(image.Data, Is.EquivalentTo(new byte[] { 11, 22, 33 }));
             Assert.That(image.ImageMimeType, Is.EqualTo("png"));
+        }
+
+        [Test]
+        public void CreateOrUpdateNewEntityTest()
+        {
+            var image = new Image {ImageMimeType = "bmp"};
+
+            repository.CreateOrUpdate(image);
+            var id = image.Id;
+
+            image = GetEntityById(id.ToString());
+            Assert.That(image.Id, Is.EqualTo(id));
+            Assert.That(image.ImageMimeType, Is.EqualTo("bmp"));
         }
 
         [Test]
@@ -78,7 +79,7 @@ namespace Tests.Repository
 
             image.ImageMimeType = "bmp";
 
-            repository.Update(image);
+            repository.CreateOrUpdate(image);
 
             image = GetEntityById(id);
             Assert.That(image.Id.ToString(), Is.EqualTo(id));

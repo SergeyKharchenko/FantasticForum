@@ -11,7 +11,7 @@ namespace Models
         [StringLength(30, MinimumLength = 2)]
         public string Title { get; set; }
 
-        [ScaffoldColumn(false)]
+        [ScaffoldColumn(false)]     
         public string ImageId { get; set; }
     }
 }

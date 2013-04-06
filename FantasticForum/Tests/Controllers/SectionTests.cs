@@ -56,12 +56,27 @@ namespace Tests.Controllers
 
             var section = new Section();
 
-            var view = controller.Create(section, httpPostedFileBaseMock.Object);
+            var view = controller.Edit(section, httpPostedFileBaseMock.Object);
             var redirectResult = view as RedirectToRouteResult;
 
-            unitOfWorkMock.Verify(unit => unit.CreateSection(section, httpPostedFileBaseMock.Object));
+            unitOfWorkMock.Verify(unit => unit.CreateOrUpdateSection(section, httpPostedFileBaseMock.Object));
             Assert.That(redirectResult, Is.Not.Null);
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
+        }
+
+        [Test]
+        public void ShowEditPageTest()
+        {
+            unitOfWorkMock.Setup(unit => unit.GetSectionById(1))
+                .Returns(new Section { Id = 1, Title = "Games" });
+
+            var view = controller.Edit(1);
+            var section = view.Model as Section;
+
+            unitOfWorkMock.Verify(unit => unit.GetSectionById(1), Times.Once());
+            Assert.That(section, Is.Not.Null);
+            Assert.That(section.Id, Is.EqualTo(1));
+            Assert.That(section.Title, Is.EqualTo("Games"));
         }
 
         [Test]

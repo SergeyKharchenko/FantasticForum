@@ -31,22 +31,16 @@ namespace Mvc.Infrastructure.Concrete
         {
             kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));
 
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>))
-                .When(request =>
-                    {
-                        return !request.Target.Name.Contains("Mongo");
-                    })
-                .InThreadScope();
-
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
             var server = client.GetServer();
             var database = server.GetDatabase(ConfigurationManager.AppSettings.Get("MongoDB"));
             kernel.Bind(typeof(IRepository<>)).To(typeof(MongoRepository<>))
                 .When(request => request.Target.Name.Contains("Mongo"))
-                .InThreadScope()
-                .WithConstructorArgument("database", database);  
+                .WithConstructorArgument("database", database);
 
-            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InThreadScope();
+            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
+
+            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext));
             kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper));
         }
 

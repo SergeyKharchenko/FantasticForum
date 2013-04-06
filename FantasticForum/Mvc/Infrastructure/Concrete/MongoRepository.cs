@@ -32,12 +32,7 @@ namespace Mvc.Infrastructure.Concrete
             return collection.FindOne(query);
         }
 
-        public void Create(TEntity entity)
-        {
-            collection.Insert(entity);
-        }
-
-        public void Update(TEntity entity)
+        public void CreateOrUpdate(TEntity entity)
         {
             collection.Save(entity);
         }

@@ -51,6 +51,9 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -285,7 +288,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Preview\Index.cshtml" />
     <Content Include="Views\Section\List.cshtml" />
-    <Content Include="Views\Section\Create.cshtml" />
+    <Content Include="Views\Section\Edit.cshtml" />
     <Content Include="Views\Section\Remove.cshtml" />
   </ItemGroup>
   <ItemGroup>

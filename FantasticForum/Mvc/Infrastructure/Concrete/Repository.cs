@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using Models;
 using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
+using NUnit.Framework;
 
 namespace Mvc.Infrastructure.Concrete
 {
@@ -29,16 +32,32 @@ namespace Mvc.Infrastructure.Concrete
             return dbSet.Find(id);
         }
 
-        public void Create(TEntity entity)
+        public void CreateOrUpdate(TEntity entity)
         {
-            dbSet.Add(entity);
-            context.SaveChanges();
-        }
-
-        public void Update(TEntity entity)
-        {
-            dbSet.Attach(entity);
-            context.Entry(entity).State = EntityState.Modified;
+            var sqlEntity = entity as Entity;
+            if (sqlEntity == null)
+                return;
+            if (sqlEntity.Id == 0)
+            {
+                dbSet.Add(entity);
+            }
+            else
+            {
+                var entry = context.Entry(entity);
+                if (entry.State == EntityState.Detached)
+                {                    
+                    var attachedEntity = GetById(sqlEntity.Id);
+                    if (attachedEntity != null)
+                    {
+                        var attachedEntry = context.Entry(attachedEntity);
+                        attachedEntry.CurrentValues.SetValues(entity);
+                    }
+                    else
+                    {
+                        entry.State = EntityState.Modified;
+                    }
+                }
+            }
             context.SaveChanges();
         }
 

@@ -34,16 +34,22 @@ namespace Mvc.Infrastructure.Concrete
             return sectionRepository.GetById(sectionId);
         }
 
-        public void CreateSection(Section section, HttpPostedFileBase avatar)
+        public void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
+            if (section.Id != 0)
+            {
+                section = sectionRepository.GetById(section.Id);
+                if(!string.IsNullOrEmpty(section.ImageId))
+                    imageMongoRepository.Remove(section.ImageId);
+            }
             if (avatar != null)
             {
                 var imageData = fileHelper.FileBaseToByteArray(avatar);
                 var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
-                imageMongoRepository.Create(image);
+                imageMongoRepository.CreateOrUpdate(image);
                 section.ImageId = image.Id.ToString();
             }
-            sectionRepository.Create(section);
+            sectionRepository.CreateOrUpdate(section);
         }
 
         public void RemoveSection(int sectionId)
