@@ -37,7 +37,8 @@ namespace Mvc.Infrastructure.Concrete
         public void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
             var oldSsection = sectionRepository.GetById(section.Id);
-            section.ImageId = oldSsection.ImageId;
+            if (oldSsection != null)
+                section.ImageId = oldSsection.ImageId;
 
             if (avatar != null)
             {
