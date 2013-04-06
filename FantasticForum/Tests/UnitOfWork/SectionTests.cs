@@ -102,6 +102,7 @@ namespace Tests.UnitOfWork
             imageMongoRepositoryMock.Setup(repo => repo.CreateOrUpdate(It.IsAny<Image>())).Callback((Image image) => image.Id = objectId);
 
             var section = new Section { Id = 42, Title = "Love", ImageId = "1234567890ab1234567890cc" };
+            sectionRepositoryMock.Setup(repo => repo.GetById(42)).Returns(section);
 
 
             unitOfWork.CreateOrUpdateSection(section, imageMock.Object);
