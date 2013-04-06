@@ -89,6 +89,19 @@ namespace Tests.UnitOfWork
         }
 
         [Test]
+        public void CreateSectionWithEmptyImageDBTest()
+        {
+            var section = new Section {Id = 42, Title = "Love"};
+            sectionRepositoryMock.Setup(repo => repo.GetById(42)).Returns(section);
+
+            unitOfWork.CreateOrUpdateSection(section, null);
+
+            sectionRepositoryMock.Verify(repo => repo.GetById(42), Times.Once());
+            sectionRepositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
+            imageMongoRepositoryMock.Verify(repo => repo.CreateOrUpdate(It.IsAny<Image>()), Times.Never());
+        }
+
+        [Test]
         public void UpdateSectionTest()
         {
             var imageMock = new Mock<HttpPostedFileBase>();
@@ -120,16 +133,18 @@ namespace Tests.UnitOfWork
         }
 
         [Test]
-        public void CreateSectionWithEmptyImageDBTest()
+        public void UpdateSectionWithoutAvatarTest()
         {
-            var section = new Section {Id = 42, Title = "Love"};
+            var section = new Section { Id = 42, Title = "Love" };
             sectionRepositoryMock.Setup(repo => repo.GetById(42)).Returns(section);
 
             unitOfWork.CreateOrUpdateSection(section, null);
 
             sectionRepositoryMock.Verify(repo => repo.GetById(42), Times.Once());
-            sectionRepositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
+            fileHelperMock.Verify(helper => helper.FileBaseToByteArray(It.IsAny<HttpPostedFileBase>()), Times.Never());
+            imageMongoRepositoryMock.Verify(repo => repo.Remove(It.IsAny<string>()), Times.Never());
             imageMongoRepositoryMock.Verify(repo => repo.CreateOrUpdate(It.IsAny<Image>()), Times.Never());
+            sectionRepositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
         }
 
         [Test]
