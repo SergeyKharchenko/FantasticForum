@@ -36,14 +36,14 @@ namespace Mvc.Infrastructure.Concrete
 
         public void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
-            if (section.Id != 0)
-            {
-                section = sectionRepository.GetById(section.Id);
-                if(!string.IsNullOrEmpty(section.ImageId))
-                    imageMongoRepository.Remove(section.ImageId);
-            }
+            var oldSsection = sectionRepository.GetById(section.Id);
+            section.ImageId = oldSsection.ImageId;
+
             if (avatar != null)
             {
+                if (section.Id != 0 && !string.IsNullOrEmpty(oldSsection.ImageId))
+                    imageMongoRepository.Remove(oldSsection.ImageId);
+
                 var imageData = fileHelper.FileBaseToByteArray(avatar);
                 var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
                 imageMongoRepository.CreateOrUpdate(image);
