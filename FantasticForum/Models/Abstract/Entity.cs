@@ -8,6 +8,6 @@ namespace Models.Abstract
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [ScaffoldColumn(false)]
-        public int Id { get; set; } 
+        public int Id { get; set; }
     }
 }

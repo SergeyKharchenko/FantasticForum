@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Models.Abstract;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -8,7 +9,7 @@ using MongoDB.Driver.Linq;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity : MongoEntity
+    public class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly MongoCollection<TEntity> collection;
 
@@ -19,9 +20,16 @@ namespace Mvc.Infrastructure.Concrete
             collection = database.GetCollection<TEntity>(collectionName);   
         }
 
-        public IQueryable<TEntity> Entities
+        public IEnumerable<TEntity> Entities
         {
-            get { return collection.AsQueryable(); }
+            get { return collection.AsQueryable().AsEnumerable(); }
+        }
+
+        public TEntity GetById(object id)
+        {
+            var objectId = new ObjectId(id.ToString());
+            var query = Query<MongoEntity>.EQ(entity => entity.Id, objectId);
+            return collection.FindOne(query);
         }
 
         public void Create(TEntity entity)
@@ -29,22 +37,24 @@ namespace Mvc.Infrastructure.Concrete
             collection.Insert(entity);
         }
 
-        public TEntity Get(string id)
-        {
-            var objectId = new ObjectId(id);
-            var query = Query<TEntity>.EQ(e => e.Id, objectId);
-            return collection.FindOne(query);
-        }
-
         public void Update(TEntity entity)
         {
             collection.Save(entity);
         }
 
-        public void Remove(string id)
+        public void Remove(TEntity entity)
         {
-            var objectId = new ObjectId(id);
-            var query = Query<TEntity>.EQ(e => e.Id, objectId);
+            var mongoEntity = entity as MongoEntity;
+            if (mongoEntity == null)
+                return;
+            var query = Query.EQ("Id", mongoEntity.Id);
+            collection.Remove(query);
+        }
+
+        public void Remove(object id)
+        {
+            var objectId = new ObjectId(id.ToString());
+            var query = Query<MongoEntity>.EQ(entity => entity.Id, objectId);
             collection.Remove(query);
         }
 

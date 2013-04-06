@@ -74,7 +74,6 @@ namespace Tests.Repository
         {
             var section = new Section {Title = "Love"};
             repository.Create(section);
-            repository.SaveChanges();
             var id = section.Id;
 
             section = GetSectionById(id);
@@ -94,7 +93,6 @@ namespace Tests.Repository
             section.Title = "Games";
 
             repository.Update(section);
-            repository.SaveChanges();
 
             section = GetSectionById(id);
             Assert.That(section.Id, Is.EqualTo(id));
@@ -109,7 +107,6 @@ namespace Tests.Repository
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
             repository.Remove(section);
-            repository.SaveChanges();
 
             section = repository.GetById(id);
 
@@ -124,7 +121,6 @@ namespace Tests.Repository
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
             repository.Remove(id);
-            repository.SaveChanges();
 
             section = repository.GetById(id);
 

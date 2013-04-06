@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DbContext context;
         private readonly DbSet<TEntity> dbSet;
@@ -24,7 +24,7 @@ namespace Mvc.Infrastructure.Concrete
             get { return dbSet.AsEnumerable(); }
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(object id)
         {
             return dbSet.Find(id);
         }
@@ -32,12 +32,14 @@ namespace Mvc.Infrastructure.Concrete
         public void Create(TEntity entity)
         {
             dbSet.Add(entity);
+            context.SaveChanges();
         }
 
         public void Update(TEntity entity)
         {
             dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Remove(TEntity entity)
@@ -45,16 +47,13 @@ namespace Mvc.Infrastructure.Concrete
             if (context.Entry(entity).State == EntityState.Detached)
                 dbSet.Attach(entity);
             dbSet.Remove(entity);
+            context.SaveChanges();
         }
 
         public void Remove(object id)
         {
             var entity = dbSet.Find(id);
             Remove(entity);
-        }
-
-        public void SaveChanges()
-        {
             context.SaveChanges();
         }
     }

@@ -12,11 +12,11 @@ namespace Mvc.Infrastructure.Concrete
     public class SectionUnitOfWork : ISectionUnitOfWork
     {
         private readonly IRepository<Section> sectionRepository;
-        private readonly IMongoRepository<Image> imageMongoRepository;
+        private readonly IRepository<Image> imageMongoRepository;
         private readonly IFileHelper fileHelper;
 
         public SectionUnitOfWork(IRepository<Section> sectionRepository,
-                                 IMongoRepository<Image> imageMongoRepository,
+                                 IRepository<Image> imageMongoRepository,
                                  IFileHelper fileHelper)
         {
             this.sectionRepository = sectionRepository;
@@ -44,7 +44,6 @@ namespace Mvc.Infrastructure.Concrete
                 section.ImageId = image.Id.ToString();
             }
             sectionRepository.Create(section);
-            sectionRepository.SaveChanges();
         }
 
         public void RemoveSection(int sectionId)
@@ -53,7 +52,6 @@ namespace Mvc.Infrastructure.Concrete
             if (!string.IsNullOrEmpty(section.ImageId))
                 imageMongoRepository.Remove(section.ImageId);
             sectionRepository.Remove(sectionId);
-            sectionRepository.SaveChanges();
         }
 
         public GetAvatarSM GetAvatar(int sectionId)
@@ -61,7 +59,7 @@ namespace Mvc.Infrastructure.Concrete
             var section = sectionRepository.GetById(sectionId);
             if (string.IsNullOrEmpty(section.ImageId))
                 return new GetAvatarSM(false);
-            var image = imageMongoRepository.Get(section.ImageId);
+            var image = imageMongoRepository.GetById(section.ImageId);
             return new GetAvatarSM(true, image.Data, image.ImageMimeType);
         }
     }

@@ -178,7 +178,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Abstract\IFileHelper.cs" />
-    <Compile Include="Infrastructure\Abstract\IMongoRepository.cs" />
     <Compile Include="Infrastructure\Abstract\ISectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Abstract\IRepository.cs" />
     <Compile Include="Infrastructure\Abstract\IUnitOfWork.cs" />

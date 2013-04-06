@@ -12,7 +12,7 @@ namespace Tests.Repository
     [TestFixture]
     public class MongoRepositoryTests
     {
-        private IMongoRepository<Image> repository;
+        private MongoRepository<Image> repository;
         private List<Image> images;
             
         [SetUp]
@@ -100,7 +100,7 @@ namespace Tests.Repository
 
         public Image GetEntityById(string id)
         {
-            var entity = repository.Get(id);
+            var entity = repository.GetById(id);
             return entity;
         }
 
