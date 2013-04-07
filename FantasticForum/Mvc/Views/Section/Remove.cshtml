@@ -21,6 +21,7 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Timestamp)
     <p>
         <input type="submit" value="Remove" /> |
         @Html.ActionLink("Back to List", "List")

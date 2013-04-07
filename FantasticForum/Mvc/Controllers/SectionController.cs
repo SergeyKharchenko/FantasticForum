@@ -99,7 +99,7 @@ namespace Mvc.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                return RedirectToAction("List", new { id = section.Id, concurrencyError = true});
+                return RedirectToAction("Remove", new { id = section.Id, concurrencyError = true });
             }
             return RedirectToAction("List");
         }
