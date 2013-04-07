@@ -2,7 +2,7 @@ namespace Models.Migrations
 {
     using System.Data.Entity.Migrations;
 
-    public sealed class Configuration : DbMigrationsConfiguration<Models.ForumContext>
+    public sealed class Configuration : DbMigrationsConfiguration<ForumContext>
     {
         public Configuration()
         {
