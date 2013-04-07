@@ -70,7 +70,7 @@ namespace Tests.Repository
         }
 
         [Test]
-        public void CreateOrUpdateNewEntityTest()
+        public void CreateTest()
         {            
             var section = new Section {Title = "Study"};
 

@@ -36,21 +36,34 @@ namespace Mvc.Infrastructure.Concrete
 
         public void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
-            var oldSsection = sectionRepository.GetById(section.Id);
-            if (oldSsection != null)
-                section.ImageId = oldSsection.ImageId;
+            section.ImageId = GetOldAvatarId(section.Id);
 
             if (avatar != null)
             {
-                if (section.Id != 0 && !string.IsNullOrEmpty(oldSsection.ImageId))
-                    imageMongoRepository.Remove(oldSsection.ImageId);
-
-                var imageData = fileHelper.FileBaseToByteArray(avatar);
-                var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
-                imageMongoRepository.CreateOrUpdate(image);
-                section.ImageId = image.Id.ToString();
+                RemoveOldAvatar(section);
+                section.ImageId = CreateAvatar(avatar);
             }
             sectionRepository.CreateOrUpdate(section);
+        }
+
+        private void RemoveOldAvatar(Section section)
+        {
+            if (section.Id != 0 && !string.IsNullOrEmpty(section.ImageId))
+                imageMongoRepository.Remove(section.ImageId);
+        }
+
+        private string CreateAvatar(HttpPostedFileBase avatar)
+        {
+            var imageData = fileHelper.FileBaseToByteArray(avatar);
+            var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
+            imageMongoRepository.CreateOrUpdate(image);
+            return image.Id.ToString();
+        }
+
+        private string GetOldAvatarId(int sectionId)
+        {
+            var section = sectionRepository.GetById(sectionId);
+            return section == null ? null : section.ImageId;
         }
 
         public void RemoveSection(int sectionId)

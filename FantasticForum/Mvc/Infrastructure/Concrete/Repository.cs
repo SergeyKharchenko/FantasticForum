@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.IO;
-using Models;
 using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
-using NUnit.Framework;
 
 namespace Mvc.Infrastructure.Concrete
 {
@@ -38,27 +34,27 @@ namespace Mvc.Infrastructure.Concrete
             if (sqlEntity == null)
                 return;
             if (sqlEntity.Id == 0)
-            {
                 dbSet.Add(entity);
+            else
+                UpdateValues(sqlEntity);
+            context.SaveChanges();
+        }
+
+        private void UpdateValues(Entity entity)
+        {
+            var entry = context.Entry(entity);
+            if (entry.State != EntityState.Detached) 
+                return;
+            var attachedEntity = GetById(entity.Id);
+            if (attachedEntity != null)
+            {
+                var attachedEntry = context.Entry(attachedEntity);
+                attachedEntry.CurrentValues.SetValues(entity);
             }
             else
             {
-                var entry = context.Entry(entity);
-                if (entry.State == EntityState.Detached)
-                {                    
-                    var attachedEntity = GetById(sqlEntity.Id);
-                    if (attachedEntity != null)
-                    {
-                        var attachedEntry = context.Entry(attachedEntity);
-                        attachedEntry.CurrentValues.SetValues(entity);
-                    }
-                    else
-                    {
-                        entry.State = EntityState.Modified;
-                    }
-                }
+                entry.State = EntityState.Modified;
             }
-            context.SaveChanges();
         }
 
         public void Remove(TEntity entity)
