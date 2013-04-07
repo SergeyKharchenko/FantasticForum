@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -65,6 +66,22 @@ namespace Tests.Controllers
         }
 
         [Test]
+        public void UpdateWithConcurrencyExceptionTest()
+        {
+            var httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
+            var section = new Section();
+            unitOfWorkMock.Setup(unit => unit.CreateOrUpdateSection(section, httpPostedFileBaseMock.Object))
+                .Throws<DbUpdateConcurrencyException>();
+
+            var view = controller.Edit(section, httpPostedFileBaseMock.Object);
+            var redirectResult = view as ViewResult;
+
+            unitOfWorkMock.Verify(unit => unit.CreateOrUpdateSection(section, httpPostedFileBaseMock.Object));
+            Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(redirectResult.Model, Is.EqualTo(section));
+        }
+
+        [Test]
         public void ShowEditPageTest()
         {
             unitOfWorkMock.Setup(unit => unit.GetSectionById(1))
@@ -89,7 +106,6 @@ namespace Tests.Controllers
 
             Assert.That(avatar.FileContents, Is.EquivalentTo(avatarData));
             Assert.That(avatar.ContentType, Is.EquivalentTo("file"));
-            
         }
 
         [Test]
@@ -117,7 +133,7 @@ namespace Tests.Controllers
             unitOfWorkMock.Setup(unit => unit.GetSectionById(1))
                 .Returns(new Section{Id = 1, Title = "Games"});
 
-            var view = controller.Remove(1);
+            var view = controller.Remove(1, null);
             var section = view.Model as Section;
 
             unitOfWorkMock.Verify(unit => unit.GetSectionById(1), Times.Once());
@@ -129,10 +145,25 @@ namespace Tests.Controllers
         [Test]
         public void RemoveTest()
         {
-            var view = controller.Remove(new Section {Id = 1});
+            var section = new Section {Id = 1};
+            var view = controller.Remove(section);
 
-            unitOfWorkMock.Verify(unit => unit.RemoveSection(1), Times.Once());
+            unitOfWorkMock.Verify(unit => unit.RemoveSection(section), Times.Once());
             Assert.That(view.RouteValues["action"], Is.EqualTo("List"));
+        }
+
+        [Test]
+        public void RemoveWithConcurrencyExceptionTest()
+        {
+            var section = new Section {Id = 1};
+            unitOfWorkMock.Setup(unit => unit.RemoveSection(section)).Throws<DbUpdateConcurrencyException>();
+
+            var view = controller.Remove(section);
+
+            unitOfWorkMock.Verify(unit => unit.RemoveSection(section), Times.Once());
+            Assert.That(view.RouteValues["action"], Is.EqualTo("Remove"));
+            Assert.That(view.RouteValues["id"], Is.EqualTo(1));
+            Assert.That(view.RouteValues["concurrencyError"], Is.Not.Null);
         }
     }
 }

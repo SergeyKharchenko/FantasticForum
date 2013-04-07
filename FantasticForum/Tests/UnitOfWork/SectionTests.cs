@@ -183,25 +183,25 @@ namespace Tests.UnitOfWork
         [Test]
         public void RemoveSectionWithAvatarTest()
         {
-            sectionRepositoryMock.Setup(repo => repo.GetById(1))
-                .Returns(new Section { Id = 1, Title = "Sport", ImageId = "abcd" });
+            var section = new Section {Id = 1, Title = "Sport", ImageId = "abcd"};
+            sectionRepositoryMock.Setup(repo => repo.GetById(1)).Returns(section);
 
-            unitOfWork.RemoveSection(1);
+            unitOfWork.RemoveSection(section);
 
             imageMongoRepositoryMock.Verify(repo => repo.Remove("abcd"), Times.Once());
-            sectionRepositoryMock.Verify(repo => repo.Remove(1), Times.Once());
+            sectionRepositoryMock.Verify(repo => repo.Remove(section), Times.Once());
         }
 
         [Test]
         public void RemoveSectionWithoutAvatarTest()
         {
-            sectionRepositoryMock.Setup(repo => repo.GetById(1))
-                .Returns(new Section { Id = 1, Title = "Sport" });
+            var section = new Section { Id = 1, Title = "Sport" };
+            sectionRepositoryMock.Setup(repo => repo.GetById(1)).Returns(section);
 
-            unitOfWork.RemoveSection(1);
+            unitOfWork.RemoveSection(section);
 
-            imageMongoRepositoryMock.Verify(repo => repo.Remove("abcd"), Times.Never());
-            sectionRepositoryMock.Verify(repo => repo.Remove(1), Times.Once());
+            imageMongoRepositoryMock.Verify(repo => repo.Remove(It.IsAny<string>()), Times.Never());
+            sectionRepositoryMock.Verify(repo => repo.Remove(section), Times.Once());
         }
     }
 }

@@ -47,15 +47,6 @@ namespace Tests.Repository
         {
             var actualSections = repository.Entities;
 
-            foreach (var section in sections)
-            {
-                Console.WriteLine(section.Id);
-            }
-            foreach (var section in actualSections)
-            {
-                Console.WriteLine(section.Id);
-            }
-
             Assert.That(actualSections, Is.EquivalentTo(sections));
         }
 

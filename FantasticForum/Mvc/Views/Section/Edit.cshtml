@@ -6,7 +6,9 @@
 
 @using (Html.BeginForm("Edit", "Section", FormMethod.Post, new {enctype = "multipart/form-data"})) {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Timestamp)
 
     <fieldset>
         <legend>Section</legend>

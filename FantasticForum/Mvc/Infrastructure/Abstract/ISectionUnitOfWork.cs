@@ -11,7 +11,7 @@ namespace Mvc.Infrastructure.Abstract
         IEnumerable<Section> Section { get; }
         Section GetSectionById(int sectionId);
         void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar);
-        void RemoveSection(int sectionId);
+        void RemoveSection(Section section);
         GetAvatarSM GetAvatar(int sectionId);
     }
 }

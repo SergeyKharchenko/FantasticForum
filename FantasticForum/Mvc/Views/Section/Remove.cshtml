@@ -6,10 +6,14 @@
 
 <h3>Are you sure you want to remove this?</h3>
 <fieldset>
+    @if (ViewBag.ConcurrencyError != null)
+    {
+        @ViewBag.ConcurrencyError
+    }        
     <legend>Section</legend>
     <div>
         <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
-                                                                       new {id = Model.Id})" />   
+                                                                        new {id = Model.Id})" />   
         @Html.DisplayFor(model => model.Title)
     </div>
 </fieldset>
@@ -17,6 +21,7 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.Timestamp)
     <p>
         <input type="submit" value="Remove" /> |
         @Html.ActionLink("Back to List", "List")
