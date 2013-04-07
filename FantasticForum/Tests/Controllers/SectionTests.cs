@@ -117,7 +117,7 @@ namespace Tests.Controllers
             unitOfWorkMock.Setup(unit => unit.GetSectionById(1))
                 .Returns(new Section{Id = 1, Title = "Games"});
 
-            var view = controller.Remove(1);
+            var view = controller.Remove(1, null);
             var section = view.Model as Section;
 
             unitOfWorkMock.Verify(unit => unit.GetSectionById(1), Times.Once());
@@ -129,9 +129,10 @@ namespace Tests.Controllers
         [Test]
         public void RemoveTest()
         {
-            var view = controller.Remove(new Section {Id = 1});
+            var section = new Section {Id = 1};
+            var view = controller.Remove(section);
 
-            unitOfWorkMock.Verify(unit => unit.RemoveSection(1), Times.Once());
+            unitOfWorkMock.Verify(unit => unit.RemoveSection(section), Times.Once());
             Assert.That(view.RouteValues["action"], Is.EqualTo("List"));
         }
     }

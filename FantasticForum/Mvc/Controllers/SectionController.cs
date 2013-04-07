@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System;
+using System.Data.Entity.Infrastructure;
+using System.Web;
 using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Abstract;
@@ -50,7 +52,15 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Edit", section);
-            unitOfWork.CreateOrUpdateSection(section, avatar);
+            try
+            {
+                unitOfWork.CreateOrUpdateSection(section, avatar);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                ModelState.AddModelError("", "This section had been changed by another user");
+                return View("Edit", section);
+            }
             return RedirectToAction("List");
         }
 
@@ -70,9 +80,11 @@ namespace Mvc.Controllers
         //
         // Get: /Section/Remove
         
-        public ViewResult Remove(int id)
-        {
+        public ViewResult Remove(int id, bool? concurrencyError)
+        {            
             var section = unitOfWork.GetSectionById(id);
+            if (concurrencyError != null && concurrencyError.Value)
+                ViewBag.ConcurrencyError = "This section had been changed by another user";
             return View(section);
         }
 
@@ -81,7 +93,14 @@ namespace Mvc.Controllers
         [HttpPost][ValidateAntiForgeryToken]
         public RedirectToRouteResult Remove(Section section)
         {
-            unitOfWork.RemoveSection(section.Id);
+            try
+            {
+                unitOfWork.RemoveSection(section);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return RedirectToAction("List", new { id = section.Id, concurrencyError = true});
+            }
             return RedirectToAction("List");
         }
     }

@@ -61,7 +61,6 @@ namespace Mvc.Infrastructure.Concrete
         {
             var entity = dbSet.Find(id);
             Remove(entity);
-            context.SaveChanges();
         }
     }
 }

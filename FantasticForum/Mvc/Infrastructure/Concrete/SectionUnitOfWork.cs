@@ -66,12 +66,12 @@ namespace Mvc.Infrastructure.Concrete
             return section == null ? null : section.ImageId;
         }
 
-        public void RemoveSection(int sectionId)
+        public void RemoveSection(Section section)
         {
-            var section = sectionRepository.GetById(sectionId);
-            if (!string.IsNullOrEmpty(section.ImageId))
-                imageMongoRepository.Remove(section.ImageId);
-            sectionRepository.Remove(sectionId);
+            var oldSection = sectionRepository.GetById(section.Id);
+            if (!string.IsNullOrEmpty(oldSection.ImageId))
+                imageMongoRepository.Remove(oldSection.ImageId);
+            sectionRepository.Remove(section);
         }
 
         public GetAvatarSM GetAvatar(int sectionId)
