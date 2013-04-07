@@ -25,7 +25,10 @@ namespace Mvc.Infrastructure.Concrete
 
         public TEntity GetById(object id)
         {
-            return dbSet.Find(id);
+            var entity = dbSet.Find(id);
+            if (entity != null)
+                context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public void CreateOrUpdate(TEntity entity)
@@ -36,25 +39,14 @@ namespace Mvc.Infrastructure.Concrete
             if (sqlEntity.Id == 0)
                 dbSet.Add(entity);
             else
-                UpdateValues(sqlEntity);
+                UpdateValues(entity);
             context.SaveChanges();
         }
 
-        private void UpdateValues(Entity entity)
+        private void UpdateValues(TEntity entity)
         {
-            var entry = context.Entry(entity);
-            if (entry.State != EntityState.Detached) 
-                return;
-            var attachedEntity = GetById(entity.Id);
-            if (attachedEntity != null)
-            {
-                var attachedEntry = context.Entry(attachedEntity);
-                attachedEntry.CurrentValues.SetValues(entity);
-            }
-            else
-            {
-                entry.State = EntityState.Modified;
-            }
+            dbSet.Attach(entity);
+            context.Entry(entity).State = EntityState.Modified;
         }
 
         public void Remove(TEntity entity)
