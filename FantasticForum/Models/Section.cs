@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
 using Models.Abstract;
 
 namespace Models
@@ -14,9 +13,5 @@ namespace Models
 
         [ScaffoldColumn(false)]     
         public string ImageId { get; set; }
-
-        [Timestamp]
-        [HiddenInput(DisplayValue = true)]
-        public byte[] Timestamp { get; set; }
     }
 }
