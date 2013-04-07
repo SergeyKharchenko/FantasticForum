@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
 using Models.Abstract;
@@ -14,6 +15,8 @@ namespace Models
 
         [ScaffoldColumn(false)]     
         public string ImageId { get; set; }
+
+        public Collection<Topic> Topics { get; set; }
 
         [Timestamp]
         [HiddenInput]

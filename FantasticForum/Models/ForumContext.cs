@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Models
 {
@@ -9,9 +10,16 @@ namespace Models
         }
 
         public DbSet<Section> Sections { get; set; }
+        public DbSet<Topic> Topics { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+
+            modelBuilder.Entity<Topic>()
+                        .HasRequired(topic => topic.Section)
+                        .WithMany(section => section.Topics)
+                        .HasForeignKey(topic => topic.SectionId);
         }
     }
 }

@@ -65,9 +65,14 @@
     <Compile Include="Migrations\201304071413335_Add Section Timestamp.Designer.cs">
       <DependentUpon>201304071413335_Add Section Timestamp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304071946280_Add Topic.cs" />
+    <Compile Include="Migrations\201304071946280_Add Topic.Designer.cs">
+      <DependentUpon>201304071946280_Add Topic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Section.cs" />
+    <Compile Include="Topic.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -79,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304071413335_Add Section Timestamp.resx">
       <DependentUpon>201304071413335_Add Section Timestamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304071946280_Add Topic.resx">
+      <DependentUpon>201304071946280_Add Topic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

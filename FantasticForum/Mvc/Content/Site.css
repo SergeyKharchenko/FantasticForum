@@ -27,3 +27,17 @@ footer {
     height: 50px;
     text-align: center;     
 }
+
+td.section {
+    width: 100px;
+    background-color: gainsboro;
+}
+
+.section-title {
+    color: black;
+    display: block;
+}
+
+.section-avatar {
+    float: left;
+}
