@@ -116,8 +116,8 @@
     <Compile Include="Repository\MongoRepositoryTests.cs" />
     <Compile Include="Repository\RepositoryTests.cs" />
     <Compile Include="RouteTests.cs" />
-    <Compile Include="SqlCrudUnitOfWorkTests.cs" />
     <Compile Include="UnitOfWork\SectionTests.cs" />
+    <Compile Include="UnitOfWork\SqlCrudUnitOfWorkTests.cs" />
     <Compile Include="ViewModel\Section\SectionListVMTests.cs" />
   </ItemGroup>
   <ItemGroup>

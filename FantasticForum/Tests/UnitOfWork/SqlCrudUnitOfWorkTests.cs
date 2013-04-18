@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using Models;
 using Moq;
@@ -6,7 +6,7 @@ using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using NUnit.Framework;
 
-namespace Tests
+namespace Tests.UnitOfWork
 {
     [TestFixture]
     public class SqlCrudUnitOfWorkTests

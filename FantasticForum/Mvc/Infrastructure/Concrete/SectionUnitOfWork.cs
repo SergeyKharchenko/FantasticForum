@@ -60,7 +60,7 @@ namespace Mvc.Infrastructure.Concrete
         {
             var imageData = fileHelper.FileBaseToByteArray(avatar);
             var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
-            imageMongoRepository.Create(image);
+            image = imageMongoRepository.Create(image);
             return image.Id.ToString();
         }
 
