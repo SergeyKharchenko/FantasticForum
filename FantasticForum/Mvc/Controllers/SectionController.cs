@@ -44,6 +44,5 @@ namespace Mvc.Controllers
             unitOfWork.Create(section, avatar, path, virtualPath.Substring(1));
             return RedirectToAction("List");
         }
-
     }
 }
