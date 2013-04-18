@@ -6,7 +6,7 @@ using Mvc.StructModels;
 
 namespace Mvc.Infrastructure.Abstract
 {
-    public interface ISectionUnitOfWork : IUnitOfWork
+    public interface ISectionUnitOfWork
     {
         IEnumerable<Section> Section { get; }
         Section GetSectionById(int sectionId);

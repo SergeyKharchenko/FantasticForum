@@ -32,25 +32,27 @@ namespace Mvc.Infrastructure.Concrete
             return collection.FindOne(query);
         }
 
-        public void CreateOrUpdate(TEntity entity)
+        public TEntity CreateOrUpdate(TEntity entity)
         {
             collection.Save(entity);
+            return entity;
         }
 
-        public void Remove(TEntity entity)
+        public TEntity Remove(TEntity entity)
         {
             var mongoEntity = entity as MongoEntity;
-            if (mongoEntity == null)
-                return;
-            var query = Query.EQ("Id", mongoEntity.Id);
-            collection.Remove(query);
+            if (mongoEntity != null)
+            {
+                var query = Query.EQ("_id", mongoEntity.Id);
+                collection.Remove(query);
+            }
+            return entity;
         }
 
-        public void Remove(object id)
+        public TEntity Remove(object id)
         {
-            var objectId = new ObjectId(id.ToString());
-            var query = Query<MongoEntity>.EQ(entity => entity.Id, objectId);
-            collection.Remove(query);
+            var entity = GetById(id);
+            return Remove(entity);
         }
 
         public void DropCollection()

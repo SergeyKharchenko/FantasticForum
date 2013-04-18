@@ -31,16 +31,17 @@ namespace Mvc.Infrastructure.Concrete
             return entity;
         }
 
-        public void CreateOrUpdate(TEntity entity)
+        public TEntity CreateOrUpdate(TEntity entity)
         {
-            var sqlEntity = entity as Entity;
+            var sqlEntity = entity as SqlEntity;
             if (sqlEntity == null)
-                return;
+                return entity;
             if (sqlEntity.Id == 0)
                 dbSet.Add(entity);
             else
                 UpdateValues(entity);
             context.SaveChanges();
+            return entity;
         }
 
         private void UpdateValues(TEntity entity)
@@ -49,18 +50,19 @@ namespace Mvc.Infrastructure.Concrete
             context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Remove(TEntity entity)
+        public TEntity Remove(TEntity entity)
         {
             if (context.Entry(entity).State == EntityState.Detached)
                 dbSet.Attach(entity);
             dbSet.Remove(entity);
             context.SaveChanges();
+            return entity;
         }
 
-        public void Remove(object id)
+        public TEntity Remove(object id)
         {
             var entity = dbSet.Find(id);
-            Remove(entity);
+            return Remove(entity);
         }
     }
 }

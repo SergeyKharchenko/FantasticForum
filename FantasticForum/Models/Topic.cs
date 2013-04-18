@@ -5,7 +5,7 @@ using Models.Abstract;
 namespace Models
 {
     [Table("Topic")]
-    public class Topic : Entity
+    public class Topic : SqlEntity
     {
         [Required]
         [StringLength(100, MinimumLength = 2)]

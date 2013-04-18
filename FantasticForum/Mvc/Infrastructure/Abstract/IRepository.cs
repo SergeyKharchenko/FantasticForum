@@ -8,8 +8,8 @@ namespace Mvc.Infrastructure.Abstract
     {
         IEnumerable<TEntity> Entities { get; }
         TEntity GetById(object id);
-        void CreateOrUpdate(TEntity entity);
-        void Remove(TEntity entity);
-        void Remove(object id);
+        TEntity CreateOrUpdate(TEntity entity);
+        TEntity Remove(TEntity entity);
+        TEntity Remove(object id);
     }
 }

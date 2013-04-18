@@ -7,7 +7,7 @@ using Models.Abstract;
 namespace Models
 {
     [Table("Section")]
-    public class Section : Entity
+    public class Section : SqlEntity
     {
         [Required]
         [StringLength(30, MinimumLength = 2)]
@@ -17,9 +17,5 @@ namespace Models
         public string ImageId { get; set; }
 
         public Collection<Topic> Topics { get; set; }
-
-        [Timestamp]
-        [HiddenInput]
-        public byte[] Timestamp { get; set; }
     }
 }
