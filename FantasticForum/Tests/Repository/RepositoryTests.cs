@@ -65,7 +65,7 @@ namespace Tests.Repository
         {            
             var section = new Section {Title = "Study"};
 
-            repository.CreateOrUpdate(section);
+            repository.Create(section);
             var id = section.Id;
 
             section = GetEntityById(id);
@@ -83,7 +83,7 @@ namespace Tests.Repository
 
             section.Title = "Games";
 
-            repository.CreateOrUpdate(section);
+            repository.Update(section);
 
             section = GetEntityById(id);
             Assert.That(section.Id, Is.EqualTo(id));

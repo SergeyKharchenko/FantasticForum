@@ -9,33 +9,33 @@ namespace Mvc.Infrastructure.Concrete
 {
     public class SqlCrudUnitOfWork<TEntity> : ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
     {
-        private readonly IRepository<TEntity> repository;
+        protected readonly IRepository<TEntity> repository;
 
         public SqlCrudUnitOfWork(IRepository<TEntity> repository)
         {
             this.repository = repository;
         }
 
-        public TEntity Create(TEntity entity)
+        public virtual TEntity Create(TEntity entity)
         {
-            return repository.CreateOrUpdate(entity);
+            return repository.Create(entity);
         }
 
-        public IEnumerable<TEntity> Entities
+        public virtual IEnumerable<TEntity> Entities
         {
             get { return repository.Entities; }
         }
 
-        public TEntity Read(object id)
+        public virtual TEntity Read(object id)
         {
             return repository.GetById(id);
         }
 
-        public CrudResult<TEntity> Update(TEntity entity)
+        public virtual CrudResult<TEntity> Update(TEntity entity)
         {
             try
             {
-                var updatedEntity = repository.CreateOrUpdate(entity);
+                var updatedEntity = repository.Update(entity);
                 return new CrudResult<TEntity>(true, updatedEntity);
             }
             catch (DbUpdateConcurrencyException exception)
@@ -44,7 +44,7 @@ namespace Mvc.Infrastructure.Concrete
             }
         }
 
-        public CrudResult<TEntity> Delete(TEntity entity)
+        public virtual CrudResult<TEntity> Delete(TEntity entity)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace Mvc.Infrastructure.Concrete
             }
         }
 
-        public CrudResult<TEntity> Delete(object id)
+        public virtual CrudResult<TEntity> Delete(object id)
         {
             try
             {

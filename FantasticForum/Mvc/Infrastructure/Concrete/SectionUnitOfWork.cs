@@ -9,41 +9,45 @@ using Mvc.StructModels;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class SectionUnitOfWork : ISectionUnitOfWork
+    public class SectionUnitOfWork : AbstractSectionUnitOfWork
     {
-        private readonly IRepository<Section> sectionRepository;
         private readonly IRepository<Image> imageMongoRepository;
         private readonly IFileHelper fileHelper;
 
         public SectionUnitOfWork(IRepository<Section> sectionRepository,
                                  IRepository<Image> imageMongoRepository,
                                  IFileHelper fileHelper)
+            : base(sectionRepository)
         {
-            this.sectionRepository = sectionRepository;
             this.imageMongoRepository = imageMongoRepository;
             this.fileHelper = fileHelper;
         }
 
-        public IEnumerable<Section> Section
+        public override CrudResult<Section> CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
-            get { return sectionRepository.Entities; }
-        }
+            var crudResult = new CrudResult<Section>(true, section);            
 
-        public Section GetSectionById(int sectionId)
-        {
-            return sectionRepository.GetById(sectionId);
-        }
-
-        public void CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
-        {
-            section.ImageId = GetOldAvatarId(section.Id);
-
+            string newAvatarId = null;
             if (avatar != null)
+                newAvatarId = CreateAvatar(avatar);
+
+            if (section.Id == 0)
             {
-                RemoveOldAvatar(section);
-                section.ImageId = CreateAvatar(avatar);
+                section.ImageId = newAvatarId;
+                Create(section);
             }
-            sectionRepository.CreateOrUpdate(section);
+            else
+            {
+                section.ImageId = GetOldAvatarId(section.Id);
+                if (avatar != null)
+                {
+                    RemoveOldAvatar(section);
+                    section.ImageId = newAvatarId;
+                }
+                crudResult = Update(section);
+            }
+
+            return crudResult;
         }
 
         private void RemoveOldAvatar(Section section)
@@ -56,27 +60,27 @@ namespace Mvc.Infrastructure.Concrete
         {
             var imageData = fileHelper.FileBaseToByteArray(avatar);
             var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
-            imageMongoRepository.CreateOrUpdate(image);
+            imageMongoRepository.Create(image);
             return image.Id.ToString();
         }
 
         private string GetOldAvatarId(int sectionId)
         {
-            var section = sectionRepository.GetById(sectionId);
+            var section = repository.GetById(sectionId);
             return section == null ? null : section.ImageId;
         }
 
         public void RemoveSection(Section section)
         {
-            var oldSection = sectionRepository.GetById(section.Id);
+            var oldSection = repository.GetById(section.Id);
             if (!string.IsNullOrEmpty(oldSection.ImageId))
                 imageMongoRepository.Remove(oldSection.ImageId);
-            sectionRepository.Remove(section);
+            repository.Remove(section);
         }
 
-        public GetAvatarSM GetAvatar(int sectionId)
+        public override GetAvatarSM GetAvatar(int sectionId)
         {
-            var section = sectionRepository.GetById(sectionId);
+            var section = repository.GetById(sectionId);
             if (string.IsNullOrEmpty(section.ImageId))
                 return new GetAvatarSM(false);
             var image = imageMongoRepository.GetById(section.ImageId);

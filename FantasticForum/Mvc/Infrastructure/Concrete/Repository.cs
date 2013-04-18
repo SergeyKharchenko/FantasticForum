@@ -31,23 +31,19 @@ namespace Mvc.Infrastructure.Concrete
             return entity;
         }
 
-        public TEntity CreateOrUpdate(TEntity entity)
+        public TEntity Create(TEntity entity)
         {
-            var sqlEntity = entity as SqlEntity;
-            if (sqlEntity == null)
-                return entity;
-            if (sqlEntity.Id == 0)
-                dbSet.Add(entity);
-            else
-                UpdateValues(entity);
+            dbSet.Add(entity);
             context.SaveChanges();
             return entity;
         }
 
-        private void UpdateValues(TEntity entity)
+        public TEntity Update(TEntity entity)
         {
             dbSet.Attach(entity);
             context.Entry(entity).State = EntityState.Modified;
+            context.SaveChanges();
+            return entity;
         }
 
         public TEntity Remove(TEntity entity)

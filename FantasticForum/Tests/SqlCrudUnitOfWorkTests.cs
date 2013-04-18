@@ -25,13 +25,13 @@ namespace Tests
         public void CreateTest()
         {
             var section = new Section {Title = "1"};
-            repositoryMock.Setup(repo => repo.CreateOrUpdate(section))
+            repositoryMock.Setup(repo => repo.Create(section))
                 .Callback((Section s) => s.Id = 1)
                 .Returns(section);
 
             var entity = unitOfWork.Create(section);
 
-            repositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
+            repositoryMock.Verify(repo => repo.Create(section), Times.Once());
             Assert.That(entity, Is.EqualTo(section));
         }
 
@@ -69,11 +69,11 @@ namespace Tests
         public void UpdateTest()
         {
             var section = new Section { Title = "1" };
-            repositoryMock.Setup(repo => repo.CreateOrUpdate(section)).Returns(section);
+            repositoryMock.Setup(repo => repo.Update(section)).Returns(section);
 
             var crudResult = unitOfWork.Update(section);
 
-            repositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
+            repositoryMock.Verify(repo => repo.Update(section), Times.Once());
             Assert.That(crudResult.Success, Is.True);
             Assert.That(crudResult.Entity, Is.EqualTo(section));
         }
@@ -82,11 +82,11 @@ namespace Tests
         public void UpdateWithConcurrencyExceptionTest()
         {
             var section = new Section { Title = "1" };
-            repositoryMock.Setup(repo => repo.CreateOrUpdate(section)).Throws<DbUpdateConcurrencyException>();
+            repositoryMock.Setup(repo => repo.Update(section)).Throws<DbUpdateConcurrencyException>();
 
             var crudResult = unitOfWork.Update(section);
 
-            repositoryMock.Verify(repo => repo.CreateOrUpdate(section), Times.Once());
+            repositoryMock.Verify(repo => repo.Update(section), Times.Once());
             Assert.That(crudResult.Success, Is.False);
             Assert.That(crudResult.Entity, Is.Null);
         }

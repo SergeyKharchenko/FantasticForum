@@ -29,7 +29,8 @@ namespace Mvc.Infrastructure.Concrete
 
         private void AddBindings()
         {
-            kernel.Bind(typeof(ISectionUnitOfWork)).To(typeof(SectionUnitOfWork));
+            kernel.Bind(typeof(AbstractSectionUnitOfWork)).To(typeof(SectionUnitOfWork));
+            kernel.Bind(typeof(ISqlCrudUnitOfWork<>)).To(typeof(SqlCrudUnitOfWork<>));
 
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
             var server = client.GetServer();

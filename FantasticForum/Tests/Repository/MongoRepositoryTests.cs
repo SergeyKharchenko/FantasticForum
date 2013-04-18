@@ -29,7 +29,7 @@ namespace Tests.Repository
                     new Image {Data = new byte[] {111, 222, 3}, ImageMimeType = "jpg"},
                     new Image {Data = new byte[] {222, 123, 1}, ImageMimeType = "gif"},
                 };
-            images.ForEach(i => repository.CreateOrUpdate(i));
+            images.ForEach(i => repository.Create(i));
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Tests.Repository
         {
             var image = new Image {ImageMimeType = "bmp"};
 
-            repository.CreateOrUpdate(image);
+            repository.Create(image);
             var id = image.Id;
 
             image = GetEntityById(id.ToString());
@@ -79,7 +79,7 @@ namespace Tests.Repository
 
             image.ImageMimeType = "bmp";
 
-            repository.CreateOrUpdate(image);
+            repository.Update(image);
 
             image = GetEntityById(id);
             Assert.That(image.Id.ToString(), Is.EqualTo(id));

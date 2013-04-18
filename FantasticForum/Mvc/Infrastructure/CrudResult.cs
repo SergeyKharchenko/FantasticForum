@@ -1,6 +1,6 @@
-﻿using Models.Abstract;
+using Models.Abstract;
 
-namespace Mvc.Infrastructure.Concrete
+namespace Mvc.Infrastructure
 {
     public class CrudResult<TEntity> where TEntity : SqlEntity
     {

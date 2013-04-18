@@ -4,16 +4,17 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Abstract;
+using Mvc.Infrastructure.Concrete;
 using Mvc.ViewModels;
 
 namespace Mvc.Controllers
 {
     public class SectionController : Controller
     {
-        private readonly ISectionUnitOfWork unitOfWork;
+        private readonly AbstractSectionUnitOfWork unitOfWork;
         private readonly IFileHelper fileHelper;
 
-        public SectionController(ISectionUnitOfWork unitOfWork, IFileHelper fileHelper)
+        public SectionController(AbstractSectionUnitOfWork unitOfWork, IFileHelper fileHelper)
         {
             this.unitOfWork = unitOfWork;
             this.fileHelper = fileHelper;
@@ -25,7 +26,7 @@ namespace Mvc.Controllers
 
         public ViewResult List()
         {
-            return View(unitOfWork.Section.ToVMList());
+            return View(unitOfWork.Entities.ToVMList());
         }        
 
         //
@@ -41,7 +42,7 @@ namespace Mvc.Controllers
 
         public ViewResult Edit(int id)
         {
-            var section = unitOfWork.GetSectionById(id);
+            var section = unitOfWork.Read(id);
             return View(section);
         }      
 
@@ -52,14 +53,13 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Edit", section);
-            try
-            {
-                unitOfWork.CreateOrUpdateSection(section, avatar);
-            }
-            catch (DbUpdateConcurrencyException)
+
+            var crudTesult = unitOfWork.CreateOrUpdateSection(section, avatar);
+
+            if (!crudTesult.Success)
             {
                 ModelState.AddModelError("", "This section had been changed by another user");
-                return View("Edit", section);
+                return View("Edit", crudTesult.Entity);
             }
             return RedirectToAction("List");
         }
@@ -82,7 +82,7 @@ namespace Mvc.Controllers
         
         public ViewResult Remove(int id, bool? concurrencyError)
         {            
-            var section = unitOfWork.GetSectionById(id);
+            var section = unitOfWork.Read(id);
             if (concurrencyError != null && concurrencyError.Value)
                 ViewBag.ConcurrencyError = "This section had been changed by another user";
             return View(section);
@@ -95,7 +95,7 @@ namespace Mvc.Controllers
         {
             try
             {
-                unitOfWork.RemoveSection(section);
+                unitOfWork.Delete(section);
             }
             catch (DbUpdateConcurrencyException)
             {
