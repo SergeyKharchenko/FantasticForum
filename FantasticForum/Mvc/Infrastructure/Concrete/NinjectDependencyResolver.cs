@@ -7,6 +7,7 @@ using Models;
 using MongoDB.Driver;
 using Mvc.Infrastructure.Abstract;
 using Ninject;
+using Ninject.Web.Common;
 
 namespace Mvc.Infrastructure.Concrete
 {
@@ -23,7 +24,6 @@ namespace Mvc.Infrastructure.Concrete
 
         private void AddBindigs()
         {
-            /*
             kernel.Bind(typeof(AbstractSectionUnitOfWork)).To(typeof(SectionUnitOfWork)).InRequestScope();
             kernel.Bind(typeof(ISqlCrudUnitOfWork<>)).To(typeof(SqlCrudUnitOfWork<>)).InRequestScope();
 
@@ -40,7 +40,6 @@ namespace Mvc.Infrastructure.Concrete
             kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InRequestScope();
             kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
-             */
         }
 
         public object GetService(Type serviceType)
