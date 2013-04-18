@@ -1,18 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Linq.Expressions;
 using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class SqlRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DbContext context;
         private readonly DbSet<TEntity> dbSet;
 
-        public Repository(DbContext context)
+        public SqlRepository(DbContext context)
         {
             this.context = context;
             dbSet = context.Set<TEntity>();
@@ -29,6 +31,19 @@ namespace Mvc.Infrastructure.Concrete
             if (entity != null)
                 context.Entry(entity).State = EntityState.Detached;
             return entity;
+        }
+
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = dbSet;
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            query = includeProperties.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+            return query.AsEnumerable();
         }
 
         public TEntity Create(TEntity entity)

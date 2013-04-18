@@ -16,6 +16,6 @@ namespace Models
         [ScaffoldColumn(false)]     
         public string ImageId { get; set; }
 
-        public Collection<Topic> Topics { get; set; }
+        public virtual Collection<Topic> Topics { get; set; }
     }
 }

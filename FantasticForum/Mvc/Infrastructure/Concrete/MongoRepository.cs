@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Models.Abstract;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -30,6 +32,11 @@ namespace Mvc.Infrastructure.Concrete
             var objectId = new ObjectId(id.ToString());
             var query = Query<MongoEntity>.EQ(entity => entity.Id, objectId);
             return collection.FindOne(query);
+        }
+
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+        {
+            throw new NotImplementedException();
         }
 
         public TEntity Create(TEntity entity)

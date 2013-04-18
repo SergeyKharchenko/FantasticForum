@@ -35,7 +35,7 @@ namespace Mvc.Infrastructure.Concrete
                 .InRequestScope()
                 .WithConstructorArgument("database", database);
 
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
+            kernel.Bind(typeof(IRepository<>)).To(typeof(SqlRepository<>)).InRequestScope();
 
             kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InRequestScope();
             kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
