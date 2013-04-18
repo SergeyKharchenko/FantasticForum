@@ -39,6 +39,7 @@ namespace Mvc.Infrastructure.Concrete
 
             kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InRequestScope();
             kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
+            kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
         }
 
         public object GetService(Type serviceType)

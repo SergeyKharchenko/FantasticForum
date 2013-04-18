@@ -6,6 +6,7 @@ using Models;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using Mvc.ViewModels;
+using System.Linq;
 
 namespace Mvc.Controllers
 {
@@ -13,11 +14,13 @@ namespace Mvc.Controllers
     {
         private readonly AbstractSectionUnitOfWork unitOfWork;
         private readonly IFileHelper fileHelper;
+        private readonly IMapper mapper;
 
-        public SectionController(AbstractSectionUnitOfWork unitOfWork, IFileHelper fileHelper)
+        public SectionController(AbstractSectionUnitOfWork unitOfWork, IFileHelper fileHelper, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.fileHelper = fileHelper;
+            this.mapper = mapper;
         }
         
 
@@ -26,7 +29,11 @@ namespace Mvc.Controllers
 
         public ViewResult List()
         {
-            return View(unitOfWork.Entities.ToVMList());
+            var sections = unitOfWork.Entities
+                                     .Select(section => mapper.Map(section, typeof (Section), typeof (SectionViewModel)))
+                                     .Cast<SectionViewModel>().AsEnumerable();
+
+            return View(sections);
         }        
 
         //

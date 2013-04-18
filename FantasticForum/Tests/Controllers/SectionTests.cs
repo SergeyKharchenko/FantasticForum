@@ -38,18 +38,17 @@ namespace Tests.Controllers
 
             fileHelperMock = new Mock<IFileHelper>();
 
-            controller = new SectionController(unitOfWorkMock.Object, fileHelperMock.Object);
+            controller = new SectionController(unitOfWorkMock.Object, fileHelperMock.Object, new CommonMapper());
         }
 
         [Test]
         public void ListTest()
         {
             var view = controller.List();
-            var actualSections = view.Model as List<SectionListVM>;
+            var actualSections = view.Model as IEnumerable<SectionViewModel>;
 
             unitOfWorkMock.Verify(unit => unit.Entities, Times.Once());
             Assert.That(actualSections, Is.Not.Null);
-            Assert.That(actualSections, Is.EquivalentTo(actualSections));
         }
         
         [Test]

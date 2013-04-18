@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.2.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.8.0\lib\net35\MongoDB.Bson.dll</HintPath>
@@ -194,10 +197,12 @@
     </Compile>
     <Compile Include="Infrastructure\Abstract\IFileHelper.cs" />
     <Compile Include="Infrastructure\Abstract\AbstractSectionUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Abstract\IMapper.cs" />
     <Compile Include="Infrastructure\Abstract\IRepository.cs" />
     <Compile Include="Infrastructure\Abstract\ISqlCrudUnitOfWork.cs" />
     <Compile Include="Infrastructure\Concrete\FileHelper.cs" />
     <Compile Include="Infrastructure\Concrete\ForumContextInitializer.cs" />
+    <Compile Include="Infrastructure\Concrete\CommonMapper.cs" />
     <Compile Include="Infrastructure\Concrete\MongoRepository.cs" />
     <Compile Include="Infrastructure\Concrete\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\Concrete\Repository.cs" />
@@ -206,7 +211,7 @@
     <Compile Include="Infrastructure\CrudResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructModels\GetAvatarSM.cs" />
-    <Compile Include="ViewModels\SectionListVM.cs" />
+    <Compile Include="ViewModels\SectionViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
