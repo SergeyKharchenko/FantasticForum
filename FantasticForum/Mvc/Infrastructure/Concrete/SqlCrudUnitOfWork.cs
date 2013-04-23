@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Linq.Expressions;
 using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
+using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Concrete
 {
@@ -32,6 +34,11 @@ namespace Mvc.Infrastructure.Concrete
         public virtual TEntity Read(object id)
         {
             return repository.GetById(id);
+        }
+
+        public IEnumerable<TEntity> Read(Expression<Func<TEntity, bool>> filter = null)
+        {
+            return repository.Get(filter);
         }
 
         public virtual CrudResult<TEntity> Update(TEntity entity)

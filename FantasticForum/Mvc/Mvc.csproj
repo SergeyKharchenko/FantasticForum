@@ -211,9 +211,9 @@
     <Compile Include="Infrastructure\Concrete\SqlRepository.cs" />
     <Compile Include="Infrastructure\Concrete\SectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Concrete\SqlCrudUnitOfWork.cs" />
-    <Compile Include="Infrastructure\CrudResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructModels\GetAvatarSM.cs" />
+    <Compile Include="UtilityModels\CrudResult.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="ViewModels\TopicViewModel.cs" />
   </ItemGroup>

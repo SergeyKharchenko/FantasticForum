@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
+using System.Linq.Expressions;
 using Models;
 using Moq;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Tests.UnitOfWork
 {
@@ -62,6 +65,20 @@ namespace Tests.UnitOfWork
             var entity = unitOfWork.Read(42);
 
             repositoryMock.Verify(repo => repo.GetById(42), Times.Once());
+            Assert.That(entity, Is.EqualTo(section));
+        }
+
+        [Test]
+        public void ReadByConditionTest()
+        {
+            var section = new Section { Title = "1" };
+            var expression = (Expression<Func<Section, bool>>) (s => s.Title == "1");
+            repositoryMock.Setup(repo => repo.Get(expression))
+                .Returns(new List<Section> { section });
+
+            var entity = unitOfWork.Read(expression).First();
+
+            repositoryMock.Verify(repo => repo.Get(expression), Times.Once());
             Assert.That(entity, Is.EqualTo(section));
         }
 

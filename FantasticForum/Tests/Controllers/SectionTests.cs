@@ -11,6 +11,7 @@ using Mvc.Infrastructure;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using Mvc.StructModels;
+using Mvc.UtilityModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
 

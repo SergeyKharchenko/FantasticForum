@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Concrete;
 using Mvc.StructModels;
+using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Abstract
 {
