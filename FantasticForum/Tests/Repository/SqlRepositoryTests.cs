@@ -21,23 +21,7 @@ namespace Tests.Repository
     {
         private IRepository<Section> repository;
         private ForumContext context;
-        private static List<Section> sections;
-
-        [TestFixtureSetUp]
-        public void SetUpFixture()
-        {
-            AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());
-
-            context = new ForumContext();
-            if (context.Database.Exists())
-                context.Database.Delete();
-            context.Database.Initialize(true);
-        }
-
-        [SetUp]
-        public void SetUp()
-        {
-            sections = new List<Section>
+        private static readonly List<Section> sections = new List<Section>
                 {
                     new Section
                         {
@@ -67,6 +51,21 @@ namespace Tests.Repository
                                 }
                         }
                 };
+
+        [TestFixtureSetUp]
+        public void SetUpFixture()
+        {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Directory.GetCurrentDirectory());
+
+            context = new ForumContext();
+            if (context.Database.Exists())
+                context.Database.Delete();
+            context.Database.Initialize(true);
+        }
+
+        [SetUp]
+        public void SetUp()
+        {            
             sections.ForEach(section => context.Sections.Add(section));
             context.SaveChanges();
 
@@ -96,51 +95,12 @@ namespace Tests.Repository
                 new object[]
                     {
                         (Expression<Func<Section, bool>>) (section => section.Title == "Life"),
-                        new List<Section>
-                            {
-                                new Section
-                                    {
-                                        Title = "Life",
-                                        Topics = new Collection<Topic>
-                                            {
-                                                new Topic {Title = "Topic 3", SectionId = 2}
-                                            }
-                                    }
-                            }
+                        new List<Section> {sections.First(section => section.Title == "Life")}
                     },
                 new object[]
                     {
                         null,
-                        new List<Section>
-                            {
-                                new Section
-                                    {
-                                        Title = "Sport",
-                                        Topics = new Collection<Topic>
-                                            {
-                                                new Topic {Title = "Topic 1"},
-                                                new Topic {Title = "Topic 2"}
-                                            }
-                                    },
-                                new Section
-                                    {
-                                        Title = "Life",
-                                        Topics = new Collection<Topic>
-                                            {
-                                                new Topic {Title = "Topic 3"}
-                                            }
-                                    },
-                                new Section
-                                    {
-                                        Title = "News",
-                                        Topics = new Collection<Topic>
-                                            {
-                                                new Topic {Title = "Topic 4"},
-                                                new Topic {Title = "Topic 5"},
-                                                new Topic {Title = "Topic 6"},
-                                            }
-                                    }
-                            }
+                        sections
                     }
             };
 
@@ -169,8 +129,8 @@ namespace Tests.Repository
         [Test]
         public void UpdateTest()
         {
-            var id = context.Sections.First(s => s.Title == "Sport").Id;
-            var section = GetEntityById(id);
+            var section = context.Sections.First(s => s.Title == "Sport");
+            var id = section.Id;
             Assert.That(section.Id, Is.EqualTo(id));
             Assert.That(section.Title, Is.EqualTo("Sport"));
 
@@ -186,83 +146,50 @@ namespace Tests.Repository
         [Test]
         public void UpdateWithConcurrencyExceptionTest()
         {            
-            var id = context.Sections.First(s => s.Title == "Sport").Id;
-            var section1 = GetEntityById(id);
-            Assert.That(section1.Id, Is.EqualTo(id));
-            Assert.That(section1.Title, Is.EqualTo("Sport"));
+            var section1 = context.Sections.First();
             var section2 = section1.Clone() as Section;
-
-            section1.Title = "Games";
 
             repository.Update(section1);
 
-            section1 = GetEntityById(id);
-            Assert.That(section1.Id, Is.EqualTo(id));
-            Assert.That(section1.Title, Is.EqualTo("Games"));
-
-            section2.Title = "War";
-            
             Assert.Throws<DbUpdateConcurrencyException>(() => repository.Update(section2));       
         }
 
         [Test]
         public void RemoveTest()
         {
-            var id = context.Sections.First(s => s.Title == "Sport").Id;
+            var id = context.Sections.First().Id;
             var section = repository.GetById(id);
-            Assert.That(section.Id, Is.EqualTo(id));
-            Assert.That(section.Title, Is.EqualTo("Sport"));
+            Assert.That(section, Is.Not.Null);
 
-            for (var i = section.Topics.Count - 1; i >= 0; i--)
-                context.Topics.Remove(section.Topics[i]);
-            context.SaveChanges();
-            repository.Remove(section);
+            RemoveSection(section);
 
             section = repository.GetById(id);
-
             Assert.That(section, Is.Null);
         }
 
         [Test]
         public void RemoveWithConcurrencyExceptionTest()
         {
-            var id = context.Sections.First(s => s.Title == "Sport").Id;
-            var section1 = GetEntityById(id);
-            Assert.That(section1.Id, Is.EqualTo(id));
-            Assert.That(section1.Title, Is.EqualTo("Sport"));
+            var section1 = context.Sections.First();
             var section2 = section1.Clone() as Section;
-
-            section1.Title = "Games";
 
             repository.Update(section1);
 
-            section1 = GetEntityById(id);
-            Assert.That(section1.Id, Is.EqualTo(id));
-            Assert.That(section1.Title, Is.EqualTo("Games"));
-
-            for (var i = section2.Topics.Count - 1; i >= 0; i--)
-                context.Topics.Remove(section2.Topics[i]);
-            context.SaveChanges();
-            Assert.Throws<DbUpdateConcurrencyException>(() => repository.Remove(section2));
+            Assert.Throws<DbUpdateConcurrencyException>(() => RemoveSection(section2));
         }
 
         [Test]
         public void RemoveByIdTest()
         {
-            var id = context.Sections.First(s => s.Title == "Sport").Id;
-            var section = repository.GetById(id);
-            Assert.That(section.Id, Is.EqualTo(id));
-            Assert.That(section.Title, Is.EqualTo("Sport"));
+            var section = context.Sections.First();
+            var id = section.Id;
 
-            for (var i = section.Topics.Count - 1; i >= 0; i--)
-                context.Topics.Remove(section.Topics[i]);
-            context.SaveChanges();
+            RemoveTopicsFromSection(section);
             repository.Remove(id);
-            context.SaveChanges();
 
-            section = repository.GetById(id);
-
-            Assert.That(section, Is.Null);
+            var newSection = repository.GetById(id);
+            Assert.That(section, Is.Not.Null);
+            Assert.That(newSection, Is.Null);
         }
 
         public Section GetEntityById(int id)
@@ -289,6 +216,19 @@ namespace Tests.Repository
 
                     context.Sections.Remove(section);
                 });
+            context.SaveChanges();
+        }
+
+        private void RemoveSection(Section section)
+        {
+            RemoveTopicsFromSection(section);
+            repository.Remove(section);
+        }
+
+        private void RemoveTopicsFromSection(Section section)
+        {
+            for (var i = section.Topics.Count - 1; i >= 0; i--)
+                context.Topics.Remove(section.Topics[i]);
             context.SaveChanges();
         }
 
