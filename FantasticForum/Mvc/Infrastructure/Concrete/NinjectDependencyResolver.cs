@@ -24,6 +24,10 @@ namespace Mvc.Infrastructure.Concrete
 
         private void AddBindigs()
         {
+            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InSingletonScope();
+            kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
+            kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
+
             kernel.Bind(typeof(AbstractSectionUnitOfWork)).To(typeof(SectionUnitOfWork)).InRequestScope();
             kernel.Bind(typeof(ISqlCrudUnitOfWork<>)).To(typeof(SqlCrudUnitOfWork<>)).InRequestScope();
 
@@ -36,10 +40,6 @@ namespace Mvc.Infrastructure.Concrete
                 .WithConstructorArgument("database", database);
 
             kernel.Bind(typeof(IRepository<>)).To(typeof(SqlRepository<>)).InRequestScope();
-
-            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InRequestScope();
-            kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
-            kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
         }
 
         public object GetService(Type serviceType)

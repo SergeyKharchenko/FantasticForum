@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
 using Models;
@@ -9,7 +10,8 @@ namespace Mvc.Infrastructure.Abstract
 {
     public abstract class AbstractSectionUnitOfWork : SqlCrudUnitOfWork<Section>
     {
-        protected AbstractSectionUnitOfWork(IRepository<Section> repository) : base(repository)
+        protected AbstractSectionUnitOfWork(DbContext context, IRepository<Section> repository)
+            : base(context, repository)
         {
         }
 

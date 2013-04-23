@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class SqlRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class SqlRepository<TEntity> : IRepository<TEntity> where TEntity : SqlEntity
     {
         private readonly DbContext context;
         private readonly DbSet<TEntity> dbSet;
@@ -28,8 +28,6 @@ namespace Mvc.Infrastructure.Concrete
         public TEntity GetById(object id)
         {
             var entity = dbSet.Find(id);
-            if (entity != null)
-                context.Entry(entity).State = EntityState.Detached;
             return entity;
         }
 
@@ -55,7 +53,11 @@ namespace Mvc.Infrastructure.Concrete
 
         public TEntity Update(TEntity entity)
         {
-            dbSet.Attach(entity);
+            if (context.Entry(entity).State == EntityState.Detached)
+            {
+                var oldEntity = dbSet.Find(entity.Id);
+                context.Entry(oldEntity).State = EntityState.Detached;
+            }
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
             return entity;
@@ -64,7 +66,11 @@ namespace Mvc.Infrastructure.Concrete
         public TEntity Remove(TEntity entity)
         {
             if (context.Entry(entity).State == EntityState.Detached)
+            {
+                var oldEntity = dbSet.Find(entity.Id);
+                context.Entry(oldEntity).State = EntityState.Detached;
                 dbSet.Attach(entity);
+            }
             dbSet.Remove(entity);
             context.SaveChanges();
             return entity;

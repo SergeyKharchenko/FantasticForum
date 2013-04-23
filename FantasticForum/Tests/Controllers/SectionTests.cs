@@ -33,7 +33,7 @@ namespace Tests.Controllers
                     new Section {Title = "Life"},
                     new Section {Title = "Programming"}
                 };
-            unitOfWorkMock = new Mock<AbstractSectionUnitOfWork>(null);
+            unitOfWorkMock = new Mock<AbstractSectionUnitOfWork>(null, null);
             unitOfWorkMock.Setup(unit => unit.Entities).Returns(sections);
 
             fileHelperMock = new Mock<IFileHelper>();

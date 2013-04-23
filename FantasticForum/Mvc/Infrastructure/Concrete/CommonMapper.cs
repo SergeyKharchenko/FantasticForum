@@ -8,7 +8,7 @@ namespace Mvc.Infrastructure.Concrete
 {
     public class CommonMapper : IMapper
     {
-        static CommonMapper()
+        public CommonMapper()
         {
             Mapper.CreateMap<Section, SectionViewModel>();
         }

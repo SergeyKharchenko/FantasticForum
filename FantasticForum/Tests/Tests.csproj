@@ -60,6 +60,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -115,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Controllers\SectionTests.cs" />
     <Compile Include="FileHelperTests.cs" />
+    <Compile Include="Models\SectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\MongoRepositoryTests.cs" />
     <Compile Include="Repository\SqlRepositoryTests.cs" />

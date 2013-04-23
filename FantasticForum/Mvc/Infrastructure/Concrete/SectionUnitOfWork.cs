@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
@@ -14,10 +15,11 @@ namespace Mvc.Infrastructure.Concrete
         private readonly IRepository<Image> imageMongoRepository;
         private readonly IFileHelper fileHelper;
 
-        public SectionUnitOfWork(IRepository<Section> sectionRepository,
+        public SectionUnitOfWork(DbContext context,
+                                 IRepository<Section> sectionRepository,
                                  IRepository<Image> imageMongoRepository,
                                  IFileHelper fileHelper)
-            : base(sectionRepository)
+            : base(context, sectionRepository)
         {
             this.imageMongoRepository = imageMongoRepository;
             this.fileHelper = fileHelper;
