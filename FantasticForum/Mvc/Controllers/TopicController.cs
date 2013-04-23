@@ -32,6 +32,5 @@ namespace Mvc.Controllers
                             .Select(topic => mapper.Map(topic, typeof (Topic), typeof (TopicViewModel)))
                             .Cast<TopicViewModel>().AsEnumerable());
         }
-
     }
 }
