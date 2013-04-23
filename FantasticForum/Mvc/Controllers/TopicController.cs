@@ -21,7 +21,6 @@ namespace Mvc.Controllers
             this.mapper = mapper;
         }
 
-
         //
         // GET: /Topic/List
 
