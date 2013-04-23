@@ -5,13 +5,13 @@ namespace Models.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    public sealed partial class AddSectionTimestamp : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddSectionTimestamp));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "201304071413335_Add Section Timestamp"; }
+            get { return "201304232002239_Init"; }
         }
         
         string IMigrationMetadata.Source

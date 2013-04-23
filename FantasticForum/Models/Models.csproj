@@ -57,17 +57,9 @@
     <Compile Include="Abstract\MongoEntity.cs" />
     <Compile Include="ForumContext.cs" />
     <Compile Include="Image.cs" />
-    <Compile Include="Migrations\201304071224142_InitialCreate.cs" />
-    <Compile Include="Migrations\201304071224142_InitialCreate.Designer.cs">
-      <DependentUpon>201304071224142_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304071413335_Add Section Timestamp.cs" />
-    <Compile Include="Migrations\201304071413335_Add Section Timestamp.Designer.cs">
-      <DependentUpon>201304071413335_Add Section Timestamp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304071946280_Add Topic.cs" />
-    <Compile Include="Migrations\201304071946280_Add Topic.Designer.cs">
-      <DependentUpon>201304071946280_Add Topic.cs</DependentUpon>
+    <Compile Include="Migrations\201304232002239_Init.cs" />
+    <Compile Include="Migrations\201304232002239_Init.Designer.cs">
+      <DependentUpon>201304232002239_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -79,14 +71,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201304071224142_InitialCreate.resx">
-      <DependentUpon>201304071224142_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304071413335_Add Section Timestamp.resx">
-      <DependentUpon>201304071413335_Add Section Timestamp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304071946280_Add Topic.resx">
-      <DependentUpon>201304071946280_Add Topic.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201304232002239_Init.resx">
+      <DependentUpon>201304232002239_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
