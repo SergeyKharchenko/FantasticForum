@@ -158,13 +158,13 @@ namespace Tests.Repository
         public void RemoveTest()
         {
             var id = context.Sections.First().Id;
-            var section = repository.GetById(id);
-            Assert.That(section, Is.Not.Null);
+            var section = repository.GetById(id);            
 
             RemoveSection(section);
 
-            section = repository.GetById(id);
-            Assert.That(section, Is.Null);
+            var newSection = repository.GetById(id);
+            Assert.That(section, Is.Not.Null);
+            Assert.That(newSection, Is.Null);
         }
 
         [Test]
@@ -205,17 +205,7 @@ namespace Tests.Repository
                                   objectContext.ObjectStateManager.GetObjectStateEntries(EntityState.Modified | EntityState.Deleted)
                                                .Select(x => x.Entity));
 
-            context.Sections.ToList().ForEach(section =>
-                {
-                    if (section.Topics != null)
-                    {
-                        for (var i = section.Topics.Count - 1; i >= 0; i--)
-                            context.Topics.Remove(section.Topics[i]);
-                        context.SaveChanges();
-                    }
-
-                    context.Sections.Remove(section);
-                });
+            context.Sections.ToList().ForEach(RemoveSection);
             context.SaveChanges();
         }
 
@@ -227,6 +217,8 @@ namespace Tests.Repository
 
         private void RemoveTopicsFromSection(Section section)
         {
+            if (section.Topics == null)
+                return;
             for (var i = section.Topics.Count - 1; i >= 0; i--)
                 context.Topics.Remove(section.Topics[i]);
             context.SaveChanges();
