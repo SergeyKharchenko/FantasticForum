@@ -11,6 +11,7 @@ namespace Models
 
         public DbSet<Section> Sections { get; set; }
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<Record> Records { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -20,6 +21,11 @@ namespace Models
                         .HasRequired(topic => topic.Section)
                         .WithMany(section => section.Topics)
                         .HasForeignKey(topic => topic.SectionId);
+
+            modelBuilder.Entity<Record>()
+                        .HasRequired(record => record.Topic)
+                        .WithMany(section => section.Records)
+                        .HasForeignKey(record => record.TopicId);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Models.Abstract;
 
@@ -13,6 +14,8 @@ namespace Models
 
         public virtual int SectionId { get; set; }
         public virtual Section Section { get; set; }
+
+        public virtual Collection<Record> Records { get; set; }
 
         public override bool Equals(object obj)
         {

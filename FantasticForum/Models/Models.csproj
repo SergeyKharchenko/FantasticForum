@@ -61,8 +61,17 @@
     <Compile Include="Migrations\201304232002239_Init.Designer.cs">
       <DependentUpon>201304232002239_Init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201304251500278_Add Record.cs" />
+    <Compile Include="Migrations\201304251500278_Add Record.Designer.cs">
+      <DependentUpon>201304251500278_Add Record.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201304251502065_Rename Record Table.cs" />
+    <Compile Include="Migrations\201304251502065_Rename Record Table.Designer.cs">
+      <DependentUpon>201304251502065_Rename Record Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Record.cs" />
     <Compile Include="Section.cs" />
     <Compile Include="Topic.cs" />
   </ItemGroup>
@@ -73,6 +82,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201304232002239_Init.resx">
       <DependentUpon>201304232002239_Init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304251500278_Add Record.resx">
+      <DependentUpon>201304251500278_Add Record.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201304251502065_Rename Record Table.resx">
+      <DependentUpon>201304251502065_Rename Record Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
