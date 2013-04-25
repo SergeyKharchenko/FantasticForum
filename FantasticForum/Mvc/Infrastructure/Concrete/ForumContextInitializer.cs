@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using Models;
 
@@ -12,15 +13,29 @@ namespace Mvc.Infrastructure.Concrete
                 {
                     new Section
                         {
-                            Title = "Sport"
+                            Title = "Sport",
+                            Topics = new Collection<Topic>
+                                {
+                                    new Topic {Title = "Football"},
+                                    new Topic {Title = "Chess"},
+                                }
                         },
                     new Section
                         {
-                            Title = "Life"
+                            Title = "Life",
+                            Topics = new Collection<Topic>
+                                {
+                                    new Topic {Title = "Love"},
+                                    new Topic {Title = "House"},
+                                }
                         },
                     new Section
                         {
-                            Title = "News"
+                            Title = "News",
+                            Topics = new Collection<Topic>
+                                {
+                                    new Topic {Title = "Science news"}
+                                }
                         }
                 };
             sections.ForEach(section => context.Sections.Add(section));
