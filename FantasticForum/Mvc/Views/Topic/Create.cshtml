@@ -1,4 +1,5 @@
-﻿@model Models.Topic
+﻿@using Models
+@model Models.Topic
 
 @{
     ViewBag.Title = "Create";
@@ -6,7 +7,7 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm("Edit", "Topic")) {
+@using (Html.BeginForm("Create", "Topic")) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -21,6 +22,10 @@
         <div>
             @Html.EditorFor(model => model.Title)
             @Html.ValidationMessageFor(model => model.Title)
+        </div>
+        <div>
+            @Html.EditorFor(model => new Record().Text, null, ".Records[0].Text")
+            @Html.ValidationMessage(".Records[0].Text")
         </div>
 
         <p>

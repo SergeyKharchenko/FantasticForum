@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq.Expressions;
-using System.Web;
 using System.Web.Mvc;
 using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
-using Mvc.UtilityModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Tests.Controllers
 {
@@ -23,21 +23,26 @@ namespace Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            unitOfWorkMock = new Mock<AbstractTopicUnitOfWork>();
+            unitOfWorkMock = new Mock<AbstractTopicUnitOfWork>(null);
             controller = new TopicController(unitOfWorkMock.Object, new CommonMapper());
         }
 
         [Test]
         public void ListTest()
         {
-            var expression = (Expression<Func<Topic, bool>>) (topic => topic.SectionId == 1);
-            unitOfWorkMock.Setup(unit => unit.Read(expression, ""))
-                          .Returns(new List<Topic>());
+            const int sectionId = 1;
+            unitOfWorkMock.Setup(unit => unit.Read(It.IsAny<Expression<Func<Topic, bool>>>(), ""))
+                          .Returns(new List<Topic>
+                              {
+                                  new Topic {Records = new Collection<Record> {new Record()}}
+                              });
 
-            var view = controller.List(1);
+            var view = controller.List(sectionId);
             var actualTopics = view.Model as IEnumerable<TopicViewModel>;            
 
             Assert.That(actualTopics, Is.Not.Null);
+            Assert.That(actualTopics.Count(), Is.EqualTo(1));
+            Assert.That(actualTopics.First().RecordCount, Is.EqualTo(1));
             Assert.That(view.ViewData["SectionId"], Is.EqualTo(1));
         }
 

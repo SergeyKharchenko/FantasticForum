@@ -34,7 +34,7 @@ namespace Mvc.Infrastructure.Concrete
             return repository.GetById(id);
         }
 
-        public IEnumerable<TEntity> Read(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
+        public virtual IEnumerable<TEntity> Read(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
         {
             return repository.Get(filter, includeProperties);
         }

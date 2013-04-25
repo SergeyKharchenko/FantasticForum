@@ -11,8 +11,6 @@ namespace Models
         [DataType(DataType.MultilineText)]
         public string Text { get; set; }
 
-        [Required]
-        [DataType(DataType.DateTime)]
         public string CreationDate { get; set; }
 
         public int TopicId { get; set; }

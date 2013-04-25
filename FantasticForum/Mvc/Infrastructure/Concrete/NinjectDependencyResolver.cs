@@ -29,6 +29,7 @@ namespace Mvc.Infrastructure.Concrete
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
 
             kernel.Bind(typeof(AbstractSectionUnitOfWork)).To(typeof(SectionUnitOfWork)).InRequestScope();
+            kernel.Bind(typeof(AbstractTopicUnitOfWork)).To(typeof(TopicUnitOfWork)).InRequestScope();
             kernel.Bind(typeof(ISqlCrudUnitOfWork<>)).To(typeof(SqlCrudUnitOfWork<>)).InRequestScope();
 
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));

@@ -11,7 +11,8 @@ namespace Mvc.Infrastructure.Concrete
         public CommonMapper()
         {
             Mapper.CreateMap<Section, SectionViewModel>();
-            Mapper.CreateMap<Topic, TopicViewModel>();
+            Mapper.CreateMap<Topic, TopicViewModel>()
+                  .ForMember(dest => dest.RecordCount, opt => opt.MapFrom(src => src.Records.Count));
         }
 
         public object Map(object source, Type sourceType, Type destinationType)

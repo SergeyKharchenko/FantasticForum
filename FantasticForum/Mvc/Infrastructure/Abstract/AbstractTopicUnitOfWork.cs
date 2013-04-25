@@ -10,5 +10,6 @@ namespace Mvc.Infrastructure.Abstract
             : base(repository)
         {
         }
+
     }
 }
