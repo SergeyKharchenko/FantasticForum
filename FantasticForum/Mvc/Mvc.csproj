@@ -314,6 +314,7 @@
     <Content Include="Views\Section\Edit.cshtml" />
     <Content Include="Views\Section\Remove.cshtml" />
     <Content Include="Views\Topic\List.cshtml" />
+    <Content Include="Views\Topic\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

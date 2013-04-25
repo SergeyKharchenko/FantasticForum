@@ -20,7 +20,7 @@
     <tr>
         <td class="section">
             <img width="24" height="24" alt="@item.Title" src="@Url.Action("GetAvatar", "Section", new {id = item.Id})" class="section-avatar" />
-            @Html.ActionLink(@item.Title, "List", "Topic", new {id = item.Id}, new {@class = "section-title"})
+            @Html.ActionLink(@item.Title, "List", "Topic", new {sectionId = item.Id}, new {@class = "section-title"})
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new {id = item.Id}) |

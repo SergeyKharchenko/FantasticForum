@@ -12,7 +12,6 @@ namespace Models
         public string Title { get; set; }
 
         public virtual int SectionId { get; set; }
-
         public virtual Section Section { get; set; }
 
         public override bool Equals(object obj)

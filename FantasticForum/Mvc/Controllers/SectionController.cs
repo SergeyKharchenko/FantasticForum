@@ -31,8 +31,7 @@ namespace Mvc.Controllers
         {
             var sections = unitOfWork.Entities
                                      .Select(section => mapper.Map(section, typeof (Section), typeof (SectionViewModel)))
-                                     .Cast<SectionViewModel>().AsEnumerable();
-
+                                     .Cast<SectionViewModel>().AsEnumerable();            
             return View(sections);
         }        
 
