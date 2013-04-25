@@ -12,7 +12,6 @@ using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
 using NUnit.Framework;
 using System.Linq;
-using Assert = NUnit.Framework.Assert;
 
 namespace Tests.Repository
 {
@@ -211,7 +210,7 @@ namespace Tests.Repository
 
         private void RemoveSection(Section section)
         {
-            RemoveTopicsFromSection(section);
+            //RemoveTopicsFromSection(section);
             repository.Remove(section);
         }
 
