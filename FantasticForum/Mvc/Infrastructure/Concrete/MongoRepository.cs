@@ -34,7 +34,7 @@ namespace Mvc.Infrastructure.Concrete
             return collection.FindOne(query);
         }
 
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
         {
             throw new NotImplementedException();
         }

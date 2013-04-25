@@ -31,7 +31,7 @@ namespace Tests.Controllers
         public void ListTest()
         {
             var expression = (Expression<Func<Topic, bool>>) (topic => topic.SectionId == 1);
-            unitOfWorkMock.Setup(unit => unit.Read(expression))
+            unitOfWorkMock.Setup(unit => unit.Read(expression, ""))
                           .Returns(new List<Topic>());
 
             var view = controller.List(1);

@@ -10,7 +10,7 @@ namespace Mvc.Infrastructure.Abstract
     {
         IEnumerable<TEntity> Entities { get; }
         TEntity GetById(object id);
-        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null);
+        IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "");
         TEntity Create(TEntity entity);
         TEntity Update(TEntity entity);
         TEntity Remove(TEntity entity);

@@ -73,12 +73,12 @@ namespace Tests.UnitOfWork
         {
             var section = new Section { Title = "1" };
             var expression = (Expression<Func<Section, bool>>) (s => s.Title == "1");
-            repositoryMock.Setup(repo => repo.Get(expression))
+            repositoryMock.Setup(repo => repo.Get(expression, ""))
                 .Returns(new List<Section> { section });
 
             var entity = unitOfWork.Read(expression).First();
 
-            repositoryMock.Verify(repo => repo.Get(expression), Times.Once());
+            repositoryMock.Verify(repo => repo.Get(expression, ""), Times.Once());
             Assert.That(entity, Is.EqualTo(section));
         }
 

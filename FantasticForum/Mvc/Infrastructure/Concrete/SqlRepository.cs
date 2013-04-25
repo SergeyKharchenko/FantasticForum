@@ -31,12 +31,15 @@ namespace Mvc.Infrastructure.Concrete
             return entity;
         }
 
-        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
 
             if (filter != null)
                 query = query.Where(filter);
+
+            query = includeProperties.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                                     .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
             return query.AsEnumerable();
         }
