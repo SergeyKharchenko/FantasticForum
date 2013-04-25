@@ -10,14 +10,12 @@ using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class SqlCrudUnitOfWork<TEntity> : IDisposable, ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
+    public class SqlCrudUnitOfWork<TEntity> : ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
     {
-        protected readonly DbContext context;
         protected readonly IRepository<TEntity> repository;
 
-        public SqlCrudUnitOfWork(DbContext context, IRepository<TEntity> repository)
+        public SqlCrudUnitOfWork(IRepository<TEntity> repository)
         {
-            this.context = context;
             this.repository = repository;
         }
 
@@ -84,25 +82,6 @@ namespace Mvc.Infrastructure.Concrete
         {
             var entry = exception.Entries.FirstOrDefault();
             return new CrudResult<TEntity>(false, entry == null ? null : entry.Entity as TEntity);
-        }
-
-
-        private bool disposed;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                //if (disposing)
-                //    context.Dispose();
-            }
-            disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
     }
 }

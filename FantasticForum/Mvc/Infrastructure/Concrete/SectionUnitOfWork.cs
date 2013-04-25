@@ -16,11 +16,10 @@ namespace Mvc.Infrastructure.Concrete
         private readonly IRepository<Image> imageMongoRepository;
         private readonly IFileHelper fileHelper;
 
-        public SectionUnitOfWork(DbContext context,
-                                 IRepository<Section> sectionRepository,
+        public SectionUnitOfWork(IRepository<Section> sectionRepository,
                                  IRepository<Image> imageMongoRepository,
                                  IFileHelper fileHelper)
-            : base(context, sectionRepository)
+            : base(sectionRepository)
         {
             this.imageMongoRepository = imageMongoRepository;
             this.fileHelper = fileHelper;

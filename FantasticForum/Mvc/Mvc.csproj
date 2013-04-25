@@ -198,6 +198,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\Abstract\AbstractTopicUnitOfWork.cs" />
     <Compile Include="Infrastructure\Abstract\IFileHelper.cs" />
     <Compile Include="Infrastructure\Abstract\AbstractSectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Abstract\IMapper.cs" />
@@ -314,7 +315,7 @@
     <Content Include="Views\Section\Edit.cshtml" />
     <Content Include="Views\Section\Remove.cshtml" />
     <Content Include="Views\Topic\List.cshtml" />
-    <Content Include="Views\Topic\Edit.cshtml" />
+    <Content Include="Views\Topic\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

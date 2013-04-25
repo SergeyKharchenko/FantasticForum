@@ -11,8 +11,8 @@ namespace Mvc.Infrastructure.Abstract
 {
     public abstract class AbstractSectionUnitOfWork : SqlCrudUnitOfWork<Section>
     {
-        protected AbstractSectionUnitOfWork(DbContext context, IRepository<Section> repository)
-            : base(context, repository)
+        protected AbstractSectionUnitOfWork(IRepository<Section> repository)
+            : base(repository)
         {
         }
 

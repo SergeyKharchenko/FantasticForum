@@ -12,10 +12,10 @@ namespace Mvc.Controllers
 {
     public class TopicController : Controller
     {
-        private readonly ISqlCrudUnitOfWork<Topic> unitOfWork;
+        private readonly AbstractTopicUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public TopicController(ISqlCrudUnitOfWork<Topic> unitOfWork, IMapper mapper)
+        public TopicController(AbstractTopicUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
@@ -38,16 +38,16 @@ namespace Mvc.Controllers
 
         public ViewResult Create(int sectionId)
         {
-            return View("Edit", new Topic { SectionId = sectionId });
+            return View(new Topic { SectionId = sectionId });
         } 
 
         //
-        // Post: /Topic/Edit
+        // Post: /Topic/Create
         [HttpPost]
-        public ActionResult Edit(Topic topic)
+        public ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)
-                return View("Edit", topic);
+                return View("Create", topic);
             unitOfWork.Create(topic);
             return RedirectToAction("List", new {sectionId = topic.SectionId});
         } 

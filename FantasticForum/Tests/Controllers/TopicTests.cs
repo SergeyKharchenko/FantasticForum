@@ -18,12 +18,12 @@ namespace Tests.Controllers
     public class TopicTests
     {
         private TopicController controller;
-        private Mock<ISqlCrudUnitOfWork<Topic>> unitOfWorkMock;
+        private Mock<AbstractTopicUnitOfWork> unitOfWorkMock;
             
         [SetUp]
         public void SetUp()
         {
-            unitOfWorkMock = new Mock<ISqlCrudUnitOfWork<Topic>>();
+            unitOfWorkMock = new Mock<AbstractTopicUnitOfWork>();
             controller = new TopicController(unitOfWorkMock.Object, new CommonMapper());
         }
 
@@ -56,7 +56,7 @@ namespace Tests.Controllers
         {
             var topic = new Topic {SectionId = 1};
 
-            var view = controller.Edit(topic);
+            var view = controller.Create(topic);
             var redirectResult = view as RedirectToRouteResult;
 
             unitOfWorkMock.Verify(unit => unit.Create(topic), Times.Once());

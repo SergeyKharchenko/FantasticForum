@@ -21,7 +21,7 @@ namespace Tests.UnitOfWork
         public void SetUp()
         {
             repositoryMock = new Mock<IRepository<Section>>();
-            unitOfWork = new SqlCrudUnitOfWork<Section>(null, repositoryMock.Object);
+            unitOfWork = new SqlCrudUnitOfWork<Section>(repositoryMock.Object);
         }
 
         [Test]
