@@ -20,6 +20,7 @@ namespace Models
         public DbSet<Section> Sections { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Record> Records { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -34,6 +35,11 @@ namespace Models
                         .HasRequired(record => record.Topic)
                         .WithMany(section => section.Records)
                         .HasForeignKey(record => record.TopicId);
+
+            modelBuilder.Entity<Record>()
+                        .HasRequired(record => record.User)
+                        .WithMany(section => section.Records)
+                        .HasForeignKey(record => record.UserId);
         }
 
         private void ObjectStateManagerChanged(object sender, CollectionChangeEventArgs e)
@@ -52,6 +58,13 @@ namespace Models
             {
                 var topic = e.Element as Topic;
                 var records = Records.Where(record => record.TopicId == topic.Id);
+                foreach (var record in records)
+                    Records.Remove(record);
+            }
+            if (e.Element is User)
+            {
+                var user = e.Element as User;
+                var records = Records.Where(record => record.UserId == user.Id);
                 foreach (var record in records)
                     Records.Remove(record);
             }
