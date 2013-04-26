@@ -99,14 +99,13 @@ namespace Tests.Controllers
         [Test]
         public void RemoveWithConcurrencyTest()
         {
-            var topic = new Topic {Id = 2};
+            var topic = new Topic {Id = 2, SectionId = 3};
             unitOfWorkMock.Setup(unit => unit.Delete(topic)).Returns(new CrudUtilityModel<Topic>(false, topic));
 
             var redirectToRouteResult = controller.Remove(topic);
 
-            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("Remove"));
-            Assert.That(redirectToRouteResult.RouteValues["id"], Is.EqualTo(2));
-            Assert.That(redirectToRouteResult.RouteValues["concurrencyError"], Is.EqualTo(true));
+            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("List"));
+            Assert.That(redirectToRouteResult.RouteValues["sectionId"], Is.EqualTo(3));
         }
     }
 }
