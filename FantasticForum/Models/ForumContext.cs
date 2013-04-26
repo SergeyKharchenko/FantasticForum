@@ -34,9 +34,6 @@ namespace Models
                         .HasRequired(record => record.Topic)
                         .WithMany(section => section.Records)
                         .HasForeignKey(record => record.TopicId);
-
-            
-            
         }
 
         private void ObjectStateManagerChanged(object sender, CollectionChangeEventArgs e)
@@ -53,8 +50,8 @@ namespace Models
             }
             if (e.Element is Topic)
             {
-                var c = e.Element as Topic;
-                var records = Records.Where(record => record.TopicId == record.Id);
+                var topic = e.Element as Topic;
+                var records = Records.Where(record => record.TopicId == topic.Id);
                 foreach (var record in records)
                     Records.Remove(record);
             }

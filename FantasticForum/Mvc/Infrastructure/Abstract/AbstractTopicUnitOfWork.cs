@@ -6,8 +6,8 @@ namespace Mvc.Infrastructure.Abstract
 {
     public abstract class AbstractTopicUnitOfWork : SqlCrudUnitOfWork<Topic>
     {
-        protected AbstractTopicUnitOfWork(IRepository<Topic> repository)
-            : base(repository)
+        protected AbstractTopicUnitOfWork(DbContext context, IRepository<Topic> repository)
+            : base(context, repository)
         {
         }
 

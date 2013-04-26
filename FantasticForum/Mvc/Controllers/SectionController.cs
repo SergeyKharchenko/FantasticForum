@@ -10,15 +10,16 @@ using System.Linq;
 
 namespace Mvc.Controllers
 {
-    public class SectionController : Controller
+    public class SectionController : BaseController<Section>
     {
-        private readonly AbstractSectionUnitOfWork unitOfWork;
+        private readonly AbstractSectionUnitOfWork sectionUnitOfWork;
         private readonly IFileHelper fileHelper;
         private readonly IMapper mapper;
 
-        public SectionController(AbstractSectionUnitOfWork unitOfWork, IFileHelper fileHelper, IMapper mapper)
+        public SectionController(AbstractSectionUnitOfWork sectionUnitOfWork, IFileHelper fileHelper, IMapper mapper)
+            : base(sectionUnitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this.sectionUnitOfWork = sectionUnitOfWork;
             this.fileHelper = fileHelper;
             this.mapper = mapper;
         }
@@ -29,7 +30,7 @@ namespace Mvc.Controllers
 
         public ViewResult List()
         {
-            var sections = unitOfWork.Entities
+            var sections = sectionUnitOfWork.Entities
                                      .Select(section => mapper.Map(section, typeof (Section), typeof (SectionViewModel)))
                                      .Cast<SectionViewModel>().AsEnumerable();            
             return View(sections);
@@ -48,7 +49,7 @@ namespace Mvc.Controllers
 
         public ViewResult Edit(int id)
         {
-            var section = unitOfWork.Read(id);
+            var section = sectionUnitOfWork.Read(id);
             return View(section);
         }      
 
@@ -60,7 +61,7 @@ namespace Mvc.Controllers
             if (!ModelState.IsValid)
                 return View("Edit", section);
 
-            var crudTesult = unitOfWork.CreateOrUpdateSection(section, avatar);
+            var crudTesult = sectionUnitOfWork.CreateOrUpdateSection(section, avatar);
 
             if (!crudTesult.Success)
             {
@@ -75,7 +76,7 @@ namespace Mvc.Controllers
 
         public FileContentResult GetAvatar(int id)
         {
-            var getAvatarSM = unitOfWork.GetAvatar(id);
+            var getAvatarSM = sectionUnitOfWork.GetAvatar(id);
             if (getAvatarSM.HasAvatar)
                 return File(getAvatarSM.AvatarData, getAvatarSM.ImageMimeType);
 
@@ -88,7 +89,7 @@ namespace Mvc.Controllers
         
         public ViewResult Remove(int id, bool? concurrencyError)
         {            
-            var section = unitOfWork.Read(id);
+            var section = sectionUnitOfWork.Read(id);
             if (concurrencyError != null && concurrencyError.Value)
                 ViewBag.ConcurrencyError = "This section had been changed by another user";
             return View(section);
@@ -99,14 +100,10 @@ namespace Mvc.Controllers
         [HttpPost][ValidateAntiForgeryToken]
         public RedirectToRouteResult Remove(Section section)
         {
-            try
-            {
-                unitOfWork.Delete(section);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return RedirectToAction("Remove", new { id = section.Id, concurrencyError = true });
-            }
+            var crudTesult = sectionUnitOfWork.Delete(section);
+            if (!crudTesult.Success)
+                return RedirectToAction("Remove", new {id = section.Id, concurrencyError = true});
+
             return RedirectToAction("List");
         }
     }

@@ -13,8 +13,8 @@ namespace Mvc.Infrastructure.Abstract
         IEnumerable<TEntity> Entities { get; }
         TEntity Read(object id);
         IEnumerable<TEntity> Read(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "");
-        CrudResult<TEntity> Update(TEntity entity);
-        CrudResult<TEntity> Delete(TEntity entity);
-        CrudResult<TEntity> Delete(object id);
+        CrudUtilityModel<TEntity> Update(TEntity entity);
+        CrudUtilityModel<TEntity> Delete(TEntity entity);
+        CrudUtilityModel<TEntity> Delete(object id);
     }
 }

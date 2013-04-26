@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Abstract;
 using System.Linq;
-using Mvc.StructModels;
 using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Concrete
@@ -16,18 +15,19 @@ namespace Mvc.Infrastructure.Concrete
         private readonly IRepository<Image> imageMongoRepository;
         private readonly IFileHelper fileHelper;
 
-        public SectionUnitOfWork(IRepository<Section> sectionRepository,
+        public SectionUnitOfWork(DbContext context,
+                                 IRepository<Section> sectionRepository,
                                  IRepository<Image> imageMongoRepository,
                                  IFileHelper fileHelper)
-            : base(sectionRepository)
+            : base(context, sectionRepository)
         {
             this.imageMongoRepository = imageMongoRepository;
             this.fileHelper = fileHelper;
         }
 
-        public override CrudResult<Section> CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
+        public override CrudUtilityModel<Section> CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
         {
-            var crudResult = new CrudResult<Section>(true, section);            
+            var crudResult = new CrudUtilityModel<Section>(true, section);            
 
             string newAvatarId = null;
             if (avatar != null)
@@ -80,13 +80,13 @@ namespace Mvc.Infrastructure.Concrete
             repository.Remove(section);
         }
 
-        public override GetAvatarSM GetAvatar(int sectionId)
+        public override AvatarUtilityModel GetAvatar(int sectionId)
         {
             var section = repository.GetById(sectionId);
             if (string.IsNullOrEmpty(section.ImageId))
-                return new GetAvatarSM(false);
+                return new AvatarUtilityModel(false);
             var image = imageMongoRepository.GetById(section.ImageId);
-            return new GetAvatarSM(true, image.Data, image.ImageMimeType);
+            return new AvatarUtilityModel(true, image.Data, image.ImageMimeType);
         }
     }
 }

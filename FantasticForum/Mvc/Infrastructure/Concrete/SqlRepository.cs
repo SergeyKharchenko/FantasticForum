@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq.Expressions;
 using Models.Abstract;
 using Mvc.Infrastructure.Abstract;
@@ -68,6 +69,8 @@ namespace Mvc.Infrastructure.Concrete
             if (context.Entry(entity).State == EntityState.Detached)
             {
                 var oldEntity = dbSet.Find(entity.Id);
+                if (oldEntity == null)
+                    throw new DbUpdateConcurrencyException();
                 context.Entry(oldEntity).State = EntityState.Detached;
                 dbSet.Attach(entity);
             }

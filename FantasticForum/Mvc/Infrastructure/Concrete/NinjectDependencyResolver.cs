@@ -24,7 +24,7 @@ namespace Mvc.Infrastructure.Concrete
 
         private void AddBindigs()
         {
-            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InSingletonScope();
+            kernel.Bind(typeof(DbContext)).To(typeof(ForumContext)).InRequestScope();
             kernel.Bind(typeof(IFileHelper)).To(typeof(FileHelper)).InSingletonScope();
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
 

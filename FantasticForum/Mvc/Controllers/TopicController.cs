@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure.Abstract;
-using Mvc.Infrastructure.Concrete;
 using Mvc.ViewModels;
 
 namespace Mvc.Controllers
 {
-    public class TopicController : Controller
+    public class TopicController : BaseController<Topic>
     {
-        private readonly AbstractTopicUnitOfWork unitOfWork;
+        private readonly AbstractTopicUnitOfWork topicUnitOfWork;
         private readonly IMapper mapper;
 
-        public TopicController(AbstractTopicUnitOfWork unitOfWork, IMapper mapper)
+        public TopicController(AbstractTopicUnitOfWork topicUnitOfWork, IMapper mapper)
+            : base(topicUnitOfWork)
         {
-            this.unitOfWork = unitOfWork;
+            this.topicUnitOfWork = topicUnitOfWork;
             this.mapper = mapper;
         }
 
@@ -26,7 +23,7 @@ namespace Mvc.Controllers
 
         public ViewResult List(int sectionId)
         {
-            var topics = unitOfWork.Read(topic => topic.SectionId == sectionId);
+            var topics = topicUnitOfWork.Read(topic => topic.SectionId == sectionId);
             ViewBag.SectionId = sectionId;
             return View(topics
                             .Select(topic => mapper.Map(topic, typeof (Topic), typeof (TopicViewModel)))
@@ -48,8 +45,27 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Create", topic);
-            unitOfWork.Create(topic);
+            topicUnitOfWork.Create(topic);
             return RedirectToAction("List", new {sectionId = topic.SectionId});
+        }
+
+        //
+        // GET: /Topic/Remove
+
+        public ViewResult Remove(int id, bool? concurrencyError)
+        {
+            var topic = topicUnitOfWork.Read(id);
+            ViewBag.SectionId = topic.SectionId;
+            return View(mapper.Map(topic, typeof(Topic), typeof(TopicViewModel)));
+        } 
+
+        //
+        // GET: /Topic/Remove
+        [HttpPost][ValidateAntiForgeryToken]
+        public RedirectToRouteResult Remove(Topic topic)
+        {
+            topicUnitOfWork.Delete(topic);
+            return RedirectToAction("List", new { sectionId = topic.SectionId });
         } 
     }
 }

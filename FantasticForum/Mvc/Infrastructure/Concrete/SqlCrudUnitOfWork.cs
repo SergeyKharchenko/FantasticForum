@@ -10,12 +10,14 @@ using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class SqlCrudUnitOfWork<TEntity> : ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
+    public class SqlCrudUnitOfWork<TEntity> : IDisposable, ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
     {
         protected readonly IRepository<TEntity> repository;
+        private readonly DbContext context;
 
-        public SqlCrudUnitOfWork(IRepository<TEntity> repository)
+        public SqlCrudUnitOfWork(DbContext context, IRepository<TEntity> repository)
         {
+            this.context = context;
             this.repository = repository;
         }
 
@@ -39,12 +41,12 @@ namespace Mvc.Infrastructure.Concrete
             return repository.Get(filter, includeProperties);
         }
 
-        public virtual CrudResult<TEntity> Update(TEntity entity)
+        public virtual CrudUtilityModel<TEntity> Update(TEntity entity)
         {
             try
             {
                 var updatedEntity = repository.Update(entity);
-                return new CrudResult<TEntity>(true, updatedEntity);
+                return new CrudUtilityModel<TEntity>(true, updatedEntity);
             }
             catch (DbUpdateConcurrencyException exception)
             {
@@ -52,12 +54,12 @@ namespace Mvc.Infrastructure.Concrete
             }
         }
 
-        public virtual CrudResult<TEntity> Delete(TEntity entity)
+        public virtual CrudUtilityModel<TEntity> Delete(TEntity entity)
         {
             try
             {
                 var deletedEntity = repository.Remove(entity);
-                return new CrudResult<TEntity>(true, deletedEntity);
+                return new CrudUtilityModel<TEntity>(true, deletedEntity);
             }
             catch (DbUpdateConcurrencyException exception)
             {
@@ -65,12 +67,12 @@ namespace Mvc.Infrastructure.Concrete
             }
         }
 
-        public virtual CrudResult<TEntity> Delete(object id)
+        public virtual CrudUtilityModel<TEntity> Delete(object id)
         {
             try
             {
                 var deletedEntity = repository.Remove(id);
-                return new CrudResult<TEntity>(true, deletedEntity);
+                return new CrudUtilityModel<TEntity>(true, deletedEntity);
             }
             catch (DbUpdateConcurrencyException exception)
             {
@@ -78,10 +80,25 @@ namespace Mvc.Infrastructure.Concrete
             }
         }
 
-        private static CrudResult<TEntity> CreateFailCrudResult(DbUpdateConcurrencyException exception)
+        private static CrudUtilityModel<TEntity> CreateFailCrudResult(DbUpdateConcurrencyException exception)
         {
             var entry = exception.Entries.FirstOrDefault();
-            return new CrudResult<TEntity>(false, entry == null ? null : entry.Entity as TEntity);
+            return new CrudUtilityModel<TEntity>(false, entry == null ? null : entry.Entity as TEntity);
+        }
+
+        private bool disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed && disposing)
+                context.Dispose();
+            disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using System.Data.Entity;
+using Models;
 using Mvc.Infrastructure.Abstract;
 
 namespace Mvc.Infrastructure.Concrete
@@ -7,8 +8,8 @@ namespace Mvc.Infrastructure.Concrete
     {
         private readonly IRepository<Record> recordRepository;
 
-        public TopicUnitOfWork(IRepository<Topic> repository, IRepository<Record> recordRepository)
-            : base(repository)
+        public TopicUnitOfWork(DbContext context, IRepository<Topic> repository, IRepository<Record> recordRepository)
+            : base(context, repository)
         {
             this.recordRepository = recordRepository;
         }

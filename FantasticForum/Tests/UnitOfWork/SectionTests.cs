@@ -31,7 +31,8 @@ namespace Tests.UnitOfWork
             sectionRepositoryMock = new Mock<IRepository<Section>>();
             sectionRepositoryMock.Setup(repo => repo.Entities).Returns(sections);
             fileHelperMock = new Mock<IFileHelper>();
-            unitOfWork = new SectionUnitOfWork(sectionRepositoryMock.Object,
+            unitOfWork = new SectionUnitOfWork(null,
+                                               sectionRepositoryMock.Object,
                                                imageMongoRepositoryMock.Object,
                                                fileHelperMock.Object);
         }

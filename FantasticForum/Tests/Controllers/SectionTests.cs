@@ -10,7 +10,6 @@ using Mvc.Controllers;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
-using Mvc.StructModels;
 using Mvc.UtilityModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
@@ -34,7 +33,7 @@ namespace Tests.Controllers
                     new Section {Title = "Life"},
                     new Section {Title = "Programming"}
                 };
-            unitOfWorkMock = new Mock<AbstractSectionUnitOfWork>(null);
+            unitOfWorkMock = new Mock<AbstractSectionUnitOfWork>(null, null);
             unitOfWorkMock.Setup(unit => unit.Entities).Returns(sections);
 
             fileHelperMock = new Mock<IFileHelper>();
@@ -59,7 +58,7 @@ namespace Tests.Controllers
 
             var httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
             unitOfWorkMock.Setup(unit => unit.CreateOrUpdateSection(section, httpPostedFileBaseMock.Object))
-                .Returns(new CrudResult<Section>(true, section));            
+                .Returns(new CrudUtilityModel<Section>(true, section));            
 
             var view = controller.Edit(section, httpPostedFileBaseMock.Object);
             var redirectResult = view as RedirectToRouteResult;
@@ -75,7 +74,7 @@ namespace Tests.Controllers
             var httpPostedFileBaseMock = new Mock<HttpPostedFileBase>();
             var section = new Section();
             unitOfWorkMock.Setup(unit => unit.CreateOrUpdateSection(section, httpPostedFileBaseMock.Object))
-                          .Returns(new CrudResult<Section>(false, section));
+                          .Returns(new CrudUtilityModel<Section>(false, section));
 
             var view = controller.Edit(section, httpPostedFileBaseMock.Object);
             var redirectResult = view as ViewResult;
@@ -105,7 +104,7 @@ namespace Tests.Controllers
         public void GetAvatarSuccessTest()
         {
             var avatarData = new byte[] {1, 2, 3};
-            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new GetAvatarSM(true, avatarData, "file"));
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new AvatarUtilityModel(true, avatarData, "file"));
 
             var avatar = controller.GetAvatar(1);
 
@@ -124,7 +123,7 @@ namespace Tests.Controllers
             controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
             var avatarData = new byte[] {1, 2, 4};
             fileHelperMock.Setup(helper => helper.FileToByteArray(@"c:\work\app_data")).Returns(avatarData);
-            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new GetAvatarSM(false));
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new AvatarUtilityModel(false));
 
             var avatar = controller.GetAvatar(1);
 
@@ -147,29 +146,28 @@ namespace Tests.Controllers
             Assert.That(section.Title, Is.EqualTo("Games"));
         }
 
-        
         [Test]
         public void RemoveTest()
         {
-            var section = new Section {Id = 1};
-            var view = controller.Remove(section);
+            var section = new Section { Id = 2 };
+            unitOfWorkMock.Setup(unit => unit.Delete(section)).Returns(new CrudUtilityModel<Section>(true, section));
 
-            unitOfWorkMock.Verify(unit => unit.Delete(section), Times.Once());
-            Assert.That(view.RouteValues["action"], Is.EqualTo("List"));
+            var redirectToRouteResult = controller.Remove(section);
+
+            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("List"));
         }
 
         [Test]
-        public void RemoveWithConcurrencyExceptionTest()
+        public void RemoveWithConcurrencyTest()
         {
-            var section = new Section {Id = 1};
-            unitOfWorkMock.Setup(unit => unit.Delete(section)).Throws<DbUpdateConcurrencyException>();
+            var section = new Section { Id = 2 };
+            unitOfWorkMock.Setup(unit => unit.Delete(section)).Returns(new CrudUtilityModel<Section>(false, section));
 
-            var view = controller.Remove(section);
+            var redirectToRouteResult = controller.Remove(section);
 
-            unitOfWorkMock.Verify(unit => unit.Delete(section), Times.Once());
-            Assert.That(view.RouteValues["action"], Is.EqualTo("Remove"));
-            Assert.That(view.RouteValues["id"], Is.EqualTo(1));
-            Assert.That(view.RouteValues["concurrencyError"], Is.Not.Null);
+            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("Remove"));
+            Assert.That(redirectToRouteResult.RouteValues["id"], Is.EqualTo(2));
+            Assert.That(redirectToRouteResult.RouteValues["concurrencyError"], Is.EqualTo(true));
         }
     }
     

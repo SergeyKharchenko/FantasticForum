@@ -1,12 +1,12 @@
-namespace Mvc.StructModels
+namespace Mvc.UtilityModels
 {
-    public class GetAvatarSM    
+    public class AvatarUtilityModel    
     {
         public bool HasAvatar { get; private set; }
         public byte[] AvatarData { get; private set; }
         public string ImageMimeType { get; private set; }
 
-        public GetAvatarSM(bool hasAvatar, byte[] avatarData = null, string imageMimeType = "")
+        public AvatarUtilityModel(bool hasAvatar, byte[] avatarData = null, string imageMimeType = "")
         {
             HasAvatar = hasAvatar;
             AvatarData = avatarData;

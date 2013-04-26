@@ -8,6 +8,7 @@ using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Concrete;
+using Mvc.UtilityModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Tests.Controllers
         [SetUp]
         public void SetUp()
         {
-            unitOfWorkMock = new Mock<AbstractTopicUnitOfWork>(null);
+            unitOfWorkMock = new Mock<AbstractTopicUnitOfWork>(null, null);
             controller = new TopicController(unitOfWorkMock.Object, new CommonMapper());
         }
 
@@ -68,6 +69,44 @@ namespace Tests.Controllers
             Assert.That(redirectResult, Is.Not.Null);
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
             Assert.That(redirectResult.RouteValues["sectionId"], Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ShowRemovePageTest()
+        {
+            unitOfWorkMock.Setup(unit => unit.Read(1)).Returns(new Topic {Id = 2, SectionId = 3});
+
+            var view = controller.Remove(1, false);
+            var model = view.Model as TopicViewModel;
+
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Id, Is.EqualTo(2));
+            Assert.That(view.ViewData["sectionId"], Is.EqualTo(3));
+        }
+
+        [Test]
+        public void RemoveTest()
+        {
+            var topic = new Topic { Id = 2, SectionId = 3 };
+            unitOfWorkMock.Setup(unit => unit.Delete(topic)).Returns(new CrudUtilityModel<Topic>(true, topic));
+
+            var redirectToRouteResult = controller.Remove(topic);
+
+            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("List"));
+            Assert.That(redirectToRouteResult.RouteValues["sectionId"], Is.EqualTo(3));
+        }
+
+        [Test]
+        public void RemoveWithConcurrencyTest()
+        {
+            var topic = new Topic {Id = 2};
+            unitOfWorkMock.Setup(unit => unit.Delete(topic)).Returns(new CrudUtilityModel<Topic>(false, topic));
+
+            var redirectToRouteResult = controller.Remove(topic);
+
+            Assert.That(redirectToRouteResult.RouteValues["action"], Is.EqualTo("Remove"));
+            Assert.That(redirectToRouteResult.RouteValues["id"], Is.EqualTo(2));
+            Assert.That(redirectToRouteResult.RouteValues["concurrencyError"], Is.EqualTo(true));
         }
     }
 }

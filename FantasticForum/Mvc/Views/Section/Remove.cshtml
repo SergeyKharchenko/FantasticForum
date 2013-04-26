@@ -6,11 +6,11 @@
 
 <h3>Are you sure you want to remove this?</h3>
 <fieldset>
+    <legend>Section</legend>
     @if (ViewBag.ConcurrencyError != null)
     {
         @ViewBag.ConcurrencyError
-    }        
-    <legend>Section</legend>
+    }            
     <div>
         <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
                                                                         new {id = Model.Id})" />   

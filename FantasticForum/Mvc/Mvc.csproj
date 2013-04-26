@@ -192,6 +192,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\PreviewController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
@@ -214,8 +215,8 @@
     <Compile Include="Infrastructure\Concrete\SqlCrudUnitOfWork.cs" />
     <Compile Include="Infrastructure\Concrete\TopicUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StructModels\GetAvatarSM.cs" />
-    <Compile Include="UtilityModels\CrudResult.cs" />
+    <Compile Include="UtilityModels\CrudUtilityModel.cs" />
+    <Compile Include="UtilityModels\AvatarUtilityModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="ViewModels\TopicViewModel.cs" />
   </ItemGroup>
@@ -317,6 +318,7 @@
     <Content Include="Views\Section\Remove.cshtml" />
     <Content Include="Views\Topic\List.cshtml" />
     <Content Include="Views\Topic\Create.cshtml" />
+    <Content Include="Views\Topic\Remove.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
