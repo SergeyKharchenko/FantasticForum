@@ -16,6 +16,7 @@ namespace Mvc.Infrastructure.Abstract
         }
 
         public abstract CrudUtilityModel<Section> CreateOrUpdateSection(Section section, HttpPostedFileBase avatar);
-        public abstract AvatarUtilityModel GetAvatar(int sectionId);
+        public abstract void RemoveSection(Section section);
+        public abstract ImageUtilityModel GetAvatar(int sectionId);
     }
 }

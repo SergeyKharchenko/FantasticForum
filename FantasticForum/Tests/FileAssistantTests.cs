@@ -7,14 +7,14 @@ using NUnit.Framework;
 namespace Tests
 {
     [TestFixture]
-    public class FileHelperTests
+    public class FileAssistantTests
     {
-        private FileHelper fileHelper;
+        private FileAssistant fileAssistant;
 
         [SetUp]
         public void SetUp()
         {
-            fileHelper = new FileHelper();
+            fileAssistant = new FileAssistant();
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace Tests
             fileBaseMock.Setup(fileBase => fileBase.ContentLength).Returns(100);
             fileBaseMock.Setup(fileBase => fileBase.InputStream).Returns(streamMock.Object);
 
-            var data = fileHelper.FileBaseToByteArray(fileBaseMock.Object);
+            var data = fileAssistant.FileBaseToByteArray(fileBaseMock.Object);
 
             streamMock.Verify(stream => stream.Read(data, 0, 100), Times.Once());
         }

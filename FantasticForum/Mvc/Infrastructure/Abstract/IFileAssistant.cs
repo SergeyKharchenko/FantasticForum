@@ -2,7 +2,7 @@
 
 namespace Mvc.Infrastructure.Abstract
 {
-    public interface IFileHelper
+    public interface IFileAssistant
     {
         byte[] FileBaseToByteArray(HttpPostedFileBase fileBase);
         byte[] FileToByteArray(string path);

@@ -192,6 +192,7 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\PreviewController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
@@ -200,12 +201,16 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\Abstract\AbstractTopicUnitOfWork.cs" />
-    <Compile Include="Infrastructure\Abstract\IFileHelper.cs" />
+    <Compile Include="Infrastructure\Abstract\AbstractUserUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Abstract\IEntityWithImageAssistant.cs" />
+    <Compile Include="Infrastructure\Abstract\IFileAssistant.cs" />
     <Compile Include="Infrastructure\Abstract\AbstractSectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Abstract\IMapper.cs" />
     <Compile Include="Infrastructure\Abstract\IRepository.cs" />
     <Compile Include="Infrastructure\Abstract\ISqlCrudUnitOfWork.cs" />
-    <Compile Include="Infrastructure\Concrete\FileHelper.cs" />
+    <Compile Include="Infrastructure\Concrete\EntityWithImageAssistant.cs" />
+    <Compile Include="Infrastructure\Concrete\FileAssistant.cs" />
+    <Compile Include="Infrastructure\Concrete\ForumAuthorize.cs" />
     <Compile Include="Infrastructure\Concrete\ForumContextInitializer.cs" />
     <Compile Include="Infrastructure\Concrete\CommonMapper.cs" />
     <Compile Include="Infrastructure\Concrete\MongoRepository.cs" />
@@ -214,9 +219,10 @@
     <Compile Include="Infrastructure\Concrete\SectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\Concrete\SqlCrudUnitOfWork.cs" />
     <Compile Include="Infrastructure\Concrete\TopicUnitOfWork.cs" />
+    <Compile Include="Infrastructure\Concrete\UserUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilityModels\CrudUtilityModel.cs" />
-    <Compile Include="UtilityModels\AvatarUtilityModel.cs" />
+    <Compile Include="UtilityModels\ImageUtilityModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="ViewModels\TopicViewModel.cs" />
   </ItemGroup>

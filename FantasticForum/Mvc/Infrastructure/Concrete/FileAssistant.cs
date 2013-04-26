@@ -4,7 +4,7 @@ using Mvc.Infrastructure.Abstract;
 
 namespace Mvc.Infrastructure.Concrete
 {
-    public class FileHelper : IFileHelper
+    public class FileAssistant : IFileAssistant
     {
         public byte[] FileBaseToByteArray(HttpPostedFileBase fileBase)
         {

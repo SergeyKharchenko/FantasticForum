@@ -21,7 +21,7 @@ namespace Tests.Controllers
     {
         private SectionController controller;
         private Mock<AbstractSectionUnitOfWork> unitOfWorkMock;
-        private Mock<IFileHelper> fileHelperMock;
+        private Mock<IFileAssistant> fileHelperMock;
         private Collection<Section> sections;
 
         [SetUp]
@@ -36,7 +36,7 @@ namespace Tests.Controllers
             unitOfWorkMock = new Mock<AbstractSectionUnitOfWork>(null, null);
             unitOfWorkMock.Setup(unit => unit.Entities).Returns(sections);
 
-            fileHelperMock = new Mock<IFileHelper>();
+            fileHelperMock = new Mock<IFileAssistant>();
 
             controller = new SectionController(unitOfWorkMock.Object, fileHelperMock.Object, new CommonMapper());
         }
@@ -104,7 +104,7 @@ namespace Tests.Controllers
         public void GetAvatarSuccessTest()
         {
             var avatarData = new byte[] {1, 2, 3};
-            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new AvatarUtilityModel(true, avatarData, "file"));
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new ImageUtilityModel(true, avatarData, "file"));
 
             var avatar = controller.GetAvatar(1);
 
@@ -123,7 +123,7 @@ namespace Tests.Controllers
             controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
             var avatarData = new byte[] {1, 2, 4};
             fileHelperMock.Setup(helper => helper.FileToByteArray(@"c:\work\app_data")).Returns(avatarData);
-            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new AvatarUtilityModel(false));
+            unitOfWorkMock.Setup(unit => unit.GetAvatar(1)).Returns(new ImageUtilityModel(false));
 
             var avatar = controller.GetAvatar(1);
 

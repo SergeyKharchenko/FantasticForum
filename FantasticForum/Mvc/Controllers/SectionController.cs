@@ -13,14 +13,14 @@ namespace Mvc.Controllers
     public class SectionController : BaseController<Section>
     {
         private readonly AbstractSectionUnitOfWork sectionUnitOfWork;
-        private readonly IFileHelper fileHelper;
+        private readonly IFileAssistant fileAssistant;
         private readonly IMapper mapper;
 
-        public SectionController(AbstractSectionUnitOfWork sectionUnitOfWork, IFileHelper fileHelper, IMapper mapper)
+        public SectionController(AbstractSectionUnitOfWork sectionUnitOfWork, IFileAssistant fileAssistant, IMapper mapper)
             : base(sectionUnitOfWork)
         {
             this.sectionUnitOfWork = sectionUnitOfWork;
-            this.fileHelper = fileHelper;
+            this.fileAssistant = fileAssistant;
             this.mapper = mapper;
         }
         
@@ -77,10 +77,10 @@ namespace Mvc.Controllers
         public FileContentResult GetAvatar(int id)
         {
             var getAvatarSM = sectionUnitOfWork.GetAvatar(id);
-            if (getAvatarSM.HasAvatar)
-                return File(getAvatarSM.AvatarData, getAvatarSM.ImageMimeType);
+            if (getAvatarSM.HasImage)
+                return File(getAvatarSM.Data, getAvatarSM.ImageMimeType);
 
-            var imageData = fileHelper.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
+            var imageData = fileAssistant.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
             return File(imageData, "image/png");
         }
 

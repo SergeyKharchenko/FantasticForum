@@ -12,17 +12,14 @@ namespace Mvc.Infrastructure.Concrete
 {
     public class SectionUnitOfWork : AbstractSectionUnitOfWork
     {
-        private readonly IRepository<Image> imageMongoRepository;
-        private readonly IFileHelper fileHelper;
+        private readonly IEntityWithImageAssistant<Section> imageAssistant;
 
         public SectionUnitOfWork(DbContext context,
                                  IRepository<Section> sectionRepository,
-                                 IRepository<Image> imageMongoRepository,
-                                 IFileHelper fileHelper)
+                                 IEntityWithImageAssistant<Section> imageAssistant)
             : base(context, sectionRepository)
         {
-            this.imageMongoRepository = imageMongoRepository;
-            this.fileHelper = fileHelper;
+            this.imageAssistant = imageAssistant;
         }
 
         public override CrudUtilityModel<Section> CreateOrUpdateSection(Section section, HttpPostedFileBase avatar)
@@ -31,7 +28,7 @@ namespace Mvc.Infrastructure.Concrete
 
             string newAvatarId = null;
             if (avatar != null)
-                newAvatarId = CreateAvatar(avatar);
+                newAvatarId = imageAssistant.CreateImage(avatar);
 
             if (section.Id == 0)
             {
@@ -40,10 +37,10 @@ namespace Mvc.Infrastructure.Concrete
             }
             else
             {
-                section.ImageId = GetOldAvatarId(section.Id);
+                section.ImageId = imageAssistant.GetImageId(section.Id);
                 if (avatar != null)
                 {
-                    RemoveOldAvatar(section);
+                    imageAssistant.RemoveImageFrom(section);
                     section.ImageId = newAvatarId;
                 }
                 crudResult = Update(section);
@@ -52,41 +49,16 @@ namespace Mvc.Infrastructure.Concrete
             return crudResult;
         }
 
-        private void RemoveOldAvatar(Section section)
-        {
-            if (section.Id != 0 && !string.IsNullOrEmpty(section.ImageId))
-                imageMongoRepository.Remove(section.ImageId);
-        }
-
-        private string CreateAvatar(HttpPostedFileBase avatar)
-        {
-            var imageData = fileHelper.FileBaseToByteArray(avatar);
-            var image = new Image {Data = imageData, ImageMimeType = avatar.ContentType};
-            image = imageMongoRepository.Create(image);
-            return image.Id.ToString();
-        }
-
-        private string GetOldAvatarId(int sectionId)
-        {
-            var section = repository.GetById(sectionId);
-            return section == null ? null : section.ImageId;
-        }
-
-        public void RemoveSection(Section section)
+        public override void RemoveSection(Section section)
         {
             var oldSection = repository.GetById(section.Id);
-            if (!string.IsNullOrEmpty(oldSection.ImageId))
-                imageMongoRepository.Remove(oldSection.ImageId);
+            imageAssistant.RemoveImageFrom(oldSection);
             repository.Remove(section);
         }
 
-        public override AvatarUtilityModel GetAvatar(int sectionId)
+        public override ImageUtilityModel GetAvatar(int sectionId)
         {
-            var section = repository.GetById(sectionId);
-            if (string.IsNullOrEmpty(section.ImageId))
-                return new AvatarUtilityModel(false);
-            var image = imageMongoRepository.GetById(section.ImageId);
-            return new AvatarUtilityModel(true, image.Data, image.ImageMimeType);
+            return imageAssistant.GetImageFromEntityWithId(sectionId);
         }
     }
 }

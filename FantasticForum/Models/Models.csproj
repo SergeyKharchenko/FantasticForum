@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Abstract\SqlEntity.cs" />
     <Compile Include="Abstract\MongoEntity.cs" />
+    <Compile Include="Abstract\SqlEntityWithImage.cs" />
     <Compile Include="ForumContext.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Migrations\201304232002239_Init.cs" />
