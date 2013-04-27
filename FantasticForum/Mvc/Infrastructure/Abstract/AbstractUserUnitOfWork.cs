@@ -13,6 +13,6 @@ namespace Mvc.Infrastructure.Abstract
         {
         }
 
-        public abstract CrudUtilityModel<Section> CreateOrUpdateUser(User user, HttpPostedFileBase avatar);
+        public abstract string RegisterUser(User user, HttpPostedFileBase avatar);
     }
 }

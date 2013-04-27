@@ -6,7 +6,7 @@ using Models.Abstract;
 namespace Models
 {
     [Table("User")]
-    public class User : SqlEntity
+    public class User : SqlEntityWithImage
     {
         [Required]
         [StringLength(30, MinimumLength = 2)]

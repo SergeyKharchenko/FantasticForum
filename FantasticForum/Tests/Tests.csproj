@@ -114,6 +114,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountTests.cs" />
     <Compile Include="Controllers\SectionTests.cs" />
     <Compile Include="Controllers\TopicTests.cs" />
     <Compile Include="EntityWithImageAssistantTests.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="RouteTests.cs" />
     <Compile Include="UnitOfWork\SectionTests.cs" />
     <Compile Include="UnitOfWork\SqlCrudUnitOfWorkTests.cs" />
+    <Compile Include="UnitOfWork\UserTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

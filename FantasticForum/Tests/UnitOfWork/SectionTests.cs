@@ -101,38 +101,13 @@ namespace Tests.UnitOfWork
             Assert.That(crudResult.Entity.ImageId, Is.EqualTo("old"));
         }
 
-        //[Test]
-        //public void GetAvatarSuccessTest()
-        //{
-        //    const int sectionId = 1;
-        //    var section = new Section {ImageId = "1"};
-        //    sectionRepositoryMock.Setup(repo => repo.GetById(sectionId)).Returns(section);
-        //    var data = new byte[] {1, 2, 3};
-        //    imageMongoRepositoryMock.Setup(repo => repo.GetById("1"))
-        //        .Returns(new Image { Data = data, ImageMimeType = "file" });
+        [Test]
+        public void GetAvatarTest()
+        {
+            unitOfWork.GetAvatar(1);
 
-        //    var getAvatarSM = unitOfWork.GetAvatar(sectionId);
-
-        //    Assert.That(getAvatarSM.HasImage, Is.True);
-        //    sectionRepositoryMock.Verify(repo => repo.GetById(sectionId), Times.Once());
-        //    imageMongoRepositoryMock.Verify(repo => repo.GetById("1"), Times.Once());
-        //    Assert.That(getAvatarSM.Data, Is.EquivalentTo(data));
-        //    Assert.That(getAvatarSM.ImageMimeType, Is.EqualTo("file"));
-        //}
-
-        //[Test]
-        //public void GetAvatarUnsuccessTest()
-        //{
-        //    const int sectionId = 1;
-        //    var section = new Section {ImageId = ""};
-        //    sectionRepositoryMock.Setup(repo => repo.GetById(sectionId)).Returns(section);
-
-        //    var getAvatarSM = unitOfWork.GetAvatar(sectionId);
-
-        //    Assert.That(getAvatarSM.HasImage, Is.False);
-        //    sectionRepositoryMock.Verify(repo => repo.GetById(sectionId), Times.Once());
-        //    imageMongoRepositoryMock.Verify(repo => repo.GetById("1"), Times.Never());
-        //}
+            imageAssistantMock.Verify(assistant => assistant.GetImageFromEntityWithId(1), Times.Once());
+        }
 
         [Test]
         public void RemoveSectionWithAvatarTest()
