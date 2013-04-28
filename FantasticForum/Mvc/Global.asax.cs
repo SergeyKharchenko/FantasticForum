@@ -1,4 +1,5 @@
-﻿using Mvc.App_Start;
+﻿using Models;
+using Mvc.App_Start;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.DAL;
 using System.Data.Entity;
