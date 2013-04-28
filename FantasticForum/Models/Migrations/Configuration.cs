@@ -9,7 +9,7 @@ namespace Models.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Models.ForumContext context)
+        protected override void Seed(ForumContext context)
         {
             //  This method will be called after migrating to the latest version.
 
