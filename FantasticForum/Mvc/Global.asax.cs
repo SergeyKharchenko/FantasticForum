@@ -7,7 +7,8 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Models;
 using Mvc.App_Start;
-using Mvc.Infrastructure.Concrete;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.DAL;
 
 namespace Mvc
 {

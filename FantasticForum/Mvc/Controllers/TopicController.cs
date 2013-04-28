@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Models;
-using Mvc.Infrastructure.Abstract;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.ViewModels;
 
 namespace Mvc.Controllers

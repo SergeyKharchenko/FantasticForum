@@ -6,7 +6,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Models;
-using Mvc.Infrastructure.Abstract;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.Assistants.Abstract;
+using Mvc.Infrastructure.Assistants.Concrete;
+using Mvc.Infrastructure.UnitsOfWork.Abstract;
 
 namespace Mvc.Controllers
 {
@@ -14,12 +17,16 @@ namespace Mvc.Controllers
     {
         private readonly AbstractUserUnitOfWork userUnitOfWork;
         private readonly IMapper mapper;
+        private readonly IAuthorizationAssistant authorizationAssistant;
 
-        public AccountController(AbstractUserUnitOfWork userUnitOfWork, IMapper mapper)
+        public AccountController(AbstractUserUnitOfWork userUnitOfWork,
+                                 IAuthorizationAssistant authorizationAssistant,
+                                 IMapper mapper)
             : base(userUnitOfWork)
         {
             this.userUnitOfWork = userUnitOfWork;
             this.mapper = mapper;
+            this.authorizationAssistant = authorizationAssistant;
         }
 
 
@@ -38,11 +45,9 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View(user);
-            var authTicket = userUnitOfWork.RegisterUser(user, avatar);
-            var authCookie = new HttpCookie(ConfigurationManager.AppSettings.Get("Auth")) { Value = authTicket};
-            Response.Cookies.Set(authCookie);
+            var createdUser = userUnitOfWork.RegisterUser(user, avatar);
+            authorizationAssistant.PlaceAuthInfoInCookie(Response, createdUser.Id);
             return RedirectToAction("Register");
         }
-
     }
 }

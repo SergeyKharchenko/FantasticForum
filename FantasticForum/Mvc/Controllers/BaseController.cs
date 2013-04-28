@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Models;
 using Models.Abstract;
-using Mvc.Infrastructure.Concrete;
+using Mvc.Infrastructure.UnitsOfWork.Concrete;
 
 namespace Mvc.Controllers
 {

@@ -3,8 +3,9 @@ using System.Data.Entity.Infrastructure;
 using System.Web;
 using System.Web.Mvc;
 using Models;
-using Mvc.Infrastructure.Abstract;
-using Mvc.Infrastructure.Concrete;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.Assistants.Abstract;
+using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.ViewModels;
 using System.Linq;
 
