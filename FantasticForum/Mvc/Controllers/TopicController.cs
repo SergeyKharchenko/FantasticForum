@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using Models;
 using Mvc.Infrastructure;
@@ -46,6 +47,10 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View("Create", topic);
+            var initialRecord = topic.Records.Single();
+            initialRecord.CreationDate = DateTime.Now;
+            //todo Replace by current user
+            initialRecord.User = new User { Email = "dsfsdf@gmail.com", Password = "dcygfvhjnk", ConfirmPassword = "dcygfvhjnk" };
             topicUnitOfWork.Create(topic);
             return RedirectToAction("List", new {sectionId = topic.SectionId});
         }

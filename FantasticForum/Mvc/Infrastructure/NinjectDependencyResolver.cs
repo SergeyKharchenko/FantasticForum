@@ -58,9 +58,11 @@ namespace Mvc.Infrastructure
 
             kernel.Bind(typeof(IEntityWithImageAssistant<>)).To(typeof(EntityWithImageAssistant<>)).InRequestScope();
             kernel.Bind(typeof (IFileAssistant)).To(typeof (FileAssistant)).InSingletonScope();
-            kernel.Bind(typeof (IMapper)).To(typeof (CommonMapper)).InSingletonScope();
+            kernel.Bind(typeof(IAuthorizationAssistant)).To(typeof(AuthorizationAssistant)).InSingletonScope();
 
             #endregion
+
+            kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
         }
 
         public object GetService(Type serviceType)

@@ -10,11 +10,8 @@ namespace Models
     {
         [Required]
         [StringLength(30, MinimumLength = 2)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [StringLength(30, MinimumLength = 2)]
-        public string LastName { get; set; }
+        [DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
 
         [Required]
         [StringLength(30, MinimumLength = 2)]
@@ -26,9 +23,6 @@ namespace Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [ScaffoldColumn(false)]
-        public string ImageId { get; set; }
 
         public virtual Collection<Record> Records { get; set; }
     }

@@ -60,13 +60,15 @@ namespace Tests.Controllers
         [Test]
         public void CreateTest()
         {
-            var topic = new Topic {SectionId = 1};
+            var topic = new Topic {SectionId = 1, Records = new Collection<Record> {new Record()}};
 
             var view = controller.Create(topic);
             var redirectResult = view as RedirectToRouteResult;
 
             unitOfWorkMock.Verify(unit => unit.Create(topic), Times.Once());
             Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(topic.Records.Single().CreationDate, Is.LessThanOrEqualTo(DateTime.Now));
+            Assert.That(topic.Records.Single().User, Is.Not.Null);
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
             Assert.That(redirectResult.RouteValues["sectionId"], Is.EqualTo(1));
         }
