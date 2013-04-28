@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
-using Models;
+﻿using Models;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.ViewModels;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Mvc.Controllers
 {

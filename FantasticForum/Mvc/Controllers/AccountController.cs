@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-using Models;
+﻿using Models;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Assistants.Abstract;
-using Mvc.Infrastructure.Assistants.Concrete;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Mvc.Controllers
 {
@@ -46,7 +40,7 @@ namespace Mvc.Controllers
             if (!ModelState.IsValid)
                 return View(user);
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
-            authorizationAssistant.PlaceAuthInfoInCookie(Response, createdUser.Id);
+            authorizationAssistant.WriteAuthInfoInCookie(Response, createdUser.Id);
             return RedirectToAction("Register");
         }
     }

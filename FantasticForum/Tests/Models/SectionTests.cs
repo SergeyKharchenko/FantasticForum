@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using Models;
+﻿using Models;
 using NUnit.Framework;
+using System.Collections.ObjectModel;
 
 namespace Tests.Models
 {

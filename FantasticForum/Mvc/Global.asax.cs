@@ -1,14 +1,12 @@
-﻿using System.Configuration;
+﻿using Mvc.App_Start;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.DAL;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using Models;
-using Mvc.App_Start;
-using Mvc.Infrastructure;
-using Mvc.Infrastructure.DAL;
 
 namespace Mvc
 {

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Models;
-using WebGrease.Css.Extensions;
-
+﻿
 namespace Mvc.ViewModels
 {
     public class SectionViewModel

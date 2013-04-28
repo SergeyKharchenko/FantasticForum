@@ -1,7 +1,7 @@
+using Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
-using Models;
 
 namespace Mvc.Infrastructure.DAL
 {

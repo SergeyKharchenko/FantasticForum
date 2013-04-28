@@ -4,6 +4,7 @@ namespace Mvc.Infrastructure.Assistants.Abstract
 {
     public interface IAuthorizationAssistant
     {
-        void PlaceAuthInfoInCookie(HttpResponseBase httpResponse, int userId);
+        void WriteAuthInfoInCookie(HttpResponseBase httpResponse, int userId);
+        bool ReadAuthInfoFromCookie(HttpRequestBase httpRequest, ref int userId);
     }
 }

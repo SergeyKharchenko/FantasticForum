@@ -1,7 +1,7 @@
-using System.Data.Entity;
 using Models;
 using Mvc.Infrastructure.DAL.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
+using System.Data.Entity;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Concrete
 {

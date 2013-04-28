@@ -1,13 +1,13 @@
+using Models.Abstract;
+using Mvc.Infrastructure.DAL.Abstract;
+using Mvc.Infrastructure.UnitsOfWork.Abstract;
+using Mvc.UtilityModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using Models.Abstract;
-using Mvc.Infrastructure.DAL.Abstract;
-using Mvc.Infrastructure.UnitsOfWork.Abstract;
-using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Concrete
 {

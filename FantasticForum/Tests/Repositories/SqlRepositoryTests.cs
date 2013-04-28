@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Models;
+using Mvc.Infrastructure.DAL.Abstract;
+using Mvc.Infrastructure.DAL.Cocnrete;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.IO;
-using System.Linq.Expressions;
-using Models;
-using Mvc.Infrastructure.DAL.Abstract;
-using Mvc.Infrastructure.DAL.Cocnrete;
-using NUnit.Framework;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Tests.Repositories
 {

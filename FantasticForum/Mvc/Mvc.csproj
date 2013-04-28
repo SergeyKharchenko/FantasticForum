@@ -197,7 +197,7 @@
     <Compile Include="Controllers\PreviewController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
-    <Compile Include="Filters\ForumAuthorize.cs" />
+    <Compile Include="Filters\ForumAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

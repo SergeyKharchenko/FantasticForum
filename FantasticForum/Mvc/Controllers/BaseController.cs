@@ -1,7 +1,6 @@
-﻿using System.Web.Mvc;
-using Models;
-using Models.Abstract;
+﻿using Models.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
+using System.Web.Mvc;
 
 namespace Mvc.Controllers
 {

@@ -1,7 +1,7 @@
-using System;
 using AutoMapper;
 using Models;
 using Mvc.ViewModels;
+using System;
 
 namespace Mvc.Infrastructure
 {

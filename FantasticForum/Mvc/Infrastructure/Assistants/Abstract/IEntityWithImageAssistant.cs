@@ -1,6 +1,6 @@
-using System.Web;
 using Models.Abstract;
 using Mvc.UtilityModels;
+using System.Web;
 
 namespace Mvc.Infrastructure.Assistants.Abstract
 {

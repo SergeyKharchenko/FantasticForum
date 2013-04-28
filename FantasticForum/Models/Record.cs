@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Models.Abstract;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Models.Abstract;
 
 namespace Models
 {

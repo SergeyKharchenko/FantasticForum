@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Web.Mvc;
-using Models;
+﻿using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure;
@@ -11,7 +6,12 @@ using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.UtilityModels;
 using Mvc.ViewModels;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace Tests.Controllers
 {

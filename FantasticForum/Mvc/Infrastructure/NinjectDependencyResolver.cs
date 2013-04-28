@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Entity;
-using System.Web.Mvc;
 using Models;
 using MongoDB.Driver;
 using Mvc.Infrastructure.Assistants.Abstract;
@@ -13,6 +8,11 @@ using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
 using Ninject;
 using Ninject.Web.Common;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data.Entity;
+using System.Web.Mvc;
 
 namespace Mvc.Infrastructure
 {

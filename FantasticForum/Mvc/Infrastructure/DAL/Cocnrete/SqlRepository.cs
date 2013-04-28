@@ -1,3 +1,5 @@
+using Models.Abstract;
+using Mvc.Infrastructure.DAL.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -5,8 +7,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using Models.Abstract;
-using Mvc.Infrastructure.DAL.Abstract;
 
 namespace Mvc.Infrastructure.DAL.Cocnrete
 {

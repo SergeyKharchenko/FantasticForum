@@ -1,8 +1,8 @@
+using Models.Abstract;
+using Mvc.UtilityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using Models.Abstract;
-using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Abstract
 {

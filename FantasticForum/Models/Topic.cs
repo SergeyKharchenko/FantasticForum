@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using Models.Abstract;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Models.Abstract;
 
 namespace Models
 {

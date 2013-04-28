@@ -1,14 +1,12 @@
-﻿using System.Configuration;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Routing;
-using Models;
+﻿using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using NUnit.Framework;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Tests.Controllers
 {
@@ -38,7 +36,7 @@ namespace Tests.Controllers
             var redirectToRouteResult = view as RedirectToRouteResult;
 
             unitOfWorkMock.Verify(unit => unit.RegisterUser(user, imageMock.Object), Times.Once());
-            authorizationAssistantMock.Verify(assistant => assistant.PlaceAuthInfoInCookie(controller.Response, 42));
+            authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInCookie(controller.Response, 42));
             Assert.That(redirectToRouteResult, Is.Not.Null);
         }
     }
