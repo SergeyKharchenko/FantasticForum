@@ -14,19 +14,11 @@
         <legend>User</legend>
 
         <div>
-            @Html.LabelFor(model => model.FirstName)
+            @Html.LabelFor(model => model.Email)
         </div>
         <div>
-            @Html.EditorFor(model => model.FirstName)
-            @Html.ValidationMessageFor(model => model.FirstName)
-        </div>
-
-        <div>
-            @Html.LabelFor(model => model.LastName)
-        </div>
-        <div>
-            @Html.EditorFor(model => model.LastName)
-            @Html.ValidationMessageFor(model => model.LastName)
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
         </div>
 
         <div>
