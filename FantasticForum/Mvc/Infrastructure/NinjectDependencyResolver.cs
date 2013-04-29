@@ -36,8 +36,7 @@ namespace Mvc.Infrastructure
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
             var server = client.GetServer();
             var database = server.GetDatabase(ConfigurationManager.AppSettings.Get("MongoDB"));
-            kernel.Bind(typeof (IRepository<>)).To(typeof (MongoRepository<>))
-                  .When(request => request.Target.Name.Contains("Mongo"))
+            kernel.Bind(typeof(IRepository<Image>)).To(typeof(MongoRepository<Image>))                
                   .InRequestScope()
                   .WithConstructorArgument("database", database);
 

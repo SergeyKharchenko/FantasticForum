@@ -120,6 +120,7 @@
     <Compile Include="Controllers\AccountTests.cs" />
     <Compile Include="Controllers\SectionTests.cs" />
     <Compile Include="Controllers\TopicTests.cs" />
+    <Compile Include="Filters\ForumAuthorizeTests.cs" />
     <Compile Include="Models\SectionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\MongoRepositoryTests.cs" />

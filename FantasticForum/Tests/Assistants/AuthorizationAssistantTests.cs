@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Mvc.Infrastructure.Assistants.Concrete;
+using Mvc.UtilityModels;
 using NUnit.Framework;
 using System.Configuration;
 using System.Web;
@@ -40,23 +41,23 @@ namespace Tests.Assistants
                         new FormsAuthenticationTicket("42",
                                                       false,
                                                       (int) FormsAuthentication.Timeout.TotalMinutes),
-                        true, 42
+                        new AuthorizeUtilityModel {IsAuthorized = true, UserId = 42}
                     },
                 new object[]
                     {
                         new FormsAuthenticationTicket("",
                                                       false,
                                                       (int) FormsAuthentication.Timeout.TotalMinutes),
-                        false, 42
+                        new AuthorizeUtilityModel {IsAuthorized = false}
                     },
                 new object[]
                     {
-                        null, false, 42
+                        null, new AuthorizeUtilityModel {IsAuthorized = false}
                     }
             };
 
         [Test, TestCaseSource("readAuthInfoFromCookieData")]
-        public void ReadAuthInfoFromCookieTest(FormsAuthenticationTicket ticket, bool isSuccess, int expectedUserId)
+        public void ReadAuthInfoFromCookieTest(FormsAuthenticationTicket ticket, AuthorizeUtilityModel authorizeUtilityModel)
         {
             var request = new Mock<HttpRequestBase>();
             var cookie = new HttpCookieCollection
@@ -66,13 +67,12 @@ namespace Tests.Assistants
                 };
             request.Setup(res => res.Cookies).Returns(cookie);
 
-            var userId = -1;
-            var success = assistant.ReadAuthInfoFromCookie(request.Object, ref userId);
+            var actuAlauthorizeUtilityModel = assistant.ReadAuthInfoFromCookie(request.Object);
 
             request.Verify(res => res.Cookies, Times.Once());
-            Assert.That(success, Is.EqualTo(isSuccess));
-            if (success)
-                Assert.That(userId, Is.EqualTo(expectedUserId));
+            Assert.That(actuAlauthorizeUtilityModel.IsAuthorized, Is.EqualTo(authorizeUtilityModel.IsAuthorized));
+            if (actuAlauthorizeUtilityModel.IsAuthorized)
+                Assert.That(actuAlauthorizeUtilityModel.UserId, Is.EqualTo(authorizeUtilityModel.UserId));
         }
     }
 }

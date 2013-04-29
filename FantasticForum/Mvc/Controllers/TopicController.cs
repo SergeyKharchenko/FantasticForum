@@ -1,4 +1,5 @@
 ﻿using Models;
+using Mvc.Filters;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.ViewModels;
@@ -22,7 +23,7 @@ namespace Mvc.Controllers
 
         //
         // GET: /Topic/List
-
+       
         public ViewResult List(int sectionId)
         {
             var topics = topicUnitOfWork.Read(topic => topic.SectionId == sectionId);

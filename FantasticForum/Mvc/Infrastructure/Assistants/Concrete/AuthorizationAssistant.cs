@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Web;
 using System.Web.Security;
+using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.Assistants.Concrete
 {
@@ -18,16 +19,21 @@ namespace Mvc.Infrastructure.Assistants.Concrete
             httpResponse.Cookies.Set(authCookie);
         }
 
-        public bool ReadAuthInfoFromCookie(HttpRequestBase httpRequest, ref int userId)
+        public AuthorizeUtilityModel ReadAuthInfoFromCookie(HttpRequestBase httpRequest)
         {
+            var authorizeUtilityModel = new AuthorizeUtilityModel {IsAuthorized = false};
             var authCookie = httpRequest.Cookies.Get(ConfigurationManager.AppSettings.Get("Auth"));
             if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
             {
                 var ticket = FormsAuthentication.Decrypt(authCookie.Value);
                 if (ticket != null)
-                    return int.TryParse(ticket.Name, out userId);
+                {
+                    int userId;
+                    authorizeUtilityModel.IsAuthorized = int.TryParse(ticket.Name, out userId);
+                    authorizeUtilityModel.UserId = userId;
+                }
             }
-            return false;
+            return authorizeUtilityModel;
         }
     }
 }

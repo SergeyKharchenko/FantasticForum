@@ -198,6 +198,7 @@
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Filters\ForumAuthorizeAttribute.cs" />
+    <Compile Include="Filters\UserIndentity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -223,6 +224,7 @@
     <Compile Include="Infrastructure\UnitsOfWork\Concrete\TopicUnitOfWork.cs" />
     <Compile Include="Infrastructure\UnitsOfWork\Concrete\UserUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilityModels\AuthorizeUtilityModel.cs" />
     <Compile Include="UtilityModels\CrudUtilityModel.cs" />
     <Compile Include="UtilityModels\ImageUtilityModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
