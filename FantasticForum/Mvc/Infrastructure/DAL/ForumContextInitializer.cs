@@ -39,6 +39,8 @@ namespace Mvc.Infrastructure.DAL
                         }
                 };
             sections.ForEach(section => context.Sections.Add(section));
+
+            context.Users.Add(new User {Email = "a@b.com", Password = "123", ConfirmPassword = "123"});
             context.SaveChanges();
         }   
     }

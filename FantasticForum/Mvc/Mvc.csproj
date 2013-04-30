@@ -186,7 +186,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -227,6 +226,7 @@
     <Compile Include="UtilityModels\AuthorizeUtilityModel.cs" />
     <Compile Include="UtilityModels\CrudUtilityModel.cs" />
     <Compile Include="UtilityModels\ImageUtilityModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\SectionViewModel.cs" />
     <Compile Include="ViewModels\TopicViewModel.cs" />
   </ItemGroup>
@@ -330,6 +330,7 @@
     <Content Include="Views\Topic\Create.cshtml" />
     <Content Include="Views\Topic\Remove.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
