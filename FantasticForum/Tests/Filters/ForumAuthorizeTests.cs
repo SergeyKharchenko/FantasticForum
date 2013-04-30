@@ -46,10 +46,11 @@ namespace Tests.Filters
         [Test, TestCaseSource("authorizeCoreData")]
         public void AuthorizeCoreTest(AuthorizeUtilityModel authorizeUtilityModel)
         {
-            var requestBase = new Mock<HttpRequestBase>();
+            var session = new Mock<HttpSessionStateBase>();
             var contextBase = new Mock<HttpContextBase>();
-            contextBase.Setup(context => context.Request).Returns(requestBase.Object);
-            assistantMock.Setup(assistant => assistant.ReadAuthInfoFromCookie(requestBase.Object))
+            contextBase.Setup(context => context.Session)
+                         .Returns(session.Object);         
+            assistantMock.Setup(assistant => assistant.ReadAuthInfoFromSession(session.Object))
                          .Returns(authorizeUtilityModel);            
             var user = new User();
             repositoryMock.Setup(repo => repo.GetById(authorizeUtilityModel.UserId))
@@ -58,8 +59,7 @@ namespace Tests.Filters
             var privateAttribute = new PrivateObject(attribute);
             var isAuthorized = (bool) privateAttribute.Invoke("AuthorizeCore", contextBase.Object);
 
-            contextBase.Verify(context => context.Request, Times.Once());
-            assistantMock.Verify(assistant => assistant.ReadAuthInfoFromCookie(It.IsAny<HttpRequestBase>()),
+            assistantMock.Verify(assistant => assistant.ReadAuthInfoFromSession(session.Object),
                                  Times.Once());
             Assert.That(isAuthorized, Is.EqualTo(authorizeUtilityModel.IsAuthorized));
 

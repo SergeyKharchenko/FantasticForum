@@ -19,7 +19,7 @@ namespace Mvc.Filters
         {
             var userIndentity = new UserIndentity();
             httpContext.User = userIndentity;
-            var authorizeUtilityModel = assistant.ReadAuthInfoFromCookie(httpContext.Request);
+            var authorizeUtilityModel = assistant.ReadAuthInfoFromSession(httpContext.Session);
             if (!authorizeUtilityModel.IsAuthorized)
                 return false;
             userIndentity.User = repository.GetById(authorizeUtilityModel.UserId);

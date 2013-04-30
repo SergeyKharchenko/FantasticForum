@@ -9,29 +9,19 @@ namespace Mvc.Infrastructure.Assistants.Concrete
 {
     public class AuthorizationAssistant : IAuthorizationAssistant
     {
-        public void WriteAuthInfoInCookie(HttpResponseBase httpResponse, int userId)
+        public void WriteAuthInfoInSession(HttpSessionStateBase httpSession, int userId)
         {
-            var formsAuthenticationTicket = new FormsAuthenticationTicket(userId.ToString(CultureInfo.InvariantCulture),
-                                                                          false,
-                                                                          (int)FormsAuthentication.Timeout.TotalMinutes);
-            var authTicket = FormsAuthentication.Encrypt(formsAuthenticationTicket);
-            var authCookie = new HttpCookie(ConfigurationManager.AppSettings.Get("Auth")) { Value = authTicket };
-            httpResponse.Cookies.Set(authCookie);
+            httpSession.Add(ConfigurationManager.AppSettings.Get("Auth"), userId);
         }
 
-        public AuthorizeUtilityModel ReadAuthInfoFromCookie(HttpRequestBase httpRequest)
+        public AuthorizeUtilityModel ReadAuthInfoFromSession(HttpSessionStateBase httpSession)
         {
             var authorizeUtilityModel = new AuthorizeUtilityModel {IsAuthorized = false};
-            var authCookie = httpRequest.Cookies.Get(ConfigurationManager.AppSettings.Get("Auth"));
-            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+            var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
+            if (authData is int)
             {
-                var ticket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (ticket != null)
-                {
-                    int userId;
-                    authorizeUtilityModel.IsAuthorized = int.TryParse(ticket.Name, out userId);
-                    authorizeUtilityModel.UserId = userId;
-                }
+                authorizeUtilityModel.UserId = (int) authData;
+                authorizeUtilityModel.IsAuthorized = true;
             }
             return authorizeUtilityModel;
         }

@@ -36,7 +36,7 @@ namespace Tests.Controllers
             var redirectToRouteResult = view as RedirectToRouteResult;
 
             unitOfWorkMock.Verify(unit => unit.RegisterUser(user, imageMock.Object), Times.Once());
-            authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInCookie(controller.Response, 42));
+            authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, 42));
             Assert.That(redirectToRouteResult, Is.Not.Null);
         }
     }

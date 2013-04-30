@@ -5,7 +5,7 @@ namespace Mvc.Infrastructure.Assistants.Abstract
 {
     public interface IAuthorizationAssistant
     {
-        void WriteAuthInfoInCookie(HttpResponseBase httpResponse, int userId);
-        AuthorizeUtilityModel ReadAuthInfoFromCookie(HttpRequestBase httpRequest);
+        void WriteAuthInfoInSession(HttpSessionStateBase httpSession, int userId);
+        AuthorizeUtilityModel ReadAuthInfoFromSession(HttpSessionStateBase httpSession);
     }
 }

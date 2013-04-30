@@ -40,7 +40,7 @@ namespace Mvc.Controllers
             if (!ModelState.IsValid)
                 return View(user);
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
-            authorizationAssistant.WriteAuthInfoInCookie(Response, createdUser.Id);
+            authorizationAssistant.WriteAuthInfoInSession(Session, createdUser.Id);
             return RedirectToAction("Register");
         }
     }
