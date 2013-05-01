@@ -16,8 +16,7 @@ header, footer {
 
 header {
     top: 0;
-    height: 30px;
-    padding-left: 20px;
+    height: 50px;
 }
 
 footer {   
@@ -40,4 +39,8 @@ td.section {
 
 .section-avatar {
     float: left;
+}
+
+.login-menu {
+    float: right;
 }

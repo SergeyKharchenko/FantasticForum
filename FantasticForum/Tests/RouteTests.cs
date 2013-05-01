@@ -17,6 +17,9 @@ namespace Tests
             return;
             #endif
             IncomingRouteMatchTest("~/", "List", "Section");
+            IncomingRouteMatchTest("~/Section/Create/2", "Create", "Section", new { id = 2 });
+            IncomingRouteMatchTest("~/Section/1/", "List", "Topic", new {sectionId = 1});
+            IncomingRouteMatchTest("~/Section/1/Topic/Remove/2", "Remove", "Topic", new { sectionId = 1, id = 2 });
         }
 
         [Test]
@@ -26,6 +29,9 @@ namespace Tests
             return;
             #endif
             OutgoingRouteMatchTest("List", "Section", null, "/");
+            OutgoingRouteMatchTest("Create", "Section", new RouteValueDictionary(new { id = 2 }), "/Section/Create/2");
+            OutgoingRouteMatchTest("List", "Topic", new RouteValueDictionary(new { sectionId = 1 }), "/Section/1");
+            OutgoingRouteMatchTest("Remove", "Topic", new RouteValueDictionary(new { sectionId = 1, id = 2 }), "/Section/1/Topic/Remove/2");
         }
 
         private static void IncomingRouteMatchTest(string url, string action, string controller, object routeProperties = null, string httpMethod = "GET")
