@@ -1,2 +1,2 @@
-﻿@Html.ActionLink("Login", "Login", "Account")<br/>
-@Html.ActionLink("Register", "Register", "Account")
+﻿@Html.ActionLink("Login", "Login", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)<br/>
+@Html.ActionLink("Register", "Register", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)

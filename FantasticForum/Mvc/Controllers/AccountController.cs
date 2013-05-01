@@ -29,28 +29,31 @@ namespace Mvc.Controllers
         //
         // GET: /Account/Register
 
-        public ActionResult Register()
+        public ActionResult Register(string returnUrl)
         {
+            TempData["returnUrl"] = returnUrl;
             return View();
         }
 
         //
         // Post: /Account/Register
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Register(User user, HttpPostedFileBase avatar)
+        public ActionResult Register(RegisterViewModel registeredUser, HttpPostedFileBase avatar)
         {
             if (!ModelState.IsValid)
-                return View(user);
+                return View(registeredUser);
+            var user = (User) mapper.Map(registeredUser, typeof (RegisterViewModel), typeof (User));
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
             authorizationAssistant.WriteAuthInfoInSession(Session, createdUser.Id);
-            return RedirectToAction("List", "Section");
+            return Redirect(TempData["returnUrl"] as string);
         }
 
         //
         // Get: /Account/Login
 
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            TempData["returnUrl"] = returnUrl;
             return View();
         }
 
@@ -69,7 +72,7 @@ namespace Mvc.Controllers
                 return View(loginViewModel);
             }
             authorizationAssistant.WriteAuthInfoInSession(Session, user.Id);
-            return RedirectToAction("List", "Section");
+            return Redirect(TempData["returnUrl"] as string);
         }
     }
 }

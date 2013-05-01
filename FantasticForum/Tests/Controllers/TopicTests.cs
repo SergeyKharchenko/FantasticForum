@@ -1,6 +1,9 @@
-﻿using Models;
+﻿using System.Web;
+using System.Web.Routing;
+using Models;
 using Moq;
 using Mvc.Controllers;
+using Mvc.Filters;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.UtilityModels;
@@ -61,6 +64,9 @@ namespace Tests.Controllers
         public void CreateTest()
         {
             var topic = new Topic {SectionId = 1, Records = new Collection<Record> {new Record()}};
+            var httpContextMock = new Mock<HttpContextBase>();
+            httpContextMock.Setup(context => context.User).Returns(new UserIndentity {User = new User()});
+            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
 
             var view = controller.Create(topic);
             var redirectResult = view as RedirectToRouteResult;

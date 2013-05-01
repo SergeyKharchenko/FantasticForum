@@ -12,6 +12,7 @@ namespace Mvc.Infrastructure
             Mapper.CreateMap<Section, SectionViewModel>();
             Mapper.CreateMap<Topic, TopicViewModel>()
                   .ForMember(dest => dest.RecordCount, opt => opt.MapFrom(src => src.Records.Count));
+            Mapper.CreateMap<RegisterViewModel, User>();
         }
 
         public object Map(object source, Type sourceType, Type destinationType)

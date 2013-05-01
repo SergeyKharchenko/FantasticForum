@@ -35,23 +35,22 @@ namespace Mvc.Controllers
 
         //
         // GET: /Topic/Create
-
+        [ForumAuthorize]
         public ViewResult Create(int sectionId)
         {
-            return View(new Topic { SectionId = sectionId });
+             return View(new Topic { SectionId = sectionId });
         } 
 
         //
         // Post: /Topic/Create
-        [HttpPost]
+        [HttpPost, ForumAuthorize]
         public ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)
                 return View("Create", topic);
             var initialRecord = topic.Records.Single();
             initialRecord.CreationDate = DateTime.Now;
-            //todo Replace by current user
-            initialRecord.User = new User { Email = "dsfsdf@gmail.com", Password = "dcygfvhjnk", ConfirmPassword = "dcygfvhjnk" };
+            initialRecord.User = ((UserIndentity) User).User;
             topicUnitOfWork.Create(topic);
             return RedirectToAction("List", new {sectionId = topic.SectionId});
         }

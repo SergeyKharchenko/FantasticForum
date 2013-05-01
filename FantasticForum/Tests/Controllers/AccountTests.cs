@@ -32,16 +32,18 @@ namespace Tests.Controllers
         [Test]
         public void RegisterTest()
         {
-            var user = new User {Id = 42};
+            var user = new RegisterViewModel();
             var imageMock = new Mock<HttpPostedFileBase>();
-            unitOfWorkMock.Setup(unit => unit.RegisterUser(user, imageMock.Object)).Returns(user);
+            unitOfWorkMock.Setup(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object))
+                          .Returns(new User {Id = 42});
+            controller.TempData["returnUrl"] = "/abs";
             
             var view = controller.Register(user, imageMock.Object);
-            var redirectToRouteResult = view as RedirectToRouteResult;
+            var redirectResult = view as RedirectResult;
 
-            unitOfWorkMock.Verify(unit => unit.RegisterUser(user, imageMock.Object), Times.Once());
+            Assert.That(redirectResult, Is.Not.Null);
+            unitOfWorkMock.Verify(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, 42));
-            Assert.That(redirectToRouteResult, Is.Not.Null);
         }
 
         [Test]
@@ -50,9 +52,13 @@ namespace Tests.Controllers
             var loginViewModel = new LoginViewModel {Email = "a@ew.com", Password = "123"};
             unitOfWorkMock.Setup(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string>()))
                 .Returns(new List<User> { new User { Id = 42} });
+            controller.TempData["returnUrl"] = "/abs";
 
-            controller.Login(loginViewModel);
+            var view = controller.Login(loginViewModel);
+            var redirectResult = view as RedirectResult;
 
+            Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(redirectResult.Url, Is.EqualTo("/abs"));
             unitOfWorkMock.Verify(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string>()), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, 42), Times.Once());
         }
@@ -63,9 +69,12 @@ namespace Tests.Controllers
             var loginViewModel = new LoginViewModel {Email = "a@ew.com", Password = "123"};
             unitOfWorkMock.Setup(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string>()))
                 .Returns(new List<User> ());
+            controller.TempData["returnUrl"] = "/abs";
 
-            controller.Login(loginViewModel);
+            var view = controller.Login(loginViewModel);
+            var viewResult = view as ViewResult;
 
+            Assert.That(viewResult, Is.Not.Null);
             unitOfWorkMock.Verify(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string>()), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, 42), Times.Never());
         }
