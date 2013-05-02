@@ -9,5 +9,6 @@ namespace Mvc.Infrastructure.Assistants.Abstract
     {
         void WriteAuthInfoInSession(HttpSessionStateBase httpSession, User user);
         User ReadAuthInfoFromSession(HttpSessionState httpSession);
+        User ReadAuthInfoFromSession(HttpSessionStateBase httpSession);
     }
 }

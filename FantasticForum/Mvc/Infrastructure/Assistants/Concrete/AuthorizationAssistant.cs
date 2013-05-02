@@ -21,5 +21,11 @@ namespace Mvc.Infrastructure.Assistants.Concrete
             var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
             return authData as User;
         }
+
+        public User ReadAuthInfoFromSession(HttpSessionStateBase httpSession)
+        {
+            var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
+            return authData as User;
+        }
     }
 }

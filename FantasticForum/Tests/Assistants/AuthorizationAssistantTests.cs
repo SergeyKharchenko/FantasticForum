@@ -38,7 +38,7 @@ namespace Tests.Assistants
         [Test, TestCaseSource("readAuthInfoFromSessionData")]
         public void ReadAuthInfoFromSessionTest(object dataFromSession)
         {
-            var session = new Mock<HttpSessionState>();
+            var session = new Mock<HttpSessionStateBase>();
             session.Setup(s => s[ConfigurationManager.AppSettings.Get("Auth")]).Returns(dataFromSession);
 
             var user = assistant.ReadAuthInfoFromSession(session.Object);
