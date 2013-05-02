@@ -7,12 +7,9 @@ namespace Mvc.Filters
 {
     public class ForumAuthorizeAttribute : AuthorizeAttribute
     {
-        [Inject]
-        public IAuthorizationAssistant Assistant { get; set; }
-
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            return Assistant.ReadAuthInfoFromSession(httpContext.Session) != null;
+            return httpContext.User.Identity.IsAuthenticated;
         }
     }
 }

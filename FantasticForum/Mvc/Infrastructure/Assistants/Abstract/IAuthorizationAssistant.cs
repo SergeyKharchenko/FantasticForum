@@ -8,7 +8,6 @@ namespace Mvc.Infrastructure.Assistants.Abstract
     public interface IAuthorizationAssistant
     {
         void WriteAuthInfoInSession(HttpSessionStateBase httpSession, User user);
-        User ReadAuthInfoFromSession(HttpSessionStateBase httpSession);
         User ReadAuthInfoFromSession(HttpSessionState httpSession);
     }
 }

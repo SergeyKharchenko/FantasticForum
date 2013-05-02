@@ -67,9 +67,6 @@ namespace Mvc.Infrastructure
 
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
             kernel.Bind(typeof(ILogger)).To(typeof(MyLogger)).InSingletonScope();
-
-            kernel.BindFilter<ForumAuthorizeAttribute>(FilterScope.Action, null).WhenActionMethodHas<ForumAuthorizeAttribute>();
-            kernel.BindFilter<UserProvider>(FilterScope.Action, null);
         }
 
         public object GetService(Type serviceType)

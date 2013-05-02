@@ -1,11 +1,10 @@
-﻿using Models;
+﻿using System.Web.SessionState;
+using Models;
 using Moq;
 using Mvc.Infrastructure.Assistants.Concrete;
-using Mvc.UtilityModels;
 using NUnit.Framework;
 using System.Configuration;
 using System.Web;
-using System.Web.Security;
 
 namespace Tests.Assistants
 {
@@ -39,10 +38,10 @@ namespace Tests.Assistants
         [Test, TestCaseSource("readAuthInfoFromSessionData")]
         public void ReadAuthInfoFromSessionTest(object dataFromSession)
         {
-            var session = new Mock<HttpSessionStateBase>();
+            var session = new Mock<HttpSessionState>();
             session.Setup(s => s[ConfigurationManager.AppSettings.Get("Auth")]).Returns(dataFromSession);
 
-            var user = assistant.ICollection(session.Object);
+            var user = assistant.ReadAuthInfoFromSession(session.Object);
 
             session.Verify(s => s[ConfigurationManager.AppSettings.Get("Auth")], Times.Once());
             Assert.That(user, Is.EqualTo(dataFromSession));
