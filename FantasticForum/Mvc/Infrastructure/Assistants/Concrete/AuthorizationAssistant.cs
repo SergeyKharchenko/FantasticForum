@@ -1,3 +1,4 @@
+using Models;
 using Mvc.Infrastructure.Assistants.Abstract;
 using System.Configuration;
 using System.Globalization;
@@ -9,21 +10,15 @@ namespace Mvc.Infrastructure.Assistants.Concrete
 {
     public class AuthorizationAssistant : IAuthorizationAssistant
     {
-        public void WriteAuthInfoInSession(HttpSessionStateBase httpSession, int userId)
+        public void WriteAuthInfoInSession(HttpSessionStateBase httpSession, User user)
         {
-            httpSession.Add(ConfigurationManager.AppSettings.Get("Auth"), userId);
+            httpSession.Add(ConfigurationManager.AppSettings.Get("Auth"), user);
         }
 
-        public AuthorizeUtilityModel ReadAuthInfoFromSession(HttpSessionStateBase httpSession)
+        public User ReadAuthInfoFromSession(HttpSessionStateBase httpSession)
         {
-            var authorizeUtilityModel = new AuthorizeUtilityModel {IsAuthorized = false};
             var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
-            if (authData is int)
-            {
-                authorizeUtilityModel.UserId = (int) authData;
-                authorizeUtilityModel.IsAuthorized = true;
-            }
-            return authorizeUtilityModel;
+            return authData as User;
         }
     }
 }

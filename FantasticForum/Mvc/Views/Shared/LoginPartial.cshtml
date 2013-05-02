@@ -1,2 +1,18 @@
-﻿@Html.ActionLink("Login", "Login", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)<br/>
-@Html.ActionLink("Register", "Register", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)
+﻿@using Mvc.Filters
+@{
+    var user = (User as UserIndentity).User;
+}
+
+
+@if (user == null)
+{
+    @Html.ActionLink("Login", "Login", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)<br/>
+    @Html.ActionLink("Register", "Register", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)
+}
+else 
+{ 
+    @:Hello, @user.Email<br/>
+    @Html.ActionLink("Logout", "Logout", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)
+}
+
+

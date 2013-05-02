@@ -45,7 +45,7 @@ namespace Mvc.Controllers
                 return View(registeredUser);
             var user = (User) mapper.Map(registeredUser, typeof (RegisterViewModel), typeof (User));
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
-            authorizationAssistant.WriteAuthInfoInSession(Session, createdUser.Id);
+            authorizationAssistant.WriteAuthInfoInSession(Session, createdUser);
             return Redirect(TempData["returnUrl"] as string);
         }
 
@@ -72,7 +72,7 @@ namespace Mvc.Controllers
                 ModelState.AddModelError("", "Invalid login or password");
                 return View(loginViewModel);
             }
-            authorizationAssistant.WriteAuthInfoInSession(Session, user.Id);
+            authorizationAssistant.WriteAuthInfoInSession(Session, user);
             return Redirect(TempData["returnUrl"] as string);
         }
     }

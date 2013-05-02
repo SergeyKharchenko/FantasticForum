@@ -205,6 +205,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Filters\ForumAuthorizeAttribute.cs" />
     <Compile Include="Filters\UserIndentity.cs" />
+    <Compile Include="Filters\UserProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

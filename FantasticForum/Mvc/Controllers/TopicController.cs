@@ -16,15 +16,11 @@ namespace Mvc.Controllers
         private readonly AbstractTopicUnitOfWork topicUnitOfWork;
         private readonly IMapper mapper;
 
-        private readonly ILogger logger = (ILogger)DependencyResolver.Current.GetService(typeof(ILogger));
-
         public TopicController(AbstractTopicUnitOfWork topicUnitOfWork, IMapper mapper)
             : base(topicUnitOfWork)
         {
             this.topicUnitOfWork = topicUnitOfWork;
             this.mapper = mapper;
-
-            logger.WriteToLog("TopicController");
         }
 
         //
@@ -49,7 +45,7 @@ namespace Mvc.Controllers
 
         //
         // Post: /Topic/Create
-        [HttpPost, ForumAuthorize, ValidateAntiForgeryToken]
+        [HttpPost, ForumAuthorize]
         public ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)

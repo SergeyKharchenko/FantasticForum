@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Models;
+using Moq;
 using Mvc.Infrastructure.Assistants.Concrete;
 using Mvc.UtilityModels;
 using NUnit.Framework;
@@ -20,39 +21,31 @@ namespace Tests.Assistants
         }
 
         [Test]
-        public void PlaceAuthInfoInCookieTest()
+        public void PlaceAuthInfoInSessionTest()
         {
             var session = new Mock<HttpSessionStateBase>();
 
-            assistant.WriteAuthInfoInSession(session.Object, 42);
+            var user = new User {Id = 42};
+            assistant.WriteAuthInfoInSession(session.Object, user);
 
-            session.Verify(s => s.Add(ConfigurationManager.AppSettings.Get("Auth"), 42), Times.Once());
+            session.Verify(s => s.Add(ConfigurationManager.AppSettings.Get("Auth"), user), Times.Once());
         }
 
-        private readonly object[] readAuthInfoFromCookieData = new object[]
+        private readonly object[] readAuthInfoFromSessionData = new object[]
             {
-                new object[]
-                    {
-                        42, new AuthorizeUtilityModel {IsAuthorized = true, UserId = 42}
-                    },
-                new object[]
-                    {
-                        null, new AuthorizeUtilityModel {IsAuthorized = false}
-                    },
+                new User {Id = 42}, null
             };
 
-        [Test, TestCaseSource("readAuthInfoFromCookieData")]
-        public void ReadAuthInfoFromCookieTest(object dataFromSession, AuthorizeUtilityModel authorizeUtilityModel)
+        [Test, TestCaseSource("readAuthInfoFromSessionData")]
+        public void ReadAuthInfoFromSessionTest(object dataFromSession)
         {
             var session = new Mock<HttpSessionStateBase>();
             session.Setup(s => s[ConfigurationManager.AppSettings.Get("Auth")]).Returns(dataFromSession);
 
-            var actuAlauthorizeUtilityModel = assistant.ReadAuthInfoFromSession(session.Object);
+            var user = assistant.ReadAuthInfoFromSession(session.Object);
 
             session.Verify(s => s[ConfigurationManager.AppSettings.Get("Auth")], Times.Once());
-            Assert.That(actuAlauthorizeUtilityModel.IsAuthorized, Is.EqualTo(authorizeUtilityModel.IsAuthorized));
-            if (actuAlauthorizeUtilityModel.IsAuthorized)
-                Assert.That(actuAlauthorizeUtilityModel.UserId, Is.EqualTo(authorizeUtilityModel.UserId));
+            Assert.That(user, Is.EqualTo(dataFromSession));
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Mvc.Infrastructure
         {
             #region Database
 
-            kernel.Bind(typeof (DbContext)).To(typeof (ForumContext)).InThreadScope();
+            kernel.Bind(typeof (DbContext)).To(typeof (ForumContext)).InRequestScope();
 
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
             var server = client.GetServer();
@@ -69,6 +69,7 @@ namespace Mvc.Infrastructure
             kernel.Bind(typeof(ILogger)).To(typeof(MyLogger)).InSingletonScope();
 
             kernel.BindFilter<ForumAuthorizeAttribute>(FilterScope.Action, null).WhenActionMethodHas<ForumAuthorizeAttribute>();
+            kernel.BindFilter<UserProvider>(FilterScope.Action, null);
         }
 
         public object GetService(Type serviceType)

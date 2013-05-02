@@ -17,17 +17,14 @@ namespace Tests.Filters
     {
         private ForumAuthorizeAttribute attribute;
         private Mock<IAuthorizationAssistant> assistantMock;
-        private Mock<IRepository<User>> repositoryMock;
 
         [SetUp]
         public void SetUp()
         {
             assistantMock = new Mock<IAuthorizationAssistant>();
-            repositoryMock = new Mock<IRepository<User>>();
             attribute = new ForumAuthorizeAttribute
                 {
-                    Assistant = assistantMock.Object,
-                    Repository = repositoryMock.Object
+                    Assistant = assistantMock.Object
                 };
         }
 
@@ -35,41 +32,30 @@ namespace Tests.Filters
             {
                 new object[]
                     {
-                        new AuthorizeUtilityModel {IsAuthorized = true, UserId = 42}
+                        new User {Id = 42}
                     },
                 new object[]
                     {
-                        new AuthorizeUtilityModel {IsAuthorized = false}
+                        null
                     }
             };
 
         [Test, TestCaseSource("authorizeCoreData")]
-        public void AuthorizeCoreTest(AuthorizeUtilityModel authorizeUtilityModel)
+        public void AuthorizeCoreTest(User user)
         {
             var session = new Mock<HttpSessionStateBase>();
             var contextBase = new Mock<HttpContextBase>();
             contextBase.Setup(context => context.Session)
-                         .Returns(session.Object);         
+                         .Returns(session.Object);
             assistantMock.Setup(assistant => assistant.ReadAuthInfoFromSession(session.Object))
-                         .Returns(authorizeUtilityModel);            
-            var user = new User();
-            repositoryMock.Setup(repo => repo.GetById(authorizeUtilityModel.UserId))
-                          .Returns(user);
+                         .Returns(user);            
 
             var privateAttribute = new PrivateObject(attribute);
             var isAuthorized = (bool) privateAttribute.Invoke("AuthorizeCore", contextBase.Object);
 
             assistantMock.Verify(assistant => assistant.ReadAuthInfoFromSession(session.Object),
                                  Times.Once());
-            Assert.That(isAuthorized, Is.EqualTo(authorizeUtilityModel.IsAuthorized));
-
-            if (!authorizeUtilityModel.IsAuthorized) 
-                return;
-            repositoryMock.Verify(repo => repo.GetById(authorizeUtilityModel.UserId), Times.Once());
-            contextBase.VerifySet(
-                context =>
-                context.User =
-                It.Is<UserIndentity>(identity => (identity.Identity as UserIndentity).User == user));
+            Assert.That(isAuthorized, Is.EqualTo(user != null));
         }
     }
 }
