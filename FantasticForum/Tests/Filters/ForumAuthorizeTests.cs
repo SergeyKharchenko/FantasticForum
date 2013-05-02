@@ -47,13 +47,13 @@ namespace Tests.Filters
             var contextBase = new Mock<HttpContextBase>();
             contextBase.Setup(context => context.Session)
                          .Returns(session.Object);
-            assistantMock.Setup(assistant => assistant.ReadAuthInfoFromSession(session.Object))
+            assistantMock.Setup(assistant => assistant.ICollection(session.Object))
                          .Returns(user);            
 
             var privateAttribute = new PrivateObject(attribute);
             var isAuthorized = (bool) privateAttribute.Invoke("AuthorizeCore", contextBase.Object);
 
-            assistantMock.Verify(assistant => assistant.ReadAuthInfoFromSession(session.Object),
+            assistantMock.Verify(assistant => assistant.ICollection(session.Object),
                                  Times.Once());
             Assert.That(isAuthorized, Is.EqualTo(user != null));
         }

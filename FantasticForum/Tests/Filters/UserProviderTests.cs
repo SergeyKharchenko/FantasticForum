@@ -34,12 +34,12 @@ namespace Tests.Filters
             contextBase.Setup(context => context.Session)
                          .Returns(session.Object);
             var user = new User();
-            assistantMock.Setup(assistant => assistant.ReadAuthInfoFromSession(session.Object))
+            assistantMock.Setup(assistant => assistant.ICollection(session.Object))
                          .Returns(user);
 
             attribute.OnActionExecuting(new ActionExecutingContext { HttpContext = contextBase .Object});
 
-            assistantMock.Verify(assistant => assistant.ReadAuthInfoFromSession(session.Object),
+            assistantMock.Verify(assistant => assistant.ICollection(session.Object),
                                  Times.Once());
             contextBase.VerifySet(
                 context =>

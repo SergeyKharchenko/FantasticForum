@@ -1,3 +1,4 @@
+using System.Web.SessionState;
 using Models;
 using Mvc.Infrastructure.Assistants.Abstract;
 using System.Configuration;
@@ -16,6 +17,12 @@ namespace Mvc.Infrastructure.Assistants.Concrete
         }
 
         public User ReadAuthInfoFromSession(HttpSessionStateBase httpSession)
+        {
+            var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
+            return authData as User;
+        }
+
+        public User ReadAuthInfoFromSession(HttpSessionState httpSession)
         {
             var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
             return authData as User;

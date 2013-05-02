@@ -42,7 +42,7 @@ namespace Tests.Assistants
             var session = new Mock<HttpSessionStateBase>();
             session.Setup(s => s[ConfigurationManager.AppSettings.Get("Auth")]).Returns(dataFromSession);
 
-            var user = assistant.ReadAuthInfoFromSession(session.Object);
+            var user = assistant.ICollection(session.Object);
 
             session.Verify(s => s[ConfigurationManager.AppSettings.Get("Auth")], Times.Once());
             Assert.That(user, Is.EqualTo(dataFromSession));

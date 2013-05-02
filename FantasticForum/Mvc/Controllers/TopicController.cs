@@ -45,7 +45,7 @@ namespace Mvc.Controllers
 
         //
         // Post: /Topic/Create
-        [HttpPost, ForumAuthorize]
+        [HttpPost, ValidateAntiForgeryToken]
         public ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)
