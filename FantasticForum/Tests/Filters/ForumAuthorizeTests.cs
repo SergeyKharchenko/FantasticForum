@@ -26,8 +26,8 @@ namespace Tests.Filters
             repositoryMock = new Mock<IRepository<User>>();
             attribute = new ForumAuthorizeAttribute
                 {
-                    assistant = assistantMock.Object,
-                    repository = repositoryMock.Object
+                    Assistant = assistantMock.Object,
+                    Repository = repositoryMock.Object
                 };
         }
 

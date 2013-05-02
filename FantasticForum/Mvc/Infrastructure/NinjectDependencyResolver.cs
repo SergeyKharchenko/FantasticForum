@@ -1,7 +1,10 @@
 using Models;
 using MongoDB.Driver;
+using Mvc.Filters;
+using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.Assistants.Concrete;
+using Mvc.Infrastructure.Concrete;
 using Mvc.Infrastructure.DAL.Abstract;
 using Mvc.Infrastructure.DAL.Cocnrete;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
@@ -13,6 +16,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Web.Mvc;
+using Ninject.Web.Mvc.FilterBindingSyntax;
 
 namespace Mvc.Infrastructure
 {
@@ -31,7 +35,7 @@ namespace Mvc.Infrastructure
         {
             #region Database
 
-            kernel.Bind(typeof (DbContext)).To(typeof (ForumContext)).InRequestScope();
+            kernel.Bind(typeof (DbContext)).To(typeof (ForumContext)).InThreadScope();
 
             var client = new MongoClient(ConfigurationManager.AppSettings.Get("MONGOLAB_URI"));
             var server = client.GetServer();
@@ -62,6 +66,9 @@ namespace Mvc.Infrastructure
             #endregion
 
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
+            kernel.Bind(typeof(ILogger)).To(typeof(MyLogger)).InSingletonScope();
+
+            kernel.BindFilter<ForumAuthorizeAttribute>(FilterScope.Action, null).WhenActionMethodHas<ForumAuthorizeAttribute>();
         }
 
         public object GetService(Type serviceType)

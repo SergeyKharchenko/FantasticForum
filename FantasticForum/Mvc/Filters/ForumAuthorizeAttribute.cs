@@ -3,40 +3,48 @@ using System.Runtime.CompilerServices;
 using System.Web;
 using System.Web.Mvc;
 using Models;
+using Mvc.Infrastructure;
+using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.DAL.Abstract;
 using Mvc.Infrastructure.DAL.Cocnrete;
+using Ninject;
 
 namespace Mvc.Filters
 {
     public class ForumAuthorizeAttribute : AuthorizeAttribute
     {
-        public IAuthorizationAssistant assistant =
-            (IAuthorizationAssistant) DependencyResolver.Current.GetService(typeof (IAuthorizationAssistant));
+        [Inject]
+        public IAuthorizationAssistant Assistant { get; set; }
 
-        public IRepository<User> repository;
+        [Inject]
+        public IRepository<User> Repository { get; set; }
+
+        [Inject]
+        public ILogger Logger { get; set; }
+
+        public ForumAuthorizeAttribute()
+        {
+            var logger = (ILogger)DependencyResolver.Current.GetService(typeof(ILogger));
+            logger.WriteToLog("ctor");
+        }
+
+        public override void OnAuthorization(AuthorizationContext filterContext)
+        {
+            Logger.WriteToLog("OnAuthorization");
+            base.OnAuthorization(filterContext);
+        }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
+            Logger.WriteToLog("AuthorizeCore");
             var userIndentity = new UserIndentity();
             httpContext.User = userIndentity;
-            var authorizeUtilityModel = assistant.ReadAuthInfoFromSession(httpContext.Session);
+            var authorizeUtilityModel = Assistant.ReadAuthInfoFromSession(httpContext.Session);
             if (!authorizeUtilityModel.IsAuthorized)
                 return false;
 
-            var usedNewContext = false;
-            ForumContext context = null;
-
-            if (repository == null)
-            {
-                usedNewContext = true;
-                context = new ForumContext();
-                repository = new SqlRepository<User>(context);
-            }
-                userIndentity.User = repository.GetById(authorizeUtilityModel.UserId);
-            if (usedNewContext)
-                context.Dispose();
-            repository = null;
+            userIndentity.User = Repository.GetById(authorizeUtilityModel.UserId);
             return true;
         }
     }

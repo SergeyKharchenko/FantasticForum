@@ -1,6 +1,6 @@
 using System;
 
-namespace Mvc.Infrastructure
+namespace Mvc.Infrastructure.Abstract
 {
     public interface IMapper
     {

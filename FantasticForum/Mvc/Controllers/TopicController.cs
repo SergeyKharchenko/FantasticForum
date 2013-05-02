@@ -1,11 +1,13 @@
 ﻿using Models;
 using Mvc.Filters;
 using Mvc.Infrastructure;
+using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.ViewModels;
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using Ninject;
 
 namespace Mvc.Controllers
 {
@@ -14,11 +16,15 @@ namespace Mvc.Controllers
         private readonly AbstractTopicUnitOfWork topicUnitOfWork;
         private readonly IMapper mapper;
 
+        private readonly ILogger logger = (ILogger)DependencyResolver.Current.GetService(typeof(ILogger));
+
         public TopicController(AbstractTopicUnitOfWork topicUnitOfWork, IMapper mapper)
             : base(topicUnitOfWork)
         {
             this.topicUnitOfWork = topicUnitOfWork;
             this.mapper = mapper;
+
+            logger.WriteToLog("TopicController");
         }
 
         //
@@ -43,7 +49,7 @@ namespace Mvc.Controllers
 
         //
         // Post: /Topic/Create
-        [HttpPost, ForumAuthorize]
+        [HttpPost, ForumAuthorize, ValidateAntiForgeryToken]
         public ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)

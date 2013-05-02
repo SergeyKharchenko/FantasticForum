@@ -1,9 +1,10 @@
+using System;
 using AutoMapper;
 using Models;
+using Mvc.Infrastructure.Abstract;
 using Mvc.ViewModels;
-using System;
 
-namespace Mvc.Infrastructure
+namespace Mvc.Infrastructure.Concrete
 {
     public class CommonMapper : IMapper
     {

@@ -12,11 +12,5 @@ namespace Mvc.Controllers
         {
             this.unitOfWork = unitOfWork;
         }
-
-        protected override void Dispose(bool disposing)
-        {
-            unitOfWork.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

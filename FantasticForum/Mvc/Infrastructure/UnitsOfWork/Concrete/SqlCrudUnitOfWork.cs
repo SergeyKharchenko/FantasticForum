@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Concrete
 {
-    public class SqlCrudUnitOfWork<TEntity> : IDisposable, ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
+    public class SqlCrudUnitOfWork<TEntity> : ISqlCrudUnitOfWork<TEntity> where TEntity : SqlEntity
     {
         protected readonly IRepository<TEntity> repository;
         private readonly DbContext context;
@@ -85,21 +85,6 @@ namespace Mvc.Infrastructure.UnitsOfWork.Concrete
         {
             var entry = exception.Entries.FirstOrDefault();
             return new CrudUtilityModel<TEntity>(false, entry == null ? null : entry.Entity as TEntity);
-        }
-
-        private bool disposed;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed && disposing)
-                context.Dispose();
-            disposed = true;
-        }
-
-        public void Dispose()
-        {
-            //Dispose(true);
-            //GC.SuppressFinalize(this);
         }
     }
 }
