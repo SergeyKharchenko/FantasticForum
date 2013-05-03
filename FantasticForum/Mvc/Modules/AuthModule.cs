@@ -1,15 +1,16 @@
-﻿using System;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
+using Mvc.Filters;
 using Mvc.Infrastructure.Assistants.Abstract;
 
-namespace Mvc.Filters
+namespace Mvc.Modules
 {
     public class AuthModule : IHttpModule
     {
         private readonly IAuthorizationAssistant assistant =
-            (IAuthorizationAssistant) DependencyResolver.Current.GetService(typeof (IAuthorizationAssistant));
+            (IAuthorizationAssistant)DependencyResolver.Current.GetService(typeof(IAuthorizationAssistant));
 
         public void Init(HttpApplication application)
         {
@@ -23,7 +24,7 @@ namespace Mvc.Filters
 
         private void Application_PostMapRequestHandler(object source, EventArgs e)
         {
-            var app = (HttpApplication) source;
+            var app = (HttpApplication)source;
 
             if (app.Context.Handler is IRequiresSessionState)
             {
@@ -37,7 +38,7 @@ namespace Mvc.Filters
 
         private void Application_PostAcquireRequestState(object source, EventArgs e)
         {
-            var app = (HttpApplication) source;
+            var app = (HttpApplication)source;
 
             var resourceHttpHandler = HttpContext.Current.Handler as MyHttpHandler;
 
@@ -46,7 +47,7 @@ namespace Mvc.Filters
                 // set the original handler back
                 HttpContext.Current.Handler = resourceHttpHandler.originalHandler;
             }
-            var userIndentity = new UserIndentity {User = assistant.ReadAuthInfoFromSession(app.Session)};
+            var userIndentity = new UserIndentity { User = assistant.ReadAuthInfoFromSession(app.Session) };
             HttpContext.Current.User = userIndentity;
         }
 

@@ -15,15 +15,18 @@ namespace Mvc.Controllers
         private readonly AbstractUserUnitOfWork userUnitOfWork;
         private readonly IMapper mapper;
         private readonly IAuthorizationAssistant authorizationAssistant;
+        private readonly IFileAssistant fileAssistant;
 
         public AccountController(AbstractUserUnitOfWork userUnitOfWork,
                                  IAuthorizationAssistant authorizationAssistant,
+                                 IFileAssistant fileAssistant,
                                  IMapper mapper)
             : base(userUnitOfWork)
         {
             this.userUnitOfWork = userUnitOfWork;
             this.mapper = mapper;
             this.authorizationAssistant = authorizationAssistant;
+            this.fileAssistant = fileAssistant;
         }
 
 
@@ -74,6 +77,28 @@ namespace Mvc.Controllers
             }
             authorizationAssistant.WriteAuthInfoInSession(Session, user);
             return Redirect(TempData["returnUrl"] as string);
+        }
+
+        //
+        // POST: /Section/GetAvatar
+
+        public FileContentResult GetAvatar(int id)
+        {
+            var imageUtilityModel = userUnitOfWork.GetAvatar(id);
+            if (imageUtilityModel.HasImage)
+                return File(imageUtilityModel.Data, imageUtilityModel.ImageMimeType);
+
+            var imageData = fileAssistant.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
+            return File(imageData, "image/png");
+        }
+        
+        //
+        // Get: /Account/Logout
+
+        public ActionResult Logout(string returnUrl)
+        {
+            authorizationAssistant.RemoveAuthInfoFromSession(Session);
+            return Redirect(returnUrl);
         }
     }
 }

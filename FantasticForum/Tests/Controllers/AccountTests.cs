@@ -27,7 +27,8 @@ namespace Tests.Controllers
         {
             unitOfWorkMock = new Mock<AbstractUserUnitOfWork>(null, null);
             authorizationAssistantMock = new Mock<IAuthorizationAssistant>();
-            controller = new AccountController(unitOfWorkMock.Object, authorizationAssistantMock.Object, new CommonMapper());
+            controller = new AccountController(unitOfWorkMock.Object, authorizationAssistantMock.Object, null,
+                                               new CommonMapper());
         }
 
         [Test]
@@ -80,6 +81,18 @@ namespace Tests.Controllers
             Assert.That(viewResult, Is.Not.Null);
             unitOfWorkMock.Verify(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<string>()), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, It.IsAny<User>()), Times.Never());
+        }
+
+        [Test]
+        public void LogoutTest()
+        {
+            var view = controller.Logout("/abs");
+            var redirectResult = view as RedirectResult;
+
+            Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(redirectResult.Url, Is.EqualTo("/abs"));
+            authorizationAssistantMock.Verify(assistant => assistant.RemoveAuthInfoFromSession(controller.Session),
+                                              Times.Once());
         }
     }
 }

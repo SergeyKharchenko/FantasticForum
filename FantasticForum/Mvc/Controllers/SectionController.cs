@@ -76,9 +76,9 @@ namespace Mvc.Controllers
 
         public FileContentResult GetAvatar(int id)
         {
-            var getAvatarSM = sectionUnitOfWork.GetAvatar(id);
-            if (getAvatarSM.HasImage)
-                return File(getAvatarSM.Data, getAvatarSM.ImageMimeType);
+            var imageUtilityModel = sectionUnitOfWork.GetAvatar(id);
+            if (imageUtilityModel.HasImage)
+                return File(imageUtilityModel.Data, imageUtilityModel.ImageMimeType);
 
             var imageData = fileAssistant.FileToByteArray(Server.MapPath("~/Images/Section/section-without-avatar.png"));
             return File(imageData, "image/png");

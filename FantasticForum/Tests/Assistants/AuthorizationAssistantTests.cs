@@ -46,5 +46,15 @@ namespace Tests.Assistants
             session.Verify(s => s[ConfigurationManager.AppSettings.Get("Auth")], Times.Once());
             Assert.That(user, Is.EqualTo(dataFromSession));
         }
+
+        [Test]
+        public void RemoveAuthInfoFromSessionTest()
+        {
+            var session = new Mock<HttpSessionStateBase>();
+
+            assistant.RemoveAuthInfoFromSession(session.Object);
+
+            session.Verify(s => s.Remove(ConfigurationManager.AppSettings.Get("Auth")), Times.Once());
+        }
     }
 }

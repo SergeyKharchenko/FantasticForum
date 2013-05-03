@@ -4,6 +4,7 @@ using Mvc.Infrastructure.DAL.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using System.Data.Entity;
 using System.Web;
+using Mvc.UtilityModels;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Concrete
 {
@@ -26,6 +27,11 @@ namespace Mvc.Infrastructure.UnitsOfWork.Concrete
                 avatarId = imageAssistant.CreateImage(avatar);
             user.ImageId = avatarId;
             return Create(user);
+        }
+
+        public override ImageUtilityModel GetAvatar(int userId)
+        {
+            return imageAssistant.GetImageFromEntityWithId(userId);
         }
     }
 }

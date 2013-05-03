@@ -27,5 +27,10 @@ namespace Mvc.Infrastructure.Assistants.Concrete
             var authData = httpSession[ConfigurationManager.AppSettings.Get("Auth")];
             return authData as User;
         }
+
+        public void RemoveAuthInfoFromSession(HttpSessionStateBase httpSession)
+        {
+            httpSession.Remove(ConfigurationManager.AppSettings.Get("Auth"));
+        }
     }
 }
