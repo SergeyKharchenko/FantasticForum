@@ -201,6 +201,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\PreviewController.cs" />
+    <Compile Include="Controllers\RecordController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Filters\ForumAuthorizeAttribute.cs" />
@@ -346,6 +347,8 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\LoginPartial.cshtml" />
+    <Content Include="Views\Record\List.cshtml" />
+    <Content Include="Views\Record\NewRecordPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

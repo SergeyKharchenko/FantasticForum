@@ -7,11 +7,13 @@
 @if (user == null)
 {
     @Html.ActionLink("Login", "Login", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)<br/>
-    @Html.ActionLink("Register", "Register", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)
+    @Html.ActionLink("Register", "Register", "Account")
 }
 else
 {
-    @:Hello, @user.Email <img width="24" height="24" alt="@user.Email" src="@Url.Action("GetAvatar", "Account", new {id = user.Id})" class="section-avatar" /><br/>@Html.ActionLink("Logout", "Logout", "Account", new {returnUrl = Request.Url.PathAndQuery}, null)
+    @:Hello, @user.Email 
+    <img width="24" height="24" alt="@user.Email" src="@Url.Action("GetAvatar", "Account", new {id = user.Id})" class="section-avatar" /><br/>
+    @Html.ActionLink("Logout", "Logout", "Account")
 }
 
 

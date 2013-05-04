@@ -27,12 +27,12 @@ footer {
     text-align: center;     
 }
 
-td.section {
-    width: 100px;
+td.element {
+    width: 200px;
     background-color: gainsboro;
 }
 
-.section-title {
+.element-title {
     color: black;
     display: block;
 }

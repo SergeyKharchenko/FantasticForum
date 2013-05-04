@@ -33,9 +33,8 @@ namespace Mvc.Controllers
         //
         // GET: /Account/Register
 
-        public ActionResult Register(string returnUrl)
+        public ActionResult Register()
         {
-            TempData["returnUrl"] = returnUrl;
             return View();
         }
 
@@ -49,7 +48,7 @@ namespace Mvc.Controllers
             var user = (User) mapper.Map(registeredUser, typeof (RegisterViewModel), typeof (User));
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
             authorizationAssistant.WriteAuthInfoInSession(Session, createdUser);
-            return Redirect(TempData["returnUrl"] as string);
+            return RedirectToAction("List", "Section");
         }
 
         //
@@ -95,10 +94,10 @@ namespace Mvc.Controllers
         //
         // Get: /Account/Logout
 
-        public ActionResult Logout(string returnUrl)
+        public RedirectToRouteResult Logout()
         {
             authorizationAssistant.RemoveAuthInfoFromSession(Session);
-            return Redirect(returnUrl);
+            return RedirectToAction("List", "Section");
         }
     }
 }

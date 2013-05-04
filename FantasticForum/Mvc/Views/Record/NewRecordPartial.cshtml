@@ -1,0 +1,12 @@
+﻿@using Mvc.Filters
+@{
+    var user = (User as UserIndentity).User;
+}
+
+
+@if (user != null)
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}

@@ -18,8 +18,13 @@ namespace Tests
             #endif
             IncomingRouteMatchTest("~/", "List", "Section");
             IncomingRouteMatchTest("~/Section/Create/2", "Create", "Section", new { id = 2 });
+
             IncomingRouteMatchTest("~/Section/1/", "List", "Topic", new {sectionId = 1});
             IncomingRouteMatchTest("~/Section/1/Topic/Remove/2", "Remove", "Topic", new { sectionId = 1, id = 2 });
+
+            IncomingRouteMatchTest("~/Section/1/Topic/2", "List", "Record", new { sectionId = 1, topicId = 2 });
+            IncomingRouteMatchTest("~/Section/1/Topic/2/Record/Remove/3", "Remove", "Record",
+                                   new {sectionId = 1, topicId = 2, id = 3});
         }
 
         [Test]
@@ -30,8 +35,14 @@ namespace Tests
             #endif
             OutgoingRouteMatchTest("List", "Section", null, "/");
             OutgoingRouteMatchTest("Create", "Section", new RouteValueDictionary(new { id = 2 }), "/Section/Create/2");
+
             OutgoingRouteMatchTest("List", "Topic", new RouteValueDictionary(new { sectionId = 1 }), "/Section/1");
             OutgoingRouteMatchTest("Remove", "Topic", new RouteValueDictionary(new { sectionId = 1, id = 2 }), "/Section/1/Topic/Remove/2");
+
+            OutgoingRouteMatchTest("List", "Record", new RouteValueDictionary(new { sectionId = 1, topicId = 2 }), "/Section/1/Topic/2");
+            OutgoingRouteMatchTest("Remove", "Record",
+                                   new RouteValueDictionary(new {sectionId = 1, topicId = 2, id = 3}),
+                                   "/Section/1/Topic/2/Record/Remove/3");
         }
 
         private static void IncomingRouteMatchTest(string url, string action, string controller, object routeProperties = null, string httpMethod = "GET")

@@ -17,15 +17,17 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title) (@item.RecordCount)
-        </td>
-        <td>
-            @Html.ActionLink("Remove", "Remove", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td class="element">
+                @Html.ActionLink(string.Format("{0} ({1})", item.Title, item.RecordCount), "List", "Record", 
+                                 new {sectionId = ViewBag.SectionId, topicId = item.Id}, 
+                                 new {@class = "element-title"})
+            </td>
+            <td>
+                @Html.ActionLink("Remove", "Remove", new { id=item.Id })
+            </td>
+        </tr>
+    }
 
 </table>

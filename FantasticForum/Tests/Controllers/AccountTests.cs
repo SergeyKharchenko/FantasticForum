@@ -39,12 +39,12 @@ namespace Tests.Controllers
             var user = new User {Id = 42};
             unitOfWorkMock.Setup(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object))
                           .Returns(user);
-            controller.TempData["returnUrl"] = "/abs";
 
             var view = controller.Register(registeredUser, imageMock.Object);
-            var redirectResult = view as RedirectResult;
+            var redirectResult = view as RedirectToRouteResult;
 
-            Assert.That(redirectResult, Is.Not.Null);
+            Assert.That(redirectResult.RouteValues["controller"], Is.EqualTo("Section"));
+            Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
             unitOfWorkMock.Verify(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, user));
         }
@@ -86,11 +86,10 @@ namespace Tests.Controllers
         [Test]
         public void LogoutTest()
         {
-            var view = controller.Logout("/abs");
-            var redirectResult = view as RedirectResult;
+            var view = controller.Logout();
 
-            Assert.That(redirectResult, Is.Not.Null);
-            Assert.That(redirectResult.Url, Is.EqualTo("/abs"));
+            Assert.That(view.RouteValues["controller"], Is.EqualTo("Section"));
+            Assert.That(view.RouteValues["action"], Is.EqualTo("List"));
             authorizationAssistantMock.Verify(assistant => assistant.RemoveAuthInfoFromSession(controller.Session),
                                               Times.Once());
         }
