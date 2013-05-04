@@ -1,49 +1,16 @@
 ﻿@model IEnumerable<Models.Record>
 
 @{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Records";
 }
 
-<h2>List</h2>
+<h2>Records</h2>
 
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Text)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TopicId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserId)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Text)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TopicId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
+<div class="table">
+    @foreach (var item in Model) 
+    {
+        @Html.Partial("RecordPartial", item)
     }
-
-</table>
+</div>
 
 @Html.Partial("NewRecordPartial")

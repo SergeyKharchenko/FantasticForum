@@ -1,0 +1,12 @@
+﻿@model Models.Record
+
+<div class="table-row">
+    <div class="table-cell-user">
+        @Model.User.Email<br/>
+        <img width="24" height="24" alt="@Model.User.Email" src="@Url.Action("GetAvatar", "Account", new {id = @Model.User.Id})" />
+    </div>
+    <div class="table-cell-record">
+        @Model.CreationDate.ToUniversalTime()<br/>
+        @Model.Text
+    </div>
+</div>

@@ -1,3 +1,4 @@
+using System;
 using Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -40,7 +41,15 @@ namespace Mvc.Infrastructure.DAL
                 };
             sections.ForEach(section => context.Sections.Add(section));
 
+            context.Users.Add(new User {Email = "a@a.com", Password = "123"});
             context.Users.Add(new User {Email = "a@b.com", Password = "123"});
+
+            context.SaveChanges();
+
+            context.Records.Add(new Record{Text = "First post", TopicId = 1, UserId = 1, CreationDate = DateTime.Now - TimeSpan.FromMinutes(2)});
+            context.Records.Add(new Record { Text = "Second post", TopicId = 1, UserId = 2, CreationDate = DateTime.Now - TimeSpan.FromMinutes(1) });
+            context.Records.Add(new Record { Text = "Third post", TopicId = 1, UserId = 1, CreationDate = DateTime.Now});
+
             context.SaveChanges();
         }   
     }

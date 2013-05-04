@@ -44,3 +44,30 @@ td.element {
 .login-menu {
     float: right;
 }
+
+.table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-row {
+    display: table-row;
+    border-top: 1px solid black;
+}
+
+.table-row:last-child {
+    border-bottom: 1px solid black;
+}
+
+.table-cell-user, .table-cell-record {
+    display: table-cell;
+}
+
+.table-cell-user {
+    width: 20%
+}
+
+.table-cell-record {
+    width: 80%
+}

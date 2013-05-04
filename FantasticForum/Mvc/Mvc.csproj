@@ -349,6 +349,7 @@
     <Content Include="Views\Shared\LoginPartial.cshtml" />
     <Content Include="Views\Record\List.cshtml" />
     <Content Include="Views\Record\NewRecordPartial.cshtml" />
+    <Content Include="Views\Record\RecordPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
