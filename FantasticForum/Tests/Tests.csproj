@@ -118,6 +118,7 @@
     <Compile Include="Assistants\EntityWithImageAssistantTests.cs" />
     <Compile Include="Assistants\FileAssistantTests.cs" />
     <Compile Include="Controllers\AccountTests.cs" />
+    <Compile Include="Controllers\RecordTests.cs" />
     <Compile Include="Controllers\SectionTests.cs" />
     <Compile Include="Controllers\TopicTests.cs" />
     <Compile Include="Models\SectionTests.cs" />
