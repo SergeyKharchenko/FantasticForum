@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Models;
+using Mvc.Filters;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
 
@@ -29,13 +30,27 @@ namespace Mvc.Controllers
 
         //
         // POST: /Record/Add
-
-        public ActionResult Add(int sectionId, int topicId, string text)
+        [HttpPost, ForumAuthorize]
+        public RedirectToRouteResult Add(int sectionId, int topicId, string text)
         {
-            var records = unitOfWork.Read(record => record.TopicId == topicId);
-            return View(records);
-        }
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("text", "Record cannot be empty");
+            }
+            else
+            {
+                var record = new Record
+                {
+                    Text = text,
+                    CreationDate = DateTime.Now,
+                    TopicId = topicId,
+                    UserId = ((UserIndentity) User).User.Id
+                };
+                unitOfWork.Create(record);
+            }
 
+            return RedirectToAction("List", new {sectionId, topicId});
+        }
 
     }
 }

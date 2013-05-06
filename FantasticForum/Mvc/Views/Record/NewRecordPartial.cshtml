@@ -13,13 +13,9 @@
             @Html.Hidden("sectionId", ((int) ViewBag.SectionId).ToString())
             @Html.Hidden("topicId",   ((int) ViewBag.TopicId).ToString())
 
-            @Html.TextArea("text")<br />
+            @Html.EditorFor(_ => new Record().Text, null, "text")<br />
+            @Html.ValidationMessage("text")<br />
             <input type="submit" value="Add record"/>
         }
     </p>
-}
-
-@section scripts
-{
-    @Scripts.Render("~/bundles/jqueryval")
 }
