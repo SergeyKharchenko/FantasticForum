@@ -1,4 +1,7 @@
-﻿@model IEnumerable<Models.Record>
+﻿@using Models
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<Record>
 
 @{
     ViewBag.Title = "Records";
@@ -12,6 +15,8 @@
         @Html.Partial("RecordPartial", item)
     }
 </div>
+
+@Html.PagedListPager(Model, page => Url.Action("List", new { page }))
 
 @Html.Partial("NewRecordPartial")
 

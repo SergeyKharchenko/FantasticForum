@@ -9,6 +9,7 @@ using Mvc.Controllers;
 using Mvc.Filters;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using NUnit.Framework;
+using PagedList;
 
 namespace Tests.Controllers
 {
@@ -28,9 +29,9 @@ namespace Tests.Controllers
         [Test]
         public void ListTest()
         {
-            var view = controller.List(1, 2);
+            var view = controller.List(1, 2, null);
 
-            Assert.That(view.Model, Is.TypeOf<List<Record>>());
+            Assert.That(view.Model, Is.TypeOf<PagedList<Record>>());
             Assert.That(view.ViewBag.SectionId, Is.EqualTo(1));
             Assert.That(view.ViewBag.TopicId, Is.EqualTo(2));
         }

@@ -7,6 +7,7 @@ using Models;
 using Mvc.Filters;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
+using PagedList;
 
 namespace Mvc.Controllers
 {
@@ -20,12 +21,14 @@ namespace Mvc.Controllers
         //
         // GET: /Record/
 
-        public ViewResult List(int sectionId, int topicId)
+        public ViewResult List(int sectionId, int topicId, int? page)
         {
             var records = unitOfWork.Read(record => record.TopicId == topicId);
+            var pageNumber = page ?? 1;
+            var pagedRecords = records.OrderBy(r => r.CreationDate).ToPagedList(pageNumber, 2);
             ViewBag.SectionId = sectionId;
             ViewBag.TopicId = topicId;
-            return View(records);
+            return View(pagedRecords);
         }
 
         //
