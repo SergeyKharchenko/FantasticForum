@@ -58,37 +58,9 @@
     <Compile Include="Abstract\SqlEntityWithImage.cs" />
     <Compile Include="ForumContext.cs" />
     <Compile Include="Image.cs" />
-    <Compile Include="Migrations\201304232002239_Init.cs" />
-    <Compile Include="Migrations\201304232002239_Init.Designer.cs">
-      <DependentUpon>201304232002239_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304251500278_Add Record.cs" />
-    <Compile Include="Migrations\201304251500278_Add Record.Designer.cs">
-      <DependentUpon>201304251500278_Add Record.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304251502065_Rename Record Table.cs" />
-    <Compile Include="Migrations\201304251502065_Rename Record Table.Designer.cs">
-      <DependentUpon>201304251502065_Rename Record Table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304261526209_Add CreationDate To Record.cs" />
-    <Compile Include="Migrations\201304261526209_Add CreationDate To Record.Designer.cs">
-      <DependentUpon>201304261526209_Add CreationDate To Record.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304261527248_Add User.cs" />
-    <Compile Include="Migrations\201304261527248_Add User.Designer.cs">
-      <DependentUpon>201304261527248_Add User.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201304281720530_Change User Info %28Add Email%29.cs" />
-    <Compile Include="Migrations\201304281720530_Change User Info %28Add Email%29.Designer.cs">
-      <DependentUpon>201304281720530_Change User Info %28Add Email%29.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305071043326_Add Registration Confirmation.cs" />
-    <Compile Include="Migrations\201305071043326_Add Registration Confirmation.Designer.cs">
-      <DependentUpon>201305071043326_Add Registration Confirmation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201305071630438_Resize User Email Length Restriction.cs" />
-    <Compile Include="Migrations\201305071630438_Resize User Email Length Restriction.Designer.cs">
-      <DependentUpon>201305071630438_Resize User Email Length Restriction.cs</DependentUpon>
+    <Compile Include="Migrations\201305071638508_Init.cs" />
+    <Compile Include="Migrations\201305071638508_Init.Designer.cs">
+      <DependentUpon>201305071638508_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,29 +74,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201304232002239_Init.resx">
-      <DependentUpon>201304232002239_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304251500278_Add Record.resx">
-      <DependentUpon>201304251500278_Add Record.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304251502065_Rename Record Table.resx">
-      <DependentUpon>201304251502065_Rename Record Table.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304261526209_Add CreationDate To Record.resx">
-      <DependentUpon>201304261526209_Add CreationDate To Record.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304261527248_Add User.resx">
-      <DependentUpon>201304261527248_Add User.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201304281720530_Change User Info %28Add Email%29.resx">
-      <DependentUpon>201304281720530_Change User Info %28Add Email%29.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305071043326_Add Registration Confirmation.resx">
-      <DependentUpon>201305071043326_Add Registration Confirmation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201305071630438_Resize User Email Length Restriction.resx">
-      <DependentUpon>201305071630438_Resize User Email Length Restriction.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201305071638508_Init.resx">
+      <DependentUpon>201305071638508_Init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
