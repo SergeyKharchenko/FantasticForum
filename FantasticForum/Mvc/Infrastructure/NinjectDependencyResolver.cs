@@ -67,7 +67,7 @@ namespace Mvc.Infrastructure
 
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
             kernel.Bind(typeof(ILogger)).To(typeof(MyLogger)).InSingletonScope();
-            kernel.Bind(typeof(IUserMailer)).To(typeof(UserMailer)).InRequestScope();
+            kernel.Bind(typeof(IUserMailer)).To(typeof(UserMailer));
         }
 
         public object GetService(Type serviceType)
