@@ -14,6 +14,7 @@ namespace Mvc.Infrastructure.UnitsOfWork.Abstract
         {
         }
 
+        public abstract bool IsUserExist(User user);
         public abstract User RegisterUser(User user, HttpPostedFileBase avatar);
         public abstract ImageUtilityModel GetAvatar(int userId);
     }

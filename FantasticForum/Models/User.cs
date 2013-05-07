@@ -19,5 +19,12 @@ namespace Models
         public string Password { get; set; }
 
         public virtual Collection<Record> Records { get; set; }
+
+        [ScaffoldColumn(false)]
+        [StringLength(36, MinimumLength = 36)]
+        public string Guid { get; set; }
+
+        [ScaffoldColumn(false)]
+        public bool IsConfirmed { get; set; }
     }
 }

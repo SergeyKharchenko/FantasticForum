@@ -1,4 +1,7 @@
-﻿using Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using Models;
 using Moq;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.DAL.Abstract;
@@ -25,6 +28,20 @@ namespace Tests.UnitsOfWork
         }
 
         [Test]
+        public void IsUserExistTest()
+        {            
+            var user = new User {Id = 42};
+            userRepositoryMock.Setup(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>(), ""))
+                              .Returns(new List<User>());
+
+            var isUserExist = unitOfWork.IsUserExist(user);
+
+            userRepositoryMock.Verify(repo => repo.Get(It.IsAny<Expression<Func<User, bool>>>(), ""), Times.Once());
+            Assert.That(isUserExist, Is.False);
+
+        }
+
+        [Test]
         public void RegisterTest()
         {            
             var user = new User {Id = 42};
@@ -37,11 +54,6 @@ namespace Tests.UnitsOfWork
             imageAssistantMock.Verify(assistant => assistant.CreateImage(imageMock.Object), Times.Once());
             userRepositoryMock.Verify(repo => repo.Create(user), Times.Once());
             Assert.That(createdUser.ImageId, Is.EqualTo("123"));
-            //Assert.That(FormsAuthentication.Decrypt(authTicketStr).Name, Is.qualTo("42"));
-            //var formsAuthenticationTicket = new FormsAuthenticationTicket(user.Id.ToString(CultureInfo.InvariantCulture),
-            //                                                              false,
-            //                                                              (int)FormsAuthentication.Timeout.TotalMinutes);
-            //return FormsAuthentication.Encrypt(formsAuthenticationTicket);
         }
     }
 }

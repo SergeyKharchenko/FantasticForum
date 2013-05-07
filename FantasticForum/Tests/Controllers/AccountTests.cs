@@ -37,6 +37,8 @@ namespace Tests.Controllers
             var registeredUser = new RegisterViewModel();
             var imageMock = new Mock<HttpPostedFileBase>();
             var user = new User {Id = 42};
+            unitOfWorkMock.Setup(unit => unit.IsUserExist(It.IsAny<User>()))
+                          .Returns(false);
             unitOfWorkMock.Setup(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object))
                           .Returns(user);
 
@@ -45,6 +47,7 @@ namespace Tests.Controllers
 
             Assert.That(redirectResult.RouteValues["controller"], Is.EqualTo("Section"));
             Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
+            unitOfWorkMock.Verify(unit => unit.IsUserExist(It.IsAny<User>()), Times.Once());
             unitOfWorkMock.Verify(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, user));
         }

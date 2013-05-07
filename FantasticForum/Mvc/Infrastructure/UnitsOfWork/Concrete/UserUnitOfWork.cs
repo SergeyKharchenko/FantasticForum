@@ -5,6 +5,7 @@ using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using System.Data.Entity;
 using System.Web;
 using Mvc.UtilityModels;
+using System.Linq;
 
 namespace Mvc.Infrastructure.UnitsOfWork.Concrete
 {
@@ -18,6 +19,12 @@ namespace Mvc.Infrastructure.UnitsOfWork.Concrete
             : base(context, repository)
         {
             this.imageAssistant = imageAssistant;
+        }
+
+        public override bool IsUserExist(User user)
+        {
+            var users = repository.Get(u => u.Email == user.Email);
+            return users.Any();
         }
 
         public override User RegisterUser(User user, HttpPostedFileBase avatar)

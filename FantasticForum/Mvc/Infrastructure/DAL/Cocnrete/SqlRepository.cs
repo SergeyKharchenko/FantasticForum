@@ -72,6 +72,7 @@ namespace Mvc.Infrastructure.DAL.Cocnrete
                 if (oldEntity == null)
                     throw new DbUpdateConcurrencyException();
                 context.Entry(oldEntity).State = EntityState.Detached;
+
                 dbSet.Attach(entity);
             }
             dbSet.Remove(entity);

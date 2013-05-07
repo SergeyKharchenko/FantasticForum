@@ -82,6 +82,10 @@
     <Compile Include="Migrations\201304281720530_Change User Info %28Add Email%29.Designer.cs">
       <DependentUpon>201304281720530_Change User Info %28Add Email%29.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201305071043326_Add Registration Confirmation.cs" />
+    <Compile Include="Migrations\201305071043326_Add Registration Confirmation.Designer.cs">
+      <DependentUpon>201305071043326_Add Registration Confirmation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Record.cs" />
@@ -111,6 +115,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201304281720530_Change User Info %28Add Email%29.resx">
       <DependentUpon>201304281720530_Change User Info %28Add Email%29.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201305071043326_Add Registration Confirmation.resx">
+      <DependentUpon>201305071043326_Add Registration Confirmation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

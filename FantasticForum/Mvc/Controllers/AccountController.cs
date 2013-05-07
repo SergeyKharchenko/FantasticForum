@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using System;
+using System.Collections.Generic;
+using Models;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Assistants.Abstract;
@@ -46,6 +48,11 @@ namespace Mvc.Controllers
             if (!ModelState.IsValid)
                 return View(registeredUser);
             var user = (User) mapper.Map(registeredUser, typeof (RegisterViewModel), typeof (User));
+            if (userUnitOfWork.IsUserExist(user))
+            {
+                ModelState.AddModelError("Email", "User with that email already exist");
+                return View(registeredUser);
+            }
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
             authorizationAssistant.WriteAuthInfoInSession(Session, createdUser);
             return RedirectToAction("List", "Section");
