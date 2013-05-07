@@ -9,7 +9,7 @@ namespace Models
     public class User : SqlEntityWithImage
     {
         [Required]
-        [StringLength(30, MinimumLength = 2)]
+        [StringLength(100, MinimumLength = 2)]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
