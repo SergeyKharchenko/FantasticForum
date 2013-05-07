@@ -224,10 +224,12 @@
     <Compile Include="Infrastructure\Assistants\Abstract\IEntityWithImageAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Abstract\IFileAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Abstract\IMailAssistant.cs" />
+    <Compile Include="Infrastructure\Assistants\Abstract\UrlAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Concrete\AuthorizationAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Concrete\EntityWithImageAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Concrete\FileAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Concrete\MailAssistant.cs" />
+    <Compile Include="Infrastructure\Assistants\Concrete\UrlAssistant.cs" />
     <Compile Include="Infrastructure\Concrete\CommonMapper.cs" />
     <Compile Include="Infrastructure\Concrete\MyLogger.cs" />
     <Compile Include="Infrastructure\DAL\Abstract\IRepository.cs" />

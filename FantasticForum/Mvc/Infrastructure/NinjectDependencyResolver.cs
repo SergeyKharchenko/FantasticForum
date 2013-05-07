@@ -61,6 +61,7 @@ namespace Mvc.Infrastructure
             kernel.Bind(typeof(IEntityWithImageAssistant<>)).To(typeof(EntityWithImageAssistant<>)).InRequestScope();
             kernel.Bind(typeof (IFileAssistant)).To(typeof (FileAssistant)).InSingletonScope();
             kernel.Bind(typeof(IAuthorizationAssistant)).To(typeof(AuthorizationAssistant)).InSingletonScope();
+            kernel.Bind(typeof(IUrlAssistant)).To(typeof(UrlAssistant)).InSingletonScope();
 
             #endregion
 

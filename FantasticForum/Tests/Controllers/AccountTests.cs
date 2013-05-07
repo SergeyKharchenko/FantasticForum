@@ -26,6 +26,7 @@ namespace Tests.Controllers
         private Mock<AbstractUserUnitOfWork> unitOfWorkMock;
         private Mock<IAuthorizationAssistant> authorizationAssistantMock;
         private Mock<IUserMailer> userMailertMock;
+        private Mock<IUrlAssistant> urlAssistantMock;
         
         [SetUp]
         public void SetUp()
@@ -33,10 +34,12 @@ namespace Tests.Controllers
             unitOfWorkMock = new Mock<AbstractUserUnitOfWork>(null, null);
             authorizationAssistantMock = new Mock<IAuthorizationAssistant>();
             userMailertMock = new Mock<IUserMailer>();
+            urlAssistantMock = new Mock<IUrlAssistant>();
             controller = new AccountController(unitOfWorkMock.Object,
                                                authorizationAssistantMock.Object,
                                                null,
                                                userMailertMock.Object,
+                                               urlAssistantMock.Object,
                                                new CommonMapper());
         }
 
@@ -45,16 +48,16 @@ namespace Tests.Controllers
         {
             var registeredUser = new RegisterViewModel();
             var imageMock = new Mock<HttpPostedFileBase>();
-            var user = new User {Id = 42, Email = "a@b.com"};
+            var user = new User {Id = 42, Email = "a@b.com", Guid = ""};
             unitOfWorkMock.Setup(unit => unit.IsUserExist(It.IsAny<User>()))
                           .Returns(false);
             unitOfWorkMock.Setup(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object))
                           .Returns(user);
-            var httpContextMock = new Mock<HttpContextBase>();
-            var httpRequestMock = new Mock<HttpRequestBase>();
-            httpRequestMock.Setup(request => request.Url).Returns(new Uri("http://ff.com"));
-            httpContextMock.Setup(context => context.Request).Returns(httpRequestMock.Object);
-            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+            urlAssistantMock.Setup(
+                assistant =>
+                assistant.GenerateAbsoluteUrl(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>(), controller.Url))
+                            .Returns("Hello");
+
             var messageMock = new Mock<MvcMailMessage>();
             userMailertMock.Setup(mailer => mailer.Register("a@b.com", It.IsAny<string>()))
                            .Returns(messageMock.Object);
@@ -63,7 +66,7 @@ namespace Tests.Controllers
             
             unitOfWorkMock.Verify(unit => unit.IsUserExist(It.IsAny<User>()), Times.Once());
             unitOfWorkMock.Verify(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object), Times.Once());
-            userMailertMock.Verify(mailer => mailer.Register("a@b.com", It.IsAny<string>()), Times.Once());
+            userMailertMock.Verify(mailer => mailer.Register("a@b.com", "Hello"), Times.Once());
             messageMock.Verify(message => message.Send(null), Times.Once());
         }
 

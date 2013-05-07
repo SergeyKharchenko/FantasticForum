@@ -21,11 +21,13 @@ namespace Mvc.Controllers
         private readonly IAuthorizationAssistant authorizationAssistant;
         private readonly IFileAssistant fileAssistant;
         private readonly IUserMailer userMailer;
+        private readonly IUrlAssistant urlAssistant;
 
         public AccountController(AbstractUserUnitOfWork userUnitOfWork,
                                  IAuthorizationAssistant authorizationAssistant,
                                  IFileAssistant fileAssistant,
                                  IUserMailer userMailer,
+                                 IUrlAssistant urlAssistant,
                                  IMapper mapper)
             : base(userUnitOfWork)
         {
@@ -34,6 +36,7 @@ namespace Mvc.Controllers
             this.authorizationAssistant = authorizationAssistant;
             this.fileAssistant = fileAssistant;
             this.userMailer = userMailer;
+            this.urlAssistant = urlAssistant;
         }
 
 
@@ -60,10 +63,7 @@ namespace Mvc.Controllers
             }
             
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
-
-            var url = UrlHelper.GenerateUrl(null, "RegistrationConfirmation", "Account", "http", Request.Url.Host,
-                                            String.Empty, new RouteValueDictionary {{"guid", user.Guid}}, RouteTable.Routes,
-                                            ControllerContext.RequestContext, false);
+            var url = urlAssistant.GenerateAbsoluteUrl("RegistrationConfirmation", "Account", new { guid  = createdUser.Guid}, Url);
             var message = userMailer.Register(createdUser.Email, url);
             message.Send();
 
