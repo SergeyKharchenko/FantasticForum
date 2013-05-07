@@ -50,7 +50,7 @@ namespace Tests
             // Arrange
             var routes = new RouteCollection();
             RouteConfig.RegisterRoutes(routes);
-
+            
             // Act - process the route
             var result = routes.GetRouteData(CreateHttpContext(url, httpMethod));
 

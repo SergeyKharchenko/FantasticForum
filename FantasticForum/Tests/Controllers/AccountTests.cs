@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Web.Routing;
 using Models;
 using Moq;
+using Mvc.App_Start;
 using Mvc.Controllers;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.Concrete;
+using Mvc.Infrastructure.Mailers;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
+using Mvc.Mailer;
 using Mvc.ViewModels;
 using NUnit.Framework;
 using System.Web;
@@ -21,13 +25,18 @@ namespace Tests.Controllers
         private AccountController controller;
         private Mock<AbstractUserUnitOfWork> unitOfWorkMock;
         private Mock<IAuthorizationAssistant> authorizationAssistantMock;
+        private Mock<IUserMailer> userMailertMock;
         
         [SetUp]
         public void SetUp()
         {
             unitOfWorkMock = new Mock<AbstractUserUnitOfWork>(null, null);
             authorizationAssistantMock = new Mock<IAuthorizationAssistant>();
-            controller = new AccountController(unitOfWorkMock.Object, authorizationAssistantMock.Object, null,
+            userMailertMock = new Mock<IUserMailer>();
+            controller = new AccountController(unitOfWorkMock.Object,
+                                               authorizationAssistantMock.Object,
+                                               null,
+                                               userMailertMock.Object,
                                                new CommonMapper());
         }
 
@@ -36,19 +45,40 @@ namespace Tests.Controllers
         {
             var registeredUser = new RegisterViewModel();
             var imageMock = new Mock<HttpPostedFileBase>();
-            var user = new User {Id = 42};
+            var user = new User {Id = 42, Email = "a@b.com"};
             unitOfWorkMock.Setup(unit => unit.IsUserExist(It.IsAny<User>()))
                           .Returns(false);
             unitOfWorkMock.Setup(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object))
                           .Returns(user);
+            var httpContextMock = new Mock<HttpContextBase>();
+            var httpRequestMock = new Mock<HttpRequestBase>();
+            httpRequestMock.Setup(request => request.Url).Returns(new Uri("http://ff.com"));
+            httpContextMock.Setup(context => context.Request).Returns(httpRequestMock.Object);
+            controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
+            var messageMock = new Mock<MvcMailMessage>();
+            userMailertMock.Setup(mailer => mailer.Register("a@b.com", It.IsAny<string>()))
+                           .Returns(messageMock.Object);
 
-            var view = controller.Register(registeredUser, imageMock.Object);
-            var redirectResult = view as RedirectToRouteResult;
-
-            Assert.That(redirectResult.RouteValues["controller"], Is.EqualTo("Section"));
-            Assert.That(redirectResult.RouteValues["action"], Is.EqualTo("List"));
+            controller.Register(registeredUser, imageMock.Object);
+            
             unitOfWorkMock.Verify(unit => unit.IsUserExist(It.IsAny<User>()), Times.Once());
             unitOfWorkMock.Verify(unit => unit.RegisterUser(It.IsAny<User>(), imageMock.Object), Times.Once());
+            userMailertMock.Verify(mailer => mailer.Register("a@b.com", It.IsAny<string>()), Times.Once());
+            messageMock.Verify(message => message.Send(null), Times.Once());
+        }
+
+        [Test]
+        public void RegistrationConfirmationTest()
+        {
+            var user = new User();
+            unitOfWorkMock.Setup(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), ""))
+                          .Returns(new List<User> { user });
+
+            var view = controller.RegistrationConfirmation("Hello");
+
+            Assert.That(view.Model, Is.EqualTo(true));
+            unitOfWorkMock.Verify(unit => unit.Update(It.Is<User>(u => u.IsConfirmed)), Times.Once());
+            unitOfWorkMock.Verify(unit => unit.Read(It.IsAny<Expression<Func<User, bool>>>(), ""), Times.Once());
             authorizationAssistantMock.Verify(assistant => assistant.WriteAuthInfoInSession(controller.Session, user));
         }
 

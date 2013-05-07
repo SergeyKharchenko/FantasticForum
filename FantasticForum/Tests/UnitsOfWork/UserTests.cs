@@ -54,6 +54,8 @@ namespace Tests.UnitsOfWork
             imageAssistantMock.Verify(assistant => assistant.CreateImage(imageMock.Object), Times.Once());
             userRepositoryMock.Verify(repo => repo.Create(user), Times.Once());
             Assert.That(createdUser.ImageId, Is.EqualTo("123"));
+            Assert.That(createdUser.IsConfirmed, Is.False);
+            Assert.That(createdUser.Guid, Is.Not.Empty);
         }
     }
 }

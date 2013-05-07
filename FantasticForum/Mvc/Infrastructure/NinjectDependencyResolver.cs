@@ -1,12 +1,12 @@
 using Models;
 using MongoDB.Driver;
-using Mvc.Filters;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.Assistants.Concrete;
 using Mvc.Infrastructure.Concrete;
 using Mvc.Infrastructure.DAL.Abstract;
 using Mvc.Infrastructure.DAL.Cocnrete;
+using Mvc.Infrastructure.Mailers;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
 using Ninject;
@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Web.Mvc;
-using Ninject.Web.Mvc.FilterBindingSyntax;
 
 namespace Mvc.Infrastructure
 {
@@ -67,6 +66,7 @@ namespace Mvc.Infrastructure
 
             kernel.Bind(typeof(IMapper)).To(typeof(CommonMapper)).InSingletonScope();
             kernel.Bind(typeof(ILogger)).To(typeof(MyLogger)).InSingletonScope();
+            kernel.Bind(typeof(IUserMailer)).To(typeof(UserMailer)).InRequestScope();
         }
 
         public object GetService(Type serviceType)

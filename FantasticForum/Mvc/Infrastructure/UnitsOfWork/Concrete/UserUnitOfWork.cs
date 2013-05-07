@@ -1,3 +1,4 @@
+using System;
 using Models;
 using Mvc.Infrastructure.Assistants.Abstract;
 using Mvc.Infrastructure.DAL.Abstract;
@@ -33,6 +34,8 @@ namespace Mvc.Infrastructure.UnitsOfWork.Concrete
             if (avatar != null)
                 avatarId = imageAssistant.CreateImage(avatar);
             user.ImageId = avatarId;
+            user.Guid = Guid.NewGuid().ToString();
+            user.IsConfirmed = false;
             return Create(user);
         }
 

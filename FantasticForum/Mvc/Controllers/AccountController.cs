@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Routing;
 using Models;
 using Mvc.Infrastructure;
 using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.Assistants.Abstract;
+using Mvc.Infrastructure.Mailers;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using System.Web;
 using System.Web.Mvc;
@@ -18,10 +20,12 @@ namespace Mvc.Controllers
         private readonly IMapper mapper;
         private readonly IAuthorizationAssistant authorizationAssistant;
         private readonly IFileAssistant fileAssistant;
+        private readonly IUserMailer userMailer;
 
         public AccountController(AbstractUserUnitOfWork userUnitOfWork,
                                  IAuthorizationAssistant authorizationAssistant,
                                  IFileAssistant fileAssistant,
+                                 IUserMailer userMailer,
                                  IMapper mapper)
             : base(userUnitOfWork)
         {
@@ -29,6 +33,7 @@ namespace Mvc.Controllers
             this.mapper = mapper;
             this.authorizationAssistant = authorizationAssistant;
             this.fileAssistant = fileAssistant;
+            this.userMailer = userMailer;
         }
 
 
@@ -43,7 +48,7 @@ namespace Mvc.Controllers
         //
         // Post: /Account/Register
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel registeredUser, HttpPostedFileBase avatar)
+        public ViewResult Register(RegisterViewModel registeredUser, HttpPostedFileBase avatar)
         {
             if (!ModelState.IsValid)
                 return View(registeredUser);
@@ -53,9 +58,30 @@ namespace Mvc.Controllers
                 ModelState.AddModelError("Email", "User with that email already exist");
                 return View(registeredUser);
             }
+            
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
-            authorizationAssistant.WriteAuthInfoInSession(Session, createdUser);
-            return RedirectToAction("List", "Section");
+
+            var url = UrlHelper.GenerateUrl(null, "RegistrationConfirmation", "Account", "http", Request.Url.Host,
+                                            String.Empty, new RouteValueDictionary {{"guid", user.Guid}}, RouteTable.Routes,
+                                            ControllerContext.RequestContext, false);
+            var message = userMailer.Register(createdUser.Email, url);
+            message.Send();
+
+            return View("RegistrationNotification");
+        }
+
+        //
+        // Get: /Account/RegistrationConfirmation
+
+        public ViewResult RegistrationConfirmation(string guid)
+        {
+            var user = userUnitOfWork.Read(u => u.Guid == guid && !u.IsConfirmed).FirstOrDefault();
+            if (user == null)
+                return View(false);
+            user.IsConfirmed = true;
+            userUnitOfWork.Update(user);
+            authorizationAssistant.WriteAuthInfoInSession(Session, user);
+            return View(true);
         }
 
         //

@@ -1,0 +1,18 @@
+﻿@model bool
+
+@{
+    ViewBag.Title = "RegistrationConfirmation";
+}
+
+<h2>RegistrationConfirmation</h2>
+
+@if (Model)
+{
+    @: You have confirmed your registration!
+}
+else
+{
+    @: Who are you? -_-
+}
+
+@Html.ActionLink("Back to List", "List", "Section")
