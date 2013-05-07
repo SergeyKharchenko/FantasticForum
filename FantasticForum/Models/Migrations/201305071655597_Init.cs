@@ -53,7 +53,7 @@ namespace Models.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Email = c.String(nullable: false),
+                        Email = c.String(maxLength: 100),
                         Password = c.String(nullable: false, maxLength: 30),
                         Guid = c.String(maxLength: 36),
                         IsConfirmed = c.Boolean(nullable: false),
