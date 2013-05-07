@@ -1,3 +1,14 @@
 <h2>FantasticForum</h2>
 <h3>Registration Confirmation</h3>
-<a href="@ViewBag.Link">Go here to complete your registration</a>
+
+@{
+    var link = ViewBag.Link as string;
+    if (!Request.IsLocal)
+    {
+        var uri = new Uri(ViewBag.Link);
+        link = uri.GetComponents(UriComponents.AbsoluteUri & ~UriComponents.Port,
+                               UriFormat.UriEscaped);
+    }
+}
+
+<a href="@link">Go here to complete your registration</a>

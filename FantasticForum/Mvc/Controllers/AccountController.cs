@@ -63,7 +63,9 @@ namespace Mvc.Controllers
             }
             
             var createdUser = userUnitOfWork.RegisterUser(user, avatar);
+
             var url = urlAssistant.GenerateAbsoluteUrl("RegistrationConfirmation", "Account", new { guid  = createdUser.Guid}, Url);
+
             var message = userMailer.Register(createdUser.Email, url);
             message.Send();
 
