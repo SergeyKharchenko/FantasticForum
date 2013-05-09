@@ -171,7 +171,7 @@ namespace Tests.Repositories
             var section1 = context.Sections.First();
             var section2 = section1.Clone() as Section;
 
-            repository.Update(section1);
+            repository.Remove(section1);
 
             Assert.Throws<DbUpdateConcurrencyException>(() => RemoveSection(section2));
         }
@@ -182,7 +182,6 @@ namespace Tests.Repositories
             var section = context.Sections.First();
             var id = section.Id;
 
-            RemoveTopicsFromSection(section);
             repository.Remove(id);
 
             var newSection = repository.GetById(id);
@@ -209,17 +208,7 @@ namespace Tests.Repositories
 
         private void RemoveSection(Section section)
         {
-            //RemoveTopicsFromSection(section);
             repository.Remove(section);
-        }
-
-        private void RemoveTopicsFromSection(Section section)
-        {
-            if (section.Topics == null)
-                return;
-            for (var i = section.Topics.Count - 1; i >= 0; i--)
-                context.Topics.Remove(section.Topics[i]);
-            context.SaveChanges();
         }
 
         [TestFixtureTearDown]
