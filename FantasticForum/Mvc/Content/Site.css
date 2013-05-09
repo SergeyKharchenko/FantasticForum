@@ -71,3 +71,8 @@ td.element {
 .table-cell-record {
     width: 80%
 }
+
+.record-edit {
+    float: right;
+    margin-right: 10px;
+}

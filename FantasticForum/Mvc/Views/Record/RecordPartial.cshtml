@@ -1,4 +1,5 @@
-﻿@model Models.Record
+﻿@using Mvc.Filters
+@model Models.Record
 
 <div class="table-row">
     <div class="table-cell-user">
@@ -6,7 +7,17 @@
         <img width="24" height="24" alt="@Model.User.Email" src="@Url.Action("GetAvatar", "Account", new {id = @Model.User.Id})" />
     </div>
     <div class="table-cell-record">
+        @{
+            var user = (User as UserIndentity).User;
+            if (user != null && user.Id == Model.UserId)
+            {
+                <div class="record-edit">
+                    @Html.ActionLink("Edit", "Edit", "Record", new {id = Model.Id,}, null) | 
+                    @Html.ActionLink("Delete", "Delete", "Record", new {id = Model.Id}, null)
+                </div>
+            }
+        }
         @Model.CreationDate.ToUniversalTime()<br/>
-        @Model.Text
+        @Model.Text        
     </div>
 </div>

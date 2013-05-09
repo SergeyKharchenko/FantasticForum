@@ -25,7 +25,7 @@ namespace Mvc.Controllers
         {
             var records = unitOfWork.Read(record => record.TopicId == topicId);
             var pageNumber = page ?? 1;
-            var pagedRecords = records.OrderBy(r => r.CreationDate).ToPagedList(pageNumber, 2);
+            var pagedRecords = records.OrderBy(r => r.CreationDate).ToPagedList(pageNumber, 10);
             ViewBag.SectionId = sectionId;
             ViewBag.TopicId = topicId;
             return View(pagedRecords);
@@ -51,9 +51,51 @@ namespace Mvc.Controllers
                 };
                 unitOfWork.Create(record);
             }
-
             return RedirectToAction("List", new {sectionId, topicId});
         }
 
+        //
+        // GET: /Record/Edit
+        [Authorize]
+        public ViewResult Edit(int sectionId, int topicId, int id)
+        {
+            var userId = (User.Identity as UserIndentity).User.Id;
+            var record = unitOfWork.Read(r => r.Id == id && r.UserId == userId)
+                                   .FirstOrDefault();
+            if (record == null)
+                throw new ArgumentException("Such record was not found or you are not the creator of it");
+            return View(record);
+        }
+
+        //
+        // Post: /Record/Edit
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Edit(int sectionId, int topicId, Record record)
+        {
+            if (!ModelState.IsValid)
+                return View(record);
+            unitOfWork.Update(record);
+            return RedirectToAction("List");
+        }
+
+        //
+        // GET: /Delete/Edit
+        [Authorize]
+        public ViewResult Delete(int sectionId, int topicId, int id)
+        {
+            var record = unitOfWork.Read(id);
+            if (record == null)
+                throw new ArgumentException("Such record was not found or you are not the creator of it");
+            return View(record);
+        }
+
+        //
+        // Post: /Delete/Edit
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult Delete(int sectionId, int topicId, Record record)
+        {
+            unitOfWork.Delete(record);
+            return RedirectToAction("List");
+        }
     }
 }

@@ -367,6 +367,8 @@
     <Content Include="Views\UserMailer\Register.cshtml" />
     <Content Include="Views\Account\RegistrationNotification.cshtml" />
     <Content Include="Views\Account\RegistrationConfirmation.cshtml" />
+    <Content Include="Views\Record\Edit.cshtml" />
+    <Content Include="Views\Record\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
