@@ -11,6 +11,7 @@ using Mvc.Infrastructure.DAL.Cocnrete;
 using Mvc.Infrastructure.Mailers;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
+using Support;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(Mvc.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(Mvc.App_Start.NinjectWebCommon), "Stop")]

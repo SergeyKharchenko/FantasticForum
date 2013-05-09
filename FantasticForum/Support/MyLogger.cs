@@ -1,9 +1,8 @@
-using Mvc.Infrastructure.Abstract;
 using NLog;
 
-namespace Mvc.Infrastructure.Concrete
+namespace Support
 {
-    class MyLogger : ILogger
+    public class MyLogger : ILogger
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 

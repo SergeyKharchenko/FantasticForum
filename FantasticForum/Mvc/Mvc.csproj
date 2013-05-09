@@ -218,7 +218,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\Abstract\ILogger.cs" />
     <Compile Include="Infrastructure\Abstract\IMapper.cs" />
     <Compile Include="Infrastructure\Assistants\Abstract\IAuthorizationAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Abstract\IEntityWithImageAssistant.cs" />
@@ -231,7 +230,6 @@
     <Compile Include="Infrastructure\Assistants\Concrete\MailAssistant.cs" />
     <Compile Include="Infrastructure\Assistants\Concrete\UrlAssistant.cs" />
     <Compile Include="Infrastructure\Concrete\CommonMapper.cs" />
-    <Compile Include="Infrastructure\Concrete\MyLogger.cs" />
     <Compile Include="Infrastructure\DAL\Abstract\IRepository.cs" />
     <Compile Include="Infrastructure\DAL\Cocnrete\MongoRepository.cs" />
     <Compile Include="Infrastructure\DAL\Cocnrete\SqlRepository.cs" />
@@ -380,6 +378,10 @@
     <ProjectReference Include="..\Models\Models.csproj">
       <Project>{333eac80-bbf9-43cf-8872-03950bc05016}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Support\Support.csproj">
+      <Project>{0b48a6f1-01ff-49ad-8435-1417cb025fa3}</Project>
+      <Name>Support</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

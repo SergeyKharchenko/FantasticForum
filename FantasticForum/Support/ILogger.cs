@@ -1,4 +1,4 @@
-namespace Mvc.Infrastructure.Abstract
+namespace Support
 {
     public interface ILogger
     {
