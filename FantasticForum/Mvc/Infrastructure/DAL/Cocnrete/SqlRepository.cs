@@ -54,11 +54,11 @@ namespace Mvc.Infrastructure.DAL.Cocnrete
 
         public TEntity Update(TEntity entity)
         {
-            if (context.Entry(entity).State == EntityState.Detached)
-            {
-                var oldEntity = dbSet.Find(entity.Id);
-                context.Entry(oldEntity).State = EntityState.Detached;
-            }
+            //if (context.Entry(entity).State == EntityState.Detached)
+            //{
+            //    var oldEntity = dbSet.Find(entity.Id);
+            //    context.Entry(oldEntity).State = EntityState.Detached;
+            //}
             context.Entry(entity).State = EntityState.Modified;
             context.SaveChanges();
             return entity;

@@ -238,7 +238,6 @@
     <Compile Include="Infrastructure\DAL\ForumContextInitializer.cs" />
     <Compile Include="Infrastructure\Mailers\IUserMailer.cs" />
     <Compile Include="Infrastructure\Mailers\UserMailer.cs" />
-    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\UnitsOfWork\Abstract\AbstractSectionUnitOfWork.cs" />
     <Compile Include="Infrastructure\UnitsOfWork\Abstract\AbstractTopicUnitOfWork.cs" />
     <Compile Include="Infrastructure\UnitsOfWork\Abstract\AbstractUserUnitOfWork.cs" />

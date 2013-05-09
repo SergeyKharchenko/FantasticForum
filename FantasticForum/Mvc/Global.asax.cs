@@ -15,8 +15,6 @@ namespace Mvc
     {
         protected void Application_Start()
         {
-            DependencyResolver.SetResolver(new NinjectDependencyResolver());
-
             AreaRegistration.RegisterAllAreas();
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
