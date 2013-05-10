@@ -1,8 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title</title>
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
@@ -19,39 +22,18 @@
                         <span class="icon-bar"></span>
                     </a>
 
-                    <a class="brand" href="@Url.Action("List", "Section")">                        
-                        Fantastic Forum
-                    </a>
+                    <!-- Be sure to leave the brand out there if you want it shown -->
+                    <a class="brand" href="#">Project name</a>
 
                     <!-- Everything you want hidden at 940px or less, place within here -->
                     <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li class="active">
-                                <a href="@Url.Action("List", "Section")">Sections</a>
-                            </li>
-                        </ul>
-                        
-                        <ul class="nav pull-right">
-                            <li>
-                                <div>@Html.Partial("LoginPartial")</div>
-                            </li>
-                        </ul>
+                        <!-- .nav, .navbar-search, .navbar-form, etc -->
                     </div>
  
                 </div>
             </div>
         </div>
-
-        <div id="content-wrapper">
-            @RenderBody()
-        </div>
-
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Fantastic Forum</p>
-        </footer>
-
+        123
         @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
     </body>
 </html>

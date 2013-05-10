@@ -107,5 +107,11 @@ namespace Mvc.Controllers
 
             return RedirectToAction("List");
         }
+
+
+        public ViewResult Test()
+        {
+            return View();
+        }
     }
 }

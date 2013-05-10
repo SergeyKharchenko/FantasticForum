@@ -20,18 +20,19 @@
             @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImageId))
             {
                 <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
-                                                                                new {id = Model.Id})" />  
+                                                                                new {id = Model.Id})" class="img-circle" />
             }
-            <input type="file" name="avatar" />
+            <button class="btn btn-success" onclick="$('#avatar').click()">Choose avatar</button>
+            <input id="avatar" type="file" name="avatar" style="visibility: hidden" />
         </p>
         <p>
-            <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" />
+            <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" class="btn btn-primary" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List")
+    <a href="@Url.Action("List")"><i class="icon-backward" style="padding-right: 10px"></i>Back to List</a>
 </div>
 
 @section Scripts {

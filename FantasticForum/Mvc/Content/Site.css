@@ -2,53 +2,61 @@
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #content-wrapper {
-    padding: 50px 0;
+    padding: 0 15px;
 }
 
-header, footer {               
+footer {               
     position: fixed;
     width: 100%;
     padding: 0;
-}
-
-header {
-    top: 0;
-    height: 50px;
-}
-
-footer {   
     background-color: #e2e2e2;
-    font-size: .8em;
     bottom: 0;
-    height: 50px;
-    text-align: center;     
+    height: 50px;   
 }
 
-td.element {
-    width: 200px;
-    background-color: gainsboro;
+footer p {   
+    font-size: 14px;
+    text-align: center;     
+    padding: 15px;
+    border-top: 1px solid #d4d4d4;
+}
+
+.new-section-btn {
+    float: right;
+}
+
+.element {
+    padding-bottom: 15px;
 }
 
 .element-title {
-    color: black;
-    display: block;
+    display: inline-block;
+    width: 200px;
+    font-size: 14px;
+}
+
+.edit-btns {
+    display: inline-block;
 }
 
 .section-avatar {
     float: left;
 }
 
-.login-menu {
-    float: right;
-}
-
 .table {
     display: table;
     width: 100%;
     border-collapse: collapse;
+}
+
+
+td.element {
+    width: 200px;
+    background-color: gainsboro;
 }
 
 .table-row {
