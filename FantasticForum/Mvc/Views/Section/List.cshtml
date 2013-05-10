@@ -15,7 +15,7 @@
             <img width="24" height="24" alt="@item.Title" 
                  src="@Url.Action("GetAvatar", "Section", new {id = item.Id})" 
                  class="img-circle" />
-            @Html.ActionLink(@item.Title, "List", "Topic", new {sectionId = item.Id})
+            @Html.ActionLink(@item.Title, "List", "Topic", new {sectionId = item.Id}, null)
         </div>
         <div class="edit-btns">
             @Html.ActionLink("Edit", "Edit", new {id = item.Id}, new {@class = "btn-small btn-warning"})
