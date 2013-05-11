@@ -13,17 +13,18 @@
     <fieldset>
         <legend>Section</legend>
 
-        @Html.EditorForModel()    
+        @Html.EditorFor(model => model.Title)  
+        @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImageId))
+        {
+            <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
+                                                                            new {id = Model.Id})" class="img-circle" />
+        }  
         
         <p>
             Section avatar: 
-            @if (Model.Id != 0 && !string.IsNullOrEmpty(Model.ImageId))
-            {
-                <img width="24" height="24" alt="@Model.Title" src="@Url.Action("GetAvatar", "Section",
-                                                                                new {id = Model.Id})" class="img-circle" />
-            }
-            <button class="btn btn-success" onclick="$('#avatar').click()">Choose avatar</button>
-            <input id="avatar" type="file" name="avatar" style="visibility: hidden" />
+            <button id="btn" class="btn btn-success">Choose avatar</button>
+            <input id="avatar" type="file" name="avatar" style="display: none" />
+            <span id="avatar-name"></span>
         </p>
         <p>
             <input type="submit" value="@(Model.Id == 0 ? "Create" : "Edit")" class="btn btn-primary" />
@@ -37,4 +38,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/Section/Edit.js">
+        
+
+    </script>
 }
