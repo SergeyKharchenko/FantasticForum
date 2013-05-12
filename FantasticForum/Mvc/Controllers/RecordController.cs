@@ -30,8 +30,14 @@ namespace Mvc.Controllers
         {
             var records = unitOfWork.Read(record => record.TopicId == topicId);
             var pageNumber = page ?? 1;
-            return View(mapper.Map<Tuple<int, int, int, int, IEnumerable<Record>>, RecordsViewModel>(
-                new Tuple<int, int, int, int, IEnumerable<Record>>(sectionId, topicId, pageNumber, 10, records)));
+
+            return View(new RecordsViewModel
+                {
+                    SectionId = sectionId,
+                    TopicId = topicId,
+                    Records = (from record in records
+                               select mapper.Map<Record, RecordViewModel>(record)).ToPagedList(pageNumber, 10)
+                });
         }
 
         //

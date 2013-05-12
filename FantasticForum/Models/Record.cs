@@ -1,4 +1,5 @@
-﻿using Models.Abstract;
+﻿using System.Web.Mvc;
+using Models.Abstract;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,6 +11,7 @@ namespace Models
     {
         [Required]
         [DataType(DataType.MultilineText)]
+        [AllowHtml]
         public string Text { get; set; }
 
         public DateTime CreationDate { get; set; }

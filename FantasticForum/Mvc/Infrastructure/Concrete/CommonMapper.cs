@@ -19,14 +19,7 @@ namespace Mvc.Infrastructure.Concrete
             Mapper.CreateMap<RegisterViewModel, User>();
 
             Mapper.CreateMap<Record, RecordViewModel>()
-                  .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email))
                   .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
-            Mapper.CreateMap<Tuple<int, int, int, int, IEnumerable<Record>>, RecordsViewModel>()
-                  .ForMember(dest => dest.SectionId, opt => opt.MapFrom(src => src.Item1))
-                  .ForMember(dest => dest.TopicId, opt => opt.MapFrom(src => src.Item2))
-                  .AfterMap((src, dest) => dest.Records = (from record in src.Item5
-                                                           select Map<Record, RecordViewModel>(record)).ToPagedList
-                                                              (src.Item3, src.Item4));
         }
 
         public class Shit
