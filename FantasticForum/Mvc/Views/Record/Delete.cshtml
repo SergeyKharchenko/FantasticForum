@@ -1,4 +1,4 @@
-﻿@model Models.Record
+﻿@model Mvc.ViewModels.RecordViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -11,10 +11,7 @@
     <legend>Record</legend>
 
     <div>
-         @Html.DisplayNameFor(model => model.Text)
-    </div>
-    <div>
-        @Html.DisplayFor(model => model.Text)
+         @Html.Raw(Model.EncodedText)
     </div>
 
 </fieldset>

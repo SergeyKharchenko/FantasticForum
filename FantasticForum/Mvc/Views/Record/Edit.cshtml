@@ -1,4 +1,4 @@
-﻿@model Models.Record
+﻿@model Mvc.ViewModels.RecordViewModel
 
 @{
     ViewBag.Title = "Edit";
@@ -9,10 +9,8 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-    @Html.HiddenFor(model => model.Id)
     @Html.HiddenFor(model => model.Timestamp)
     @Html.HiddenFor(model => model.UserId)
-    @Html.HiddenFor(model => model.TopicId)
     @Html.HiddenFor(model => model.CreationDate)
 
     <fieldset>
@@ -33,7 +31,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "List")
 </div>
 
 @section Scripts {

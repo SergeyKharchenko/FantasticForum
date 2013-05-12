@@ -43,7 +43,7 @@ namespace Mvc.Controllers
         //
         // POST: /Record/Add
         [HttpPost, ForumAuthorize]
-        public RedirectToRouteResult Add(int sectionId, int topicId, string text)
+        public RedirectToRouteResult Add(int sectionId, int topicId, RecordViewModel recordViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +53,7 @@ namespace Mvc.Controllers
             {
                 var record = new Record
                 {
-                    Text = text,
+                    Text = recordViewModel.Text,
                     CreationDate = DateTime.Now,
                     TopicId = topicId,
                     UserId = ((UserIndentity) User).User.Id
@@ -73,16 +73,18 @@ namespace Mvc.Controllers
                                    .FirstOrDefault();
             if (record == null)
                 throw new ArgumentException("Such record was not found or you are not the creator of it");
-            return View(record);
+            return View(mapper.Map<Record, RecordViewModel>(record));
         }
 
         //
         // Post: /Record/Edit
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Edit(int sectionId, int topicId, Record record)
+        public ActionResult Edit(int sectionId, int topicId, RecordViewModel recordViewModel)
         {
             if (!ModelState.IsValid)
-                return View(record);
+                return View(recordViewModel);
+            var record = mapper.Map<RecordViewModel, Record>(recordViewModel);
+            record.TopicId = topicId;
             unitOfWork.Update(record);
             return RedirectToAction("List");
         }
@@ -95,7 +97,7 @@ namespace Mvc.Controllers
             var record = unitOfWork.Read(id);
             if (record == null)
                 throw new ArgumentException("Such record was not found or you are not the creator of it");
-            return View(record);
+            return View(mapper.Map<Record, RecordViewModel>(record));
         }
 
         //

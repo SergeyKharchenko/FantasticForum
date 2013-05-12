@@ -45,7 +45,7 @@ namespace Tests.Controllers
             httpContextMock.Setup(context => context.User).Returns(new UserIndentity {User = new User {Id = 42}});
             controller.ControllerContext = new ControllerContext(httpContextMock.Object, new RouteData(), controller);
 
-            var view = controller.Add(1, 2, "Hello");
+            var view = controller.Add(1, 2, new RecordViewModel { Text = "Hello" });
 
             unitOfWorkMock.Verify(
                 unit =>

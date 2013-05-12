@@ -1,5 +1,4 @@
-﻿@using Mvc.Filters
-@model Mvc.ViewModels.RecordViewModel
+﻿@model Mvc.ViewModels.RecordViewModel
 
 <div class="table-row">
     <div class="table-cell-user">
@@ -17,6 +16,6 @@
             }
         }
         @Model.CreationDate.ToUniversalTime()<br/>
-        @Model.Text        
+        @Html.Raw(Model.EncodedText)
     </div>
 </div>

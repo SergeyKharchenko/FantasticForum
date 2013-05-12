@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Microsoft.Security.Application;
 using Models;
 using Mvc.Infrastructure.Abstract;
 using Mvc.ViewModels;
@@ -18,8 +19,9 @@ namespace Mvc.Infrastructure.Concrete
                   .ForMember(dest => dest.RecordCount, opt => opt.MapFrom(src => src.Records.Count));
             Mapper.CreateMap<RegisterViewModel, User>();
 
-            Mapper.CreateMap<Record, RecordViewModel>()
-                  .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id));
+            Mapper.CreateMap<Record, RecordViewModel>()           
+                  .ForMember(dest => dest.EncodedText, opt => opt.MapFrom(src => Encoder.HtmlEncode(src.Text).Replace("&#13;&#10;", "<br/>")));
+            Mapper.CreateMap<RecordViewModel, Record>();
         }
 
         public class Shit
