@@ -1,15 +1,15 @@
 ﻿@using Mvc.Filters
-@model Models.Record
+@model Mvc.ViewModels.RecordViewModel
 
 <div class="table-row">
     <div class="table-cell-user">
-        @Model.User.Email<br/>
-        <img width="24" height="24" alt="@Model.User.Email" src="@Url.Action("GetAvatar", "Account", new {id = @Model.User.Id})" />
+        @Model.UserEmail<br/>
+        <img width="24" height="24" alt="@Model.UserEmail" src="@Url.Action("GetAvatar", "Account", new {id = @Model.UserId})" />
     </div>
     <div class="table-cell-record">
         @{
             var user = (User as UserIndentity).User;
-            if (user != null && user.Id == Model.UserId)
+            if (User.Identity.Name == Model.UserEmail)
             {
                 <div class="record-edit">
                     @Html.ActionLink("Edit", "Edit", "Record", new {id = Model.Id,}, null) | 

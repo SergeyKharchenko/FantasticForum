@@ -1,5 +1,6 @@
 ﻿@using Models
 @using Mvc.Filters
+@model Mvc.ViewModels.RecordsViewModel
 @{
     var user = (User as UserIndentity).User;
 }
@@ -10,8 +11,8 @@
     <p>
         @using (@Html.BeginForm("Add", "Record"))
         {
-            @Html.Hidden("sectionId", ((int) ViewBag.SectionId).ToString())
-            @Html.Hidden("topicId",   ((int) ViewBag.TopicId).ToString())
+            @Html.Hidden("sectionId", Model.SectionId)
+            @Html.Hidden("topicId",   Model.TopicId)
 
             @Html.EditorFor(_ => new Record().Text, null, "text")<br />
             @Html.ValidationMessage("text")<br />

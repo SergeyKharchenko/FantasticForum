@@ -30,9 +30,7 @@ namespace Mvc.Controllers
         {
             var topics = topicUnitOfWork.Read(topic => topic.SectionId == sectionId);
             ViewBag.SectionId = sectionId;
-            return View(topics
-                            .Select(topic => mapper.Map(topic, typeof (Topic), typeof (TopicViewModel)))
-                            .Cast<TopicViewModel>().AsEnumerable());
+            return View(topics.Select(topic => mapper.Map<Topic, TopicViewModel>(topic)));
         }
 
         //
@@ -64,7 +62,7 @@ namespace Mvc.Controllers
         {
             var topic = topicUnitOfWork.Read(id);
             ViewBag.SectionId = topic.SectionId;
-            return View(mapper.Map(topic, typeof(Topic), typeof(TopicViewModel)));
+            return View(mapper.Map<Topic, TopicViewModel>(topic));
         } 
 
         //

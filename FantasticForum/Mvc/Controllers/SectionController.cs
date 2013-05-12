@@ -32,8 +32,7 @@ namespace Mvc.Controllers
         public ViewResult List()
         {
             var sections = sectionUnitOfWork.Entities
-                                     .Select(section => mapper.Map(section, typeof (Section), typeof (SectionViewModel)))
-                                     .Cast<SectionViewModel>().AsEnumerable();            
+                                            .Select(section => mapper.Map<Section, SectionViewModel>(section));          
             return View(sections);
         }        
 

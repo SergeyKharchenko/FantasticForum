@@ -55,7 +55,7 @@ namespace Mvc.Controllers
         {
             if (!ModelState.IsValid)
                 return View(registeredUser);
-            var user = (User) mapper.Map(registeredUser, typeof (RegisterViewModel), typeof (User));
+            var user = mapper.Map<RegisterViewModel, User>(registeredUser);
             if (userUnitOfWork.IsUserExist(user))
             {
                 ModelState.AddModelError("Email", "User with that email already exist");

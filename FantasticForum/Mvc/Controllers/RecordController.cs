@@ -5,17 +5,22 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using Mvc.Filters;
+using Mvc.Infrastructure.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
 using Mvc.Infrastructure.UnitsOfWork.Concrete;
+using Mvc.ViewModels;
 using PagedList;
 
 namespace Mvc.Controllers
 {
     public class RecordController : BaseController<Record>
     {
-        public RecordController(ISqlCrudUnitOfWork<Record> unitOfWork)
+        private readonly IMapper mapper;
+
+        public RecordController(ISqlCrudUnitOfWork<Record> unitOfWork, IMapper mapper)
             : base(unitOfWork)
         {
+            this.mapper = mapper;
         }
 
         //
@@ -25,10 +30,8 @@ namespace Mvc.Controllers
         {
             var records = unitOfWork.Read(record => record.TopicId == topicId);
             var pageNumber = page ?? 1;
-            var pagedRecords = records.OrderBy(r => r.CreationDate).ToPagedList(pageNumber, 10);
-            ViewBag.SectionId = sectionId;
-            ViewBag.TopicId = topicId;
-            return View(pagedRecords);
+            return View(mapper.Map<Tuple<int, int, int, int, IEnumerable<Record>>, RecordsViewModel>(
+                new Tuple<int, int, int, int, IEnumerable<Record>>(sectionId, topicId, pageNumber, 10, records)));
         }
 
         //

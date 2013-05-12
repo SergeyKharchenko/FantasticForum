@@ -7,7 +7,9 @@ using Models;
 using Moq;
 using Mvc.Controllers;
 using Mvc.Filters;
+using Mvc.Infrastructure.Concrete;
 using Mvc.Infrastructure.UnitsOfWork.Abstract;
+using Mvc.ViewModels;
 using NUnit.Framework;
 using PagedList;
 
@@ -23,7 +25,7 @@ namespace Tests.Controllers
         public void SetUp()
         {
             unitOfWorkMock = new Mock<ISqlCrudUnitOfWork<Record>>();
-            controller = new RecordController(unitOfWorkMock.Object);
+            controller = new RecordController(unitOfWorkMock.Object, new CommonMapper());
         }
 
         [Test]
@@ -31,9 +33,9 @@ namespace Tests.Controllers
         {
             var view = controller.List(1, 2, null);
 
-            Assert.That(view.Model, Is.TypeOf<PagedList<Record>>());
-            Assert.That(view.ViewBag.SectionId, Is.EqualTo(1));
-            Assert.That(view.ViewBag.TopicId, Is.EqualTo(2));
+            Assert.That(view.Model, Is.TypeOf<RecordsViewModel>());
+            Assert.That((view.Model as RecordsViewModel).SectionId, Is.EqualTo(1));
+            Assert.That((view.Model as RecordsViewModel).TopicId, Is.EqualTo(2));
         }
 
         [Test]

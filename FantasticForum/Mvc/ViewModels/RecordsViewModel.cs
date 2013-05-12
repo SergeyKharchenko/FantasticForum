@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PagedList;
 
 namespace Mvc.ViewModels
 {
@@ -7,7 +8,7 @@ namespace Mvc.ViewModels
     {
         public int SectionId { get; set; }    
         public int TopicId { get; set; }
-        public List<RecordViewModel> Records { get; set; }
+        public IPagedList<RecordViewModel> Records { get; set; }
     }
 
     public class RecordViewModel
@@ -15,6 +16,7 @@ namespace Mvc.ViewModels
         public int Id { get; set; }
         public string Text { get; set; }
         public DateTime CreationDate { get; set; }
+        public int UserId { get; set; }
         public string UserEmail { get; set; }
     }
 }   

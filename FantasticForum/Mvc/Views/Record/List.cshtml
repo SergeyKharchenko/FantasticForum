@@ -1,7 +1,7 @@
 ﻿@using Models
 @using PagedList
 @using PagedList.Mvc
-@model IPagedList<Record>
+@model Mvc.ViewModels.RecordsViewModel
 
 @{
     ViewBag.Title = "Records";
@@ -10,13 +10,13 @@
 <h2>Records</h2>
 
 <div class="table">
-    @foreach (var item in Model) 
+    @foreach (var item in Model.Records) 
     {
         @Html.Partial("RecordPartial", item)
     }
 </div>
 
-@Html.PagedListPager(Model, page => Url.Action("List", new { page }))
+@Html.PagedListPager(Model.Records, page => Url.Action("List", new { page }))
 
 @Html.Partial("NewRecordPartial")
 
