@@ -1,5 +1,6 @@
 ﻿$(function () {
     $('#btn').click(function (e) {
+        debugger;
         e.preventDefault();
         $(this).next().click();
     });
